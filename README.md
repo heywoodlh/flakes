@@ -21,3 +21,29 @@ If you want to install it, install it to your Nix profile:
 ```
 nix profile install github:heywoodlh/vim-configs
 ```
+
+If you want to use it in a Flake, do something like this:
+
+```
+{
+  description = "my flake";
+
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
+    vim-configs.url = "github:heywoodlh/vim-configs/main";
+  };
+
+  outputs = inputs@{ self, nixpkgs, vim-configs }: {
+    nixosConfigurations = {
+      system = "x86_64-linux";
+      specialArgs = inputs;
+      modules = [
+        {
+          environment.systemPackages = [
+            vim-configs.defaultPackage.${system}
+          ];
+        }
+      ];
+    };
+  };
+```

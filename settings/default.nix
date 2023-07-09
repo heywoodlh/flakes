@@ -2,8 +2,6 @@
 
 let
   settingsFiles = [
-    # Base vim config
-    ./vimrc.nix
     # Plugins
     ./ale.nix
     ./base16-vim.nix
@@ -18,6 +16,8 @@ let
     ./nerdtree.nix
     ./nord.nix
     ./sensible.nix
+    # Base vim config
+    ./vimrc.nix
   ];
 
   importSettingsFile = f: pkgs.callPackage f {};
