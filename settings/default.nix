@@ -16,6 +16,7 @@ let
     ./nerdtree.nix
     ./nord.nix
     ./sensible.nix
+    ./todo.txt.nix
     # Base vim config
     ./vimrc.nix
   ];
