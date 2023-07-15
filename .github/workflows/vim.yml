@@ -1,9 +1,12 @@
-name: build-envs
+name: build-vim-envs
 
 on:
   push:
     branches:
     - 'main'
+    paths:
+    - vim/**
+    - .github/workflows/vim.yml
   schedule:
   - cron: '0 0 * * Thu' # To update flake.lock
   workflow_dispatch:
@@ -26,17 +29,17 @@ jobs:
     - name: If scheduled or manually triggered, update inputs again
       if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
       run: |
-        nix flake update
+        nix flake update ./vim
 
-    - name: Build nix flake
+    - name: Build vim flake
       run: |
-        # Build nixos-desktop output
-        nix build .#
+        # Build vim flake
+        nix build ./vim#
 
     - name: If scheduled or manually triggered, add updated flake.lock if changed, commit and push
       if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
       uses: EndBug/add-and-commit@v9
       with:
-        add: 'flake.lock'
+        add: 'vim/flake.lock'
         author_name: 'github-actions'
         author_email: 'github-actions@github.com'
