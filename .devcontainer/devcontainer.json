@@ -10,7 +10,8 @@
 			"version": "latest"
 		},
 		"ghcr.io/dhoeric/features/act:1": {},
-		"ghcr.io/flexwie/devcontainer-features/op:1": {}
+		"ghcr.io/flexwie/devcontainer-features/op:1": {},
+		"ghcr.io/devcontainers-contrib/features/tailscale:1": {}
 	}
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
