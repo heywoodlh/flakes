@@ -2,11 +2,13 @@
   description = "heywoodlh wezterm flake";
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
+  inputs.nushell-configs.url = "github:heywoodlh/flakes/main?dir=nushell";
 
-  outputs = { self, nixpkgs, flake-utils }:
+  outputs = { self, nixpkgs, nushell-configs, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system:
     let
       pkgs = nixpkgs.legacyPackages.${system};
+      nushell = nushell-configs.packages.${system}.nushell;
       settings = pkgs.writeText "wezterm.lua" ''
         -- Add config folder to watchlist for config reloads.
         local wezterm = require 'wezterm';
@@ -42,7 +44,7 @@
         config.audible_bell = "Disabled"
 
         -- Set nushell to default shell
-        config.default_prog = { "${pkgs.nushell}/bin/nu" }
+        config.default_prog = { "${nushell}/bin/nu" }
 
         -- Disable hiding mouse cursor when typing
         -- Assumes something else will hide cursor
