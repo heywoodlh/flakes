@@ -4,7 +4,6 @@
   plugins = with vimPlugins; [ indentLine ];
   rc = ''
     " Vim-indentline config
-    let g:indentLine_char = '⦙'
     let g:markdown_syntax_conceal=0
     augroup filetype_indent
       autocmd!
