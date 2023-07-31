@@ -1,5 +1,11 @@
-This repo contains Nix flake configurations that are mission critical for myself:
+This repo contains Nix flake configurations that are mission critical for myself (mostly Nord themed):
+
+[Fish](./fish)
+
+[Tmux](./tmux)
 
 [Vim](./vim)
-[Wezterm](./wezterm)
+
 [VSCode](./vscode)
+
+[Wezterm](./wezterm)
