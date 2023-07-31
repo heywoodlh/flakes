@@ -9,3 +9,11 @@ set fish_color_user d8dee9
 set fish_color_operator 81a1c1
 set fish_color_host 81a1c1
 set fish_color_host_remote 81a1c1
+
+# Use 1password agent if it exists
+if test -e $HOME/.1password/agent.sock
+    set -g SSH_AUTH_SOCK $HOME/.1password/agent.sock
+end
+if test -e "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+    set -g SSH_AUTH_SOCK "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+end
