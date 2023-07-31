@@ -10,7 +10,7 @@
     in {
       packages = rec {
         fish = pkgs.writeShellScriptBin "fish" ''
-            ${pkgs.fish}/bin/fish --init-command="source ${./profile.fish}" $@
+            ${pkgs.fish}/bin/fish --init-command="source ${./profile.fish} && source ${./nix.fish}" $@
           '';
         default = fish;
         };
