@@ -2,13 +2,13 @@
   description = "heywoodlh wezterm flake";
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.nushell-configs.url = "github:heywoodlh/flakes/main?dir=nushell";
+  inputs.fish-configs.url = "github:heywoodlh/flakes/main?dir=fish";
 
-  outputs = { self, nixpkgs, nushell-configs, flake-utils }:
+  outputs = { self, nixpkgs, fish-configs, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system:
     let
       pkgs = nixpkgs.legacyPackages.${system};
-      nushell = nushell-configs.packages.${system}.nushell;
+      fish = fish-configs.packages.${system}.fish;
       settings = pkgs.writeText "wezterm.lua" ''
         -- Add config folder to watchlist for config reloads.
         local wezterm = require 'wezterm';
@@ -43,8 +43,8 @@
         config.hide_tab_bar_if_only_one_tab = true
         config.audible_bell = "Disabled"
 
-        -- Set nushell to default shell
-        config.default_prog = { "${nushell}/bin/nu" }
+        -- Set fish to default shell
+        config.default_prog = { "${fish}/bin/fish" }
 
         -- Disable hiding mouse cursor when typing
         -- Assumes something else will hide cursor
