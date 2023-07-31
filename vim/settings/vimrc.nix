@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   rc = ''
@@ -60,13 +60,17 @@
     match ExtraWhitespace /\s\+$/
 
     " Check operating system
-    if !exists("g:os")
-        if has("win64") || has("win32") || has("win16")
-            let g:os = "Windows"
-        else
-            let g:os = substitute(system('uname'), '\n', '''''', '''''')
-        endif
-    endif
+    if has("mac")
+        let g:os = "Darwin"
+    elseif has("win32")
+        let g:os = "Windows"
+    elseif has("win32unix")
+        let g:os = "Cygwin"
+    elseif has("bsd")
+        let g:os = "BSD"
+    elseif has("linux")
+        let g:os = "Linux"
+    end
     " OS-specific config
     " MacOS
     if g:os == "Darwin"
