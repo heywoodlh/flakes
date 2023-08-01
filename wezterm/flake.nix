@@ -2,7 +2,7 @@
   description = "heywoodlh wezterm flake";
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.fish-configs.url = "github:heywoodlh/flakes/main?dir=fish";
+  inputs.fish-configs.url = "../fish";
 
   outputs = { self, nixpkgs, fish-configs, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system:
