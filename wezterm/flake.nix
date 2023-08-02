@@ -36,7 +36,7 @@
           'SF Mono Regular',
           'DejaVu Sans Mono',
         }
-        config.font_size = 16.0
+        config.font_size = 14.0
 
         -- Appearance tweaks
         config.window_decorations = "RESIZE"
