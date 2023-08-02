@@ -22,3 +22,8 @@ end
 if not contains $HOME/bin $PATH
     set -gx PATH $HOME/bin $PATH
 end
+
+# op-unlock function
+function op-unlock
+    eval $(op signin)
+end
