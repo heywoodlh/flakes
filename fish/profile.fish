@@ -18,7 +18,7 @@ if test -e "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock
     set -gx SSH_AUTH_SOCK "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 end
 
-# Add ~/bin to $PATH
+# Add ~/bin to $PATH (ALWAYS)
 if not contains $HOME/bin $PATH
     set -gx PATH $HOME/bin $PATH
 end
@@ -27,3 +27,14 @@ end
 function op-unlock
     eval $(op signin)
 end
+
+# Function to add a directory to $PATH
+# Only if exists
+function add-to-path
+    if not contains $argv[1] $PATH
+        set -gx PATH $argv[1] $PATH
+    end
+end
+
+# Add homebrew to $PATH
+add-to-path /opt/homebrew/bin
