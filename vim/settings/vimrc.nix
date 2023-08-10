@@ -2,11 +2,6 @@
 
 {
   rc = ''
-    if winheight(0) >= 35
-    	set termwinsize=10x0
-    	set confirm
-    	set splitbelow
-    end
     syntax on
 
     filetype plugin indent on
@@ -22,7 +17,6 @@
     nnoremap zz :wa <bar> :qa!<CR>
     nnoremap zq <bar> :qa!<CR>
     map <silent> <C-y> :w! ~/tmp/vimbuf <CR>:silent !cat ~/tmp/vimbuf <Bar> pbcopy<CR>:redraw!<CR>
-    map <silent> <C-t> :term ++kill=term<CR>
     map <silent> <C-l> :set invnumber<CR>
 
     command NoComments %s/#.*\n//g
