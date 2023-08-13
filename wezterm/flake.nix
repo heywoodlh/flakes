@@ -46,11 +46,6 @@
         -- Set fish to default shell
         config.default_prog = { "${fish}/bin/fish" }
 
-        -- Disable hiding mouse cursor when typing
-        -- Assumes something else will hide cursor
-        -- (i.e. Cursorcerer on MacOS, unclutter on Linux)
-        config.hide_mouse_cursor_when_typing = false
-
         -- Keybindings
         config.leader = { key = 'a', mods = 'CTRL', timeout_milliseconds = 1000 }
         config.keys = {
