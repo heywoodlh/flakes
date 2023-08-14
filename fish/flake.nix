@@ -10,10 +10,18 @@
         inherit system;
         config.allowUnfree = true;
       };
+      starship_config = pkgs.writeText "starship.toml" ''
+        [character]
+        success_symbol = '[❯](bold white)'
+      '';
       fish_config = pkgs.writeText "profile.fish" ''
         set fish_greeting ""
 
+        # Starship
+        set -gx STARSHIP_CONFIG "${starship_config}"
         ${pkgs.starship}/bin/starship init fish | source
+
+        # Direnv
         eval (${pkgs.direnv}/bin/direnv hook fish)
 
         # Use 1password SSH agent if it exists
