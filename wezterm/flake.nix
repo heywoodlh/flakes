@@ -7,8 +7,11 @@
   outputs = { self, nixpkgs, fish-configs, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system:
     let
-      pkgs = nixpkgs.legacyPackages.${system};
+      pkgs = import nixpkgs {
+        inherit system;
+      };
       fish = fish-configs.packages.${system}.fish;
+      jetbrains_nerdfont = (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; });
       settings = pkgs.writeText "wezterm.lua" ''
         -- Add config folder to watchlist for config reloads.
         local wezterm = require 'wezterm';
@@ -45,6 +48,9 @@
 
         -- Set fish to default shell
         config.default_prog = { "${fish}/bin/fish" }
+
+        -- Use Jetbrains font directory
+        config.font_dirs = { "${jetbrains_nerdfont}/share/fonts" }
 
         -- Keybindings
         config.leader = { key = 'a', mods = 'CTRL', timeout_milliseconds = 1000 }
