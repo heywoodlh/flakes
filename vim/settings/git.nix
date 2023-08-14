@@ -2,10 +2,8 @@
 
 {
   rc = ''
-    command GitAdd :w! <bar> !${pkgs.git}/bin/git add -v %
-    command GitCommit !$gitmessage = ($gitmessage = read-host -prompt "commit message") && git commit -s -m ''${gitmessage}
+    command GitAdd :w! <bar> :Git add -v %
 
     nnoremap ga :GitAdd<CR>
-    nnoremap gc :GitCommit<CR>
   '';
 }
