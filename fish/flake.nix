@@ -15,6 +15,7 @@
         success_symbol = '[❯](bold white)'
       '';
       fish_config = pkgs.writeText "profile.fish" ''
+        fish_config theme choose Nord
         set fish_greeting ""
 
         # Starship
