@@ -38,11 +38,6 @@
             set -gx PATH $HOME/bin $PATH
         end
 
-        # op-unlock function
-        function op-unlock
-            eval $(op signin)
-        end
-
         # Function to add a directory to $PATH
         # Only if exists
         function add-to-path
@@ -53,16 +48,20 @@
 
         # Add homebrew to $PATH
         add-to-path /opt/homebrew/bin
+        # Add direnv to $PATH
         add-to-path ${pkgs.direnv}/bin
 
         # Set EDITOR to vim
         set -gx EDITOR "vim"
         set -gx GIT_EDITOR "vim"
+
+        source ${./functions.fish}
+        source ${./nix.fish}
       '';
     in {
       packages = rec {
         fish = pkgs.writeShellScriptBin "fish" ''
-          ${pkgs.fish}/bin/fish --init-command="source ${fish_config} && source ${./nix.fish}" $@
+          ${pkgs.fish}/bin/fish --init-command="source ${fish_config}" $@
           '';
         default = fish;
         };
