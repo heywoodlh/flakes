@@ -6,14 +6,19 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1,
-        "narHash": "sha256-/A2jiCs/kUpxKMHjbSM+nrC8tn7t8UVqgomio07BGd0=",
-        "path": "/nix/store/c2sdcmvcyvps16xsbqxv76cc9iciirba-source/fish",
-        "type": "path"
+        "dir": "fish",
+        "lastModified": 1693156294,
+        "narHash": "sha256-/tWPEUnsT8kNZ7kjDZyPUliXmS6V6d8hJUMdGaCx3Rc=",
+        "owner": "heywoodlh",
+        "repo": "flakes",
+        "rev": "f0099717da66163a41f78273e70b0796c871e0e4",
+        "type": "github"
       },
       "original": {
-        "path": "/nix/store/c2sdcmvcyvps16xsbqxv76cc9iciirba-source/fish",
-        "type": "path"
+        "dir": "fish",
+        "owner": "heywoodlh",
+        "repo": "flakes",
+        "type": "github"
       }
     },
     "flake-utils": {

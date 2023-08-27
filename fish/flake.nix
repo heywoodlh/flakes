@@ -13,6 +13,9 @@
       starship_config = pkgs.writeText "starship.toml" ''
         [character]
         success_symbol = '[❯](bold white)'
+
+        [container]
+        disabled = true
       '';
       fish_config = pkgs.writeText "profile.fish" ''
         fish_config theme choose Nord
