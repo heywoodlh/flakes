@@ -71,18 +71,25 @@
         "Something
     " Linux
     elseif g:os == "Linux"
-        let g:clipboard = {
-              \   'name': 'wayland-clip',
-              \   'copy': {
-              \      '+': 'wl-copy --foreground --type text/plain',
-              \      '*': 'wl-copy --foreground --type text/plain --primary',
-              \    },
-              \   'paste': {
-              \      '+': {-> systemlist('wl-paste --no-newline | sed -e "s/\r$//"')},
-              \      '*': {-> systemlist('wl-paste --no-newline --primary | sed -e "s/\r$//"')},
-              \   },
-              \   'cache_enabled': 1,
-              \ }
+        " Wayland-specific config
+        if !empty($WAYLAND_DISPLAY)
+            let g:clipboard = {
+                  \   'name': 'wayland-clip',
+                  \   'copy': {
+                  \      '+': 'wl-copy --foreground --type text/plain',
+                  \      '*': 'wl-copy --foreground --type text/plain --primary',
+                  \    },
+                  \   'paste': {
+                  \      '+': {-> systemlist('wl-paste --no-newline | sed -e "s/\r$//"')},
+                  \      '*': {-> systemlist('wl-paste --no-newline --primary | sed -e "s/\r$//"')},
+                  \   },
+                  \   'cache_enabled': 1,
+                  \ }
+        " X11-specific config
+        else
+            " Something
+        endif
+        noremap <silent> <C-y> "+y
     " Windows
     elseif g:os == "Windows"
         "Something
