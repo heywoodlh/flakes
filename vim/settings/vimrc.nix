@@ -14,9 +14,7 @@
     set shiftwidth=4
 
     " Custom keybinds
-    nnoremap zz :wa <bar> :qa!<CR>
     nnoremap zq <bar> :qa!<CR>
-    map <silent> <C-y> :w! ~/tmp/vimbuf <CR>:silent !cat ~/tmp/vimbuf <Bar> pbcopy<CR>:redraw!<CR>
     map <silent> <C-l> :set invnumber<CR>
 
     command NoComments %s/#.*\n//g
@@ -49,9 +47,11 @@
     " Ignore case with search
     set ignorecase smartcase
 
-    " Show trailing whitespaces
-    highlight ExtraWhitespace ctermbg=red guibg=red
-    match ExtraWhitespace /\s\+$/
+    " Yank to system clipboard with Ctrl + y
+    noremap <silent> <C-y> "*y
+
+    "This unsets the "last search pattern" register by hitting return
+    nnoremap <CR> :noh<CR><CR>
 
     " Check operating system
     if has("mac")
@@ -68,13 +68,24 @@
     " OS-specific config
     " MacOS
     if g:os == "Darwin"
-        map <silent> <C-y> :w! /tmp/vimbuf <CR>:silent !cat ~/tmp/vimbuf <Bar> pbcopy<CR>:redraw!<CR>
+        "Something
     " Linux
     elseif g:os == "Linux"
-        map <silent> <C-y> :w! /tmp/vimbuf <CR>:silent !cat ~/tmp/vimbuf <Bar> xclip -selection clipboard<CR>:redraw!<CR>
+        let g:clipboard = {
+              \   'name': 'wayland-clip',
+              \   'copy': {
+              \      '+': 'wl-copy --foreground --type text/plain',
+              \      '*': 'wl-copy --foreground --type text/plain --primary',
+              \    },
+              \   'paste': {
+              \      '+': {-> systemlist('wl-paste --no-newline | sed -e "s/\r$//"')},
+              \      '*': {-> systemlist('wl-paste --no-newline --primary | sed -e "s/\r$//"')},
+              \   },
+              \   'cache_enabled': 1,
+              \ }
     " Windows
     elseif g:os == "Windows"
-        map <silent> <C-y> :w! ~/temp/vimbuf <CR>:silent !cat ~/temp/vimbuf <Bar> clip.exe<CR>:redraw!<CR>
+        "Something
     endif
   '';
 }

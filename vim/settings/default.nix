@@ -8,7 +8,6 @@ let
     ./colorizer.nix
     ./copilot.nix
     ./fish.nix
-    ./fterm.nix
     ./fugitive.nix
     ./git.nix
     ./gitgutter.nix
@@ -19,6 +18,7 @@ let
     ./nerdtree.nix
     ./nord.nix
     ./sensible.nix
+    ./betterwhitespace.nix
     # Base vim config
     ./vimrc.nix
   ];
