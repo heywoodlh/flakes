@@ -13,10 +13,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-nixos-env:
-    name: Build flake
+    name: Setup nix
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -27,7 +25,22 @@ jobs:
     - name: Setup Nix Magic Cache
       uses: DeterminateSystems/magic-nix-cache-action@main
 
-    - name: Update inputs
+    - name: Update inputs again
+      run: |
+        nix flake update ./fish
+
+    - name: Build fish flake
+      run: |
+        nix build ./fish#
+
+    - name: Add updated flake.lock if changed, commit and push
+      uses: EndBug/add-and-commit@v9
+      with:
+        add: 'fish/flake.lock'
+        author_name: 'github-actions'
+        author_email: 'github-actions@github.com'
+
+    - name: Update wezterm inputs
       run: |
         nix flake update ./wezterm
 
@@ -36,9 +49,10 @@ jobs:
         # Build wezterm flake
         nix build ./wezterm#
 
-    - name: add updated flake.lock if changed, commit and push
+    - name: Add updated wezterm flake.lock if changed, commit and push
       uses: EndBug/add-and-commit@v9
       with:
         add: 'wezterm/flake.lock'
         author_name: 'github-actions'
         author_email: 'github-actions@github.com'
+
