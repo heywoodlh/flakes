@@ -22,7 +22,6 @@
       lspconfig.pyright.setup {}
       lspconfig.vale_ls.setup {}
       lspconfig.jsonnet_ls.setup {}
-      lspconfig.nixd.setup {}
 
       -- Mappings.
       -- See `:help vim.diagnostic.*` for documentation on any of the below functions
