@@ -1,6 +1,5 @@
 { pkgs, lib, neovim, vimPlugins,
-  mods, fish-configs ? [],
-... }:
+  mods, ... }:
 let
   lstToString = lib.lists.foldr (a: b: a + "\n" + b) "";
   modDefaults = { plugins = []; rc = ""; };
