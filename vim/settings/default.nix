@@ -1,4 +1,4 @@
-{ pkgs, ...}:
+{ pkgs, myFish, ...}:
 
 let
   modFiles = [
@@ -19,9 +19,10 @@ let
     ./nord.nix
     ./sensible.nix
     ./betterwhitespace.nix
+    ./shell.nix
     # Base vim config
     ./vimrc.nix
   ];
 
-  importModFile = f: pkgs.callPackage f {};
+  importModFile = f: pkgs.callPackage f { inherit myFish; };
 in map importModFile modFiles

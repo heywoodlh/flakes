@@ -2,11 +2,13 @@
   description = "heywoodlh vim config";
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
+    fish-configs.url = "github:heywoodlh/flakes?dir=fish";
   };
-  outputs = { self, flake-utils, nixpkgs }: flake-utils.lib.eachDefaultSystem (system:
+  outputs = { self, flake-utils, fish-configs, nixpkgs }: flake-utils.lib.eachDefaultSystem (system:
     let
       pkgs = import nixpkgs { inherit system; };
-      mods = pkgs.callPackage ./settings {};
+      myFish = fish-configs.packages.${system}.fish;
+      mods = pkgs.callPackage ./settings { inherit myFish; };
     in {
       defaultPackage = pkgs.callPackage ./default.nix {
         inherit mods;
