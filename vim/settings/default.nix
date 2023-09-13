@@ -3,6 +3,7 @@
 let
   modFiles = [
     # Plugins
+    ./ale.nix
     ./base16-vim.nix
     ./colorizer.nix
     ./copilot.nix
@@ -12,7 +13,6 @@ let
     ./gitgutter.nix
     ./glow.nix
     ./indentline.nix
-    ./lint.nix
     ./json.nix
     ./lastplace.nix
     ./nerdtree.nix
