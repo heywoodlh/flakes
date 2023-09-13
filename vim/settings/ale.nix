@@ -6,12 +6,11 @@
   rc = ''
     " https://github.com/dense-analysis/ale/blob/master/supported-tools.md
     " External dependencies
+    " REMINDER TO SELF: don't use cspell (has some annoying defaults)
     let $PATH = "${pkgs.ansible-lint}/bin:" . $PATH
     let $PATH = "${pkgs.gopls}/bin:" . $PATH
     let $PATH = "${pkgs.html-tidy}/bin:" . $PATH
     let $PATH = "${pkgs.nimlsp}/bin:" . $PATH
-    " Don't use cspell
-    " let $PATH = "${pkgs.nodePackages.cspell}/bin:" . $PATH
     let $PATH = "${pkgs.nixfmt}/bin:" . $PATH
     let $PATH = "${pkgs.nodePackages.jsonlint}/bin:" . $PATH
     let $PATH = "${pkgs.pyright}/bin:" . $PATH
@@ -19,6 +18,14 @@
     let $PATH = "${pkgs.vale}/bin:" . $PATH
     let $PATH = "${pkgs.vim-vint}/bin:" . $PATH
 
-    let b:ale_linters = {'markdown': ['vale']}
+    " Ale-hover
+    let g:ale_floating_preview = 1
+    let g:ale_floating_window_border = []
+    let g:ale_hover_to_floating_preview = 1
+    let g:ale_detail_to_floating_preview = 1
+    let g:ale_echo_cursor = 1
+
+    " Fix for hover: https://github.com/dense-analysis/ale/issues/4424#issuecomment-1397609473
+    let g:ale_virtualtext_cursor = 'disabled'
   '';
 }
