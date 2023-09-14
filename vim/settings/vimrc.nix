@@ -47,52 +47,7 @@
     " Ignore case with search
     set ignorecase smartcase
 
-    " Yank to system clipboard with Ctrl + y
-    noremap <silent> <C-y> "*y
-
     "This unsets the "last search pattern" register by hitting return
     nnoremap <CR> :noh<CR><CR>
-
-    " Check operating system
-    if has("mac")
-        let g:os = "Darwin"
-    elseif has("win32")
-        let g:os = "Windows"
-    elseif has("win32unix")
-        let g:os = "Cygwin"
-    elseif has("bsd")
-        let g:os = "BSD"
-    elseif has("linux")
-        let g:os = "Linux"
-    end
-    " OS-specific config
-    " MacOS
-    if g:os == "Darwin"
-        "Something
-    " Linux
-    elseif g:os == "Linux"
-        " Wayland-specific config
-        if !empty($WAYLAND_DISPLAY)
-            let g:clipboard = {
-                  \   'name': 'wayland-clip',
-                  \   'copy': {
-                  \      '+': 'wl-copy --foreground --type text/plain',
-                  \      '*': 'wl-copy --foreground --type text/plain --primary',
-                  \    },
-                  \   'paste': {
-                  \      '+': {-> systemlist('wl-paste --no-newline | sed -e "s/\r$//"')},
-                  \      '*': {-> systemlist('wl-paste --no-newline --primary | sed -e "s/\r$//"')},
-                  \   },
-                  \   'cache_enabled': 1,
-                  \ }
-        " X11-specific config
-        else
-            " Something
-        endif
-        noremap <silent> <C-y> "+y
-    " Windows
-    elseif g:os == "Windows"
-        "Something
-    endif
   '';
 }

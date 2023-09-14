@@ -20,6 +20,7 @@ let
     ./sensible.nix
     ./betterwhitespace.nix
     ./shell.nix
+    ./os-specific.nix
     # Base vim config
     ./vimrc.nix
   ];
