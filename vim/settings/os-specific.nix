@@ -2,7 +2,7 @@
 
 {
   rc = if stdenv.isDarwin then ''
-    # MacOS specific config
+    " MacOS specific config
     " Yank to system clipboard with Ctrl + y
     noremap <silent> <C-y> "*y
   '' else ''
