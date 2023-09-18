@@ -9,6 +9,25 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
         vim = vim-flake.defaultPackage.${system};
+        gitignore = pkgs.writeText "gitignore" ''
+# Direnv
+.envrc
+
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+*.tfvars
+*.tfvars.json
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+        '';
         gitconfig = pkgs.writeText "gitconfig" ''
 [color]
   ui = "auto"
@@ -18,6 +37,7 @@
   editor = "${vim}/bin/vim"
   pager = "${pkgs.less}/bin/less -+F"
   whitespace = "cr-at-eol"
+  excludesFile = "${gitignore}"
 
 [diff]
   renames = "copies"
