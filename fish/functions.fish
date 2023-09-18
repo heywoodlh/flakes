@@ -1,4 +1,3 @@
-# op-unlock function
 function op-unlock
     eval $(op signin)
 end
