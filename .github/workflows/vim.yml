@@ -6,7 +6,6 @@ on:
     - 'main'
     paths:
     - vim/**
-    - fish/**
     - .github/workflows/vim.yml
   schedule:
   - cron: '0 0 * * Thu' # To update flake.lock

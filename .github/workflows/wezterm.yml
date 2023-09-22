@@ -6,7 +6,6 @@ on:
     - 'main'
     paths:
     - wezterm/**
-    - fish/**
     - .github/workflows/wezterm.yml
   schedule:
   - cron: '0 0 * * Thu' # To update flake.lock
