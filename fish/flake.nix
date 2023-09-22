@@ -82,6 +82,9 @@
             end
         end
 
+        # Ensure nix-darwin system is added to path
+        add-to-path /run/current-system/sw/bin
+        
         # Add homebrew to $PATH
         add-to-path /opt/homebrew/bin
         # Add direnv to $PATH
