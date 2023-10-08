@@ -12,6 +12,7 @@
         gitignore = pkgs.writeText "gitignore" ''
 # Direnv
 .envrc
+.direnv
 
 # Terraform
 **/.terraform/*
