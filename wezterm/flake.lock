@@ -7,11 +7,11 @@
       },
       "locked": {
         "dir": "fish",
-        "lastModified": 1696813575,
-        "narHash": "sha256-80x4UtFLOjfQQe97ZzAGUPpubMawAkOviCX4NF3u7UQ=",
+        "lastModified": 1696814378,
+        "narHash": "sha256-LF/V2KxwrUPIIqF1GkFT6H4+MvDv2DSSbcysquWqU04=",
         "owner": "heywoodlh",
         "repo": "flakes",
-        "rev": "9878d7e6fa8f46f526a36974c5908797e9da9a6d",
+        "rev": "8f959a04ccce86f358a778c0bbd83c32c3be26fe",
         "type": "github"
       },
       "original": {
