@@ -84,7 +84,7 @@
 
         # Ensure nix-darwin system is added to path
         add-to-path /run/current-system/sw/bin
-        
+
         # Add homebrew to $PATH
         add-to-path /opt/homebrew/bin
         # Add direnv to $PATH
@@ -93,6 +93,9 @@
         # Set EDITOR to vim
         set -gx EDITOR "vim"
         set -gx GIT_EDITOR "vim"
+
+        # Hammerspoon
+        add-to-path /Applications/Hammerspoon.app/Contents/Frameworks/hs
 
         source ${./functions.fish}
         source ${./nix.fish}
