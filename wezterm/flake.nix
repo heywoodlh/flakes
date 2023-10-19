@@ -45,6 +45,7 @@
         config.window_decorations = "RESIZE"
         config.hide_tab_bar_if_only_one_tab = true
         config.audible_bell = "Disabled"
+        config.window_background_opacity = 0.9
 
         -- Set fish to default shell
         config.default_prog = { "${fish}/bin/fish" }
