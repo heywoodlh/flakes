@@ -3,12 +3,14 @@
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
   inputs.fish-configs.url = "github:heywoodlh/flakes?dir=fish";
+  inputs.nixgl.url = "github:nix-community/nixGL";
 
-  outputs = { self, nixpkgs, fish-configs, flake-utils }:
+  outputs = { self, nixpkgs, fish-configs, flake-utils, nixgl, }:
     flake-utils.lib.eachDefaultSystem (system:
     let
       pkgs = import nixpkgs {
         inherit system;
+        overlays = [ nixgl.overlay ];
       };
       fish = fish-configs.packages.${system}.fish;
       jetbrains_nerdfont = (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; });
@@ -99,6 +101,9 @@
       packages = rec {
         wezterm = pkgs.writeShellScriptBin "wezterm" ''
             ${pkgs.wezterm}/bin/wezterm --config-file ${settings}
+          '';
+        wezterm-gl = pkgs.writeShellScriptBin "wezterm" ''
+            ${pkgs.nixgl.auto.nixGLDefault}/bin/nixGL ${pkgs.wezterm}/bin/wezterm --config-file ${settings}
           '';
           default = wezterm;
         };

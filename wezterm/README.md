@@ -22,6 +22,12 @@ If you want to install it, install it to your Nix profile:
 nix profile install "github:heywoodlh/flakes/main?dir=wezterm"
 ```
 
+On a non-NixOS Linux distribution, use the NixGL implementation:
+
+```
+nix profile install "github:heywoodlh/flakes/main?dir=wezterm-gl" --impure
+```
+
 If you want to use it in a Flake, do something like this:
 
 ```
