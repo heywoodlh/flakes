@@ -2,7 +2,7 @@
   description = "heywoodlh wezterm flake";
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.tmux-configs.url = "../tmux";
+  inputs.tmux-configs.url = "github:heywoodlh/flakes?dir=tmux";
   inputs.nixgl.url = "github:nix-community/nixGL";
 
   outputs = { self, nixpkgs, tmux-configs, flake-utils, nixgl, }:
@@ -48,7 +48,7 @@
         config.window_background_opacity = 0.9
 
         -- Set tmux to default shell
-        config.default_prog = { "${myTmux}" }
+        config.default_prog = { "${myTmux}/bin/tmux" }
 
         -- Use Jetbrains font directory
         config.font_dirs = { "${jetbrains_nerdfont}/share/fonts" }

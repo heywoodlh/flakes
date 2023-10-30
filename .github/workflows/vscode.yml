@@ -4,11 +4,8 @@ on:
   push:
     branches:
     - 'main'
-    paths:
-    - vscode/**
-    - .github/workflows/vscode.yml
   schedule:
-  - cron: '0 0 * * Thu' # To update flake.lock
+  - cron: '25 0 * * Thu' # To update flake.lock
   workflow_dispatch:
 
 jobs:

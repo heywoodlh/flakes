@@ -1,15 +1,15 @@
-name: build-wezterm-envs
+name: build-tmux-envs
 
 on:
   push:
     branches:
     - 'main'
   schedule:
-  - cron: '30 0 * * Thu' # To update flake.lock
+  - cron: '10 0 * * Thu' # To update flake.lock
   workflow_dispatch:
 
 jobs:
-  build:
+  setup:
     name: Setup nix
     runs-on: ubuntu-latest
     steps:
@@ -22,19 +22,18 @@ jobs:
     - name: Setup Nix Magic Cache
       uses: DeterminateSystems/magic-nix-cache-action@main
 
-    - name: Update wezterm inputs
+    - name: Update tmux inputs
       run: |
-        nix flake update ./wezterm
+        nix flake update ./tmux
 
-    - name: Build wezterm flake
+    - name: Build tmux flake
       run: |
-        # Build wezterm flake
-        nix build ./wezterm#
+        # Build tmux flake
+        nix build ./tmux#
 
-    - name: Add updated wezterm flake.lock if changed, commit and push
+    - name: Add updated tmux flake.lock if changed, commit and push
       uses: EndBug/add-and-commit@v9
       with:
-        add: 'wezterm/flake.lock'
+        add: 'tmux/flake.lock'
         author_name: 'github-actions'
         author_email: 'github-actions@github.com'
-

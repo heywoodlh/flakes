@@ -4,12 +4,8 @@ on:
   push:
     branches:
     - 'main'
-    paths:
-    - git/**
-    - vim/**
-    - .github/workflows/git.yml
   schedule:
-  - cron: '0 0 * * Thu' # To update flake.lock
+  - cron: '5 0 * * Thu' # To update flake.lock
   workflow_dispatch:
 
 jobs:

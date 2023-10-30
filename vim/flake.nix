@@ -2,7 +2,7 @@
   description = "heywoodlh vim config";
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
-    fish-configs.url = "../fish";
+    fish-configs.url = "github:heywoodlh/flakes?dir=fish";
   };
   outputs = { self, flake-utils, fish-configs, nixpkgs }: flake-utils.lib.eachDefaultSystem (system:
     let

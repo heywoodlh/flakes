@@ -2,7 +2,7 @@
   description = "heywoodlh tmux flake";
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.fish-configs.url = "../fish";
+  inputs.fish-configs.url = "github:heywoodlh/flakes?dir=fish";
 
   outputs = { self, nixpkgs, flake-utils, fish-configs }:
     flake-utils.lib.eachDefaultSystem (system:
@@ -11,7 +11,7 @@
       myFish = fish-configs.packages.${system}.fish;
       tmuxConf = pkgs.writeText "tmux.conf" ''
         # Set shell
-        set -g default-shell ${myFish}
+        set -g default-shell ${myFish}/bin/fish
         # Change default prefix key to C-a, similar to screen
         unbind-key C-b
         set-option -g prefix C-a

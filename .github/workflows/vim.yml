@@ -4,11 +4,8 @@ on:
   push:
     branches:
     - 'main'
-    paths:
-    - vim/**
-    - .github/workflows/vim.yml
   schedule:
-  - cron: '0 0 * * Thu' # To update flake.lock
+  - cron: '20 0 * * Thu' # To update flake.lock
   workflow_dispatch:
 
 jobs:
@@ -24,21 +21,6 @@ jobs:
 
     - name: Setup Nix Magic Cache
       uses: DeterminateSystems/magic-nix-cache-action@main
-
-    - name: Update inputs again
-      run: |
-        nix flake update ./fish
-
-    - name: Build fish flake
-      run: |
-        nix build ./fish#
-
-    - name: Add updated flake.lock if changed, commit and push
-      uses: EndBug/add-and-commit@v9
-      with:
-        add: 'fish/flake.lock'
-        author_name: 'github-actions'
-        author_email: 'github-actions@github.com'
 
     - name: Update vim inputs
       run: |
