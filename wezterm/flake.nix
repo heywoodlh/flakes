@@ -2,7 +2,7 @@
   description = "heywoodlh wezterm flake";
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.tmux-configs.url = "github:heywoodlh/flakes?dir=tmux";
+  inputs.tmux-configs.url = "../tmux";
   inputs.nixgl.url = "github:nix-community/nixGL";
 
   outputs = { self, nixpkgs, tmux-configs, flake-utils, nixgl, }:

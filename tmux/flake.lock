@@ -8,11 +8,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-SG0BWpGODsWh3jJX0rQs7XfPrQ+nAVCtaWwR68YOd24=",
-        "path": "/nix/store/xrdh68kw15mm5hlcm9f7wj3ckw0fldj2-source/fish",
+        "path": "/nix/store/361ikfwif84c107s7ynl85n1fd6272z4-source/fish",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/xrdh68kw15mm5hlcm9f7wj3ckw0fldj2-source/fish",
+        "path": "/nix/store/361ikfwif84c107s7ynl85n1fd6272z4-source/fish",
         "type": "path"
       }
     },
