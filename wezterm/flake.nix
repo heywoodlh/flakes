@@ -2,17 +2,17 @@
   description = "heywoodlh wezterm flake";
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.fish-configs.url = "github:heywoodlh/flakes?dir=fish";
+  inputs.tmux-configs.url = "github:heywoodlh/flakes?dir=tmux";
   inputs.nixgl.url = "github:nix-community/nixGL";
 
-  outputs = { self, nixpkgs, fish-configs, flake-utils, nixgl, }:
+  outputs = { self, nixpkgs, tmux-configs, flake-utils, nixgl, }:
     flake-utils.lib.eachDefaultSystem (system:
     let
       pkgs = import nixpkgs {
         inherit system;
         overlays = [ nixgl.overlay ];
       };
-      fish = fish-configs.packages.${system}.fish;
+      myTmux = tmux-configs.packages.${system}.tmux;
       jetbrains_nerdfont = (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; });
       settings = pkgs.writeText "wezterm.lua" ''
         -- Add config folder to watchlist for config reloads.
@@ -31,8 +31,6 @@
           config = wezterm.config_builder()
         end
 
-        -- This is where you actually apply your config choices
-
         -- Nord color scheme:
         config.color_scheme = 'nord'
         config.font = wezterm.font_with_fallback {
@@ -49,51 +47,12 @@
         config.audible_bell = "Disabled"
         config.window_background_opacity = 0.9
 
-        -- Set fish to default shell
-        config.default_prog = { "${fish}/bin/fish" }
+        -- Set tmux to default shell
+        config.default_prog = { "${myTmux}/bin/tmux" }
 
         -- Use Jetbrains font directory
         config.font_dirs = { "${jetbrains_nerdfont}/share/fonts" }
 
-        -- Keybindings
-        config.leader = { key = 'a', mods = 'CTRL', timeout_milliseconds = 1000 }
-        config.keys = {
-          {
-            key = '|',
-            mods = 'LEADER|SHIFT',
-            action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' },
-          },
-          {
-            key = '-',
-            mods = 'LEADER',
-            action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' },
-          },
-          {
-            key = 'h',
-            mods = 'LEADER',
-            action = wezterm.action.ActivatePaneDirection 'Left',
-          },
-          {
-            key = 'j',
-            mods = 'LEADER',
-            action = wezterm.action.ActivatePaneDirection 'Down',
-          },
-          {
-            key = 'k',
-            mods = 'LEADER',
-            action = wezterm.action.ActivatePaneDirection 'Up',
-          },
-          {
-            key = 'l',
-            mods = 'LEADER',
-            action = wezterm.action.ActivatePaneDirection 'Right',
-          },
-          {
-            key = "[",
-            mods = "LEADER",
-            action = wezterm.action.ActivateCopyMode,
-          },
-        }
         -- and finally, return the configuration to wezterm
         return config
       '';
