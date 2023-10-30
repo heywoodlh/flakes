@@ -8,11 +8,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-SG0BWpGODsWh3jJX0rQs7XfPrQ+nAVCtaWwR68YOd24=",
-        "path": "/nix/store/r3lwqf58mz9d1nlnhql16a44xxzrnbb4-source/fish",
+        "path": "/nix/store/a1b6wv8ygj70inwkqrx6mgdj033yhdd7-source/fish",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/r3lwqf58mz9d1nlnhql16a44xxzrnbb4-source/fish",
+        "path": "/nix/store/a1b6wv8ygj70inwkqrx6mgdj033yhdd7-source/fish",
         "type": "path"
       }
     },
@@ -222,11 +222,11 @@
       },
       "locked": {
         "dir": "tmux",
-        "lastModified": 1698699695,
-        "narHash": "sha256-q73iFuW4VG49cdQJDLSovVbHcu23Km3TBgw9VLcfIQU=",
+        "lastModified": 1698700927,
+        "narHash": "sha256-TZ8WMStR/S+fwbCVgJaFJJ8jl5siyab4FnfU9hA2jC8=",
         "owner": "heywoodlh",
         "repo": "flakes",
-        "rev": "999b68f0fb1d6dd67fdd1982a5a20951ccf33102",
+        "rev": "61b175a91e378ba49f552891c735a9e320b74e55",
         "type": "github"
       },
       "original": {
