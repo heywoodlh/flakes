@@ -11,7 +11,7 @@
       myFish = fish-configs.packages.${system}.fish;
       tmuxConf = pkgs.writeText "tmux.conf" ''
         # Set shell
-        set -g default-shell ${myFish}/bin/fish
+        set -g default-shell ${myFish}
         # Change default prefix key to C-a, similar to screen
         unbind-key C-b
         set-option -g prefix C-a

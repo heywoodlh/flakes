@@ -48,7 +48,7 @@
         config.window_background_opacity = 0.9
 
         -- Set tmux to default shell
-        config.default_prog = { "${myTmux}/bin/tmux" }
+        config.default_prog = { "${myTmux}" }
 
         -- Use Jetbrains font directory
         config.font_dirs = { "${jetbrains_nerdfont}/share/fonts" }
