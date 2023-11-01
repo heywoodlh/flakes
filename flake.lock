@@ -7,11 +7,11 @@
       },
       "locked": {
         "dir": "fish",
-        "lastModified": 1698703451,
-        "narHash": "sha256-tyc/kfbEfqQnpS0ZkmjiA2h6Q2MDPH2HudGrxY/XMq8=",
+        "lastModified": 1698875230,
+        "narHash": "sha256-lw5HNJqBTiTB9szd5AdqPgYKMz665rfbrWYcr6LturE=",
         "owner": "heywoodlh",
         "repo": "flakes",
-        "rev": "323e65d7112c9e60da481075f47931965afb4fea",
+        "rev": "95d3f346ea16fa770e034d58639f1a36ce703592",
         "type": "github"
       },
       "original": {
@@ -31,11 +31,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-SG0BWpGODsWh3jJX0rQs7XfPrQ+nAVCtaWwR68YOd24=",
-        "path": "/nix/store/qf1bs0m0p9h3pgspp30c6v697nim6spw-source/fish",
+        "path": "/nix/store/y9cj0m1sr881r5nmrd9dv6fx0slhkr77-source/fish",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/qf1bs0m0p9h3pgspp30c6v697nim6spw-source/fish",
+        "path": "/nix/store/y9cj0m1sr881r5nmrd9dv6fx0slhkr77-source/fish",
         "type": "path"
       }
     },
@@ -333,11 +333,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-xNAjeTxIc0tFhRCb5BZmTGrZcvKUgE6dDy7fae6/44M=",
-        "path": "/nix/store/qf1bs0m0p9h3pgspp30c6v697nim6spw-source/git",
+        "path": "/nix/store/y9cj0m1sr881r5nmrd9dv6fx0slhkr77-source/git",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/qf1bs0m0p9h3pgspp30c6v697nim6spw-source/git",
+        "path": "/nix/store/y9cj0m1sr881r5nmrd9dv6fx0slhkr77-source/git",
         "type": "path"
       }
     },
@@ -521,11 +521,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-C3sxepteL7hvM9q3XMD0wW/GKobf7p1vsXMQzilVba0=",
-        "path": "/nix/store/qf1bs0m0p9h3pgspp30c6v697nim6spw-source/nushell",
+        "path": "/nix/store/y9cj0m1sr881r5nmrd9dv6fx0slhkr77-source/nushell",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/qf1bs0m0p9h3pgspp30c6v697nim6spw-source/nushell",
+        "path": "/nix/store/y9cj0m1sr881r5nmrd9dv6fx0slhkr77-source/nushell",
         "type": "path"
       }
     },
@@ -747,12 +747,12 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-ENVnvQhl09Sjv7wUvf/YywM5Dz0D05Es7TrzYSSr+vk=",
-        "path": "/nix/store/qf1bs0m0p9h3pgspp30c6v697nim6spw-source/tmux",
+        "narHash": "sha256-siCOyki5QRCPBV/DcaAOf4whMp0N/T2/qJi1CAGgYPE=",
+        "path": "/nix/store/y9cj0m1sr881r5nmrd9dv6fx0slhkr77-source/tmux",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/qf1bs0m0p9h3pgspp30c6v697nim6spw-source/tmux",
+        "path": "/nix/store/y9cj0m1sr881r5nmrd9dv6fx0slhkr77-source/tmux",
         "type": "path"
       }
     },
@@ -769,11 +769,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-F3Q38osK+xWidjcJ+EdMlByA4fJFKBo6Ky7yNWviae8=",
-        "path": "/nix/store/qf1bs0m0p9h3pgspp30c6v697nim6spw-source/vim",
+        "path": "/nix/store/y9cj0m1sr881r5nmrd9dv6fx0slhkr77-source/vim",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/qf1bs0m0p9h3pgspp30c6v697nim6spw-source/vim",
+        "path": "/nix/store/y9cj0m1sr881r5nmrd9dv6fx0slhkr77-source/vim",
         "type": "path"
       }
     },
@@ -813,11 +813,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-Lwdxg7UqXmuV+ZYemGCHA8ErjRSNv9kzI5gs4BkdCBo=",
-        "path": "/nix/store/qf1bs0m0p9h3pgspp30c6v697nim6spw-source/vscode",
+        "path": "/nix/store/y9cj0m1sr881r5nmrd9dv6fx0slhkr77-source/vscode",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/qf1bs0m0p9h3pgspp30c6v697nim6spw-source/vscode",
+        "path": "/nix/store/y9cj0m1sr881r5nmrd9dv6fx0slhkr77-source/vscode",
         "type": "path"
       }
     },
@@ -835,11 +835,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-GPua5Dz6AOap8RqhXzywx1sFR25u350jQNKGEJP5NlY=",
-        "path": "/nix/store/qf1bs0m0p9h3pgspp30c6v697nim6spw-source/wezterm",
+        "path": "/nix/store/y9cj0m1sr881r5nmrd9dv6fx0slhkr77-source/wezterm",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/qf1bs0m0p9h3pgspp30c6v697nim6spw-source/wezterm",
+        "path": "/nix/store/y9cj0m1sr881r5nmrd9dv6fx0slhkr77-source/wezterm",
         "type": "path"
       }
     }
