@@ -1,12 +1,6 @@
 name: build-fish-envs
 
 on:
-  push:
-    branches:
-    - 'main'
-    paths:
-    - fish/**
-    - .github/workflows/fish.yml
   schedule:
   - cron: '0 0 * * Thu' # To update flake.lock
   workflow_dispatch:

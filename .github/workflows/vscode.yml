@@ -1,9 +1,6 @@
 name: build-vscode-envs
 
 on:
-  push:
-    branches:
-    - 'main'
   schedule:
   - cron: '25 0 * * Thu' # To update flake.lock
   workflow_dispatch:

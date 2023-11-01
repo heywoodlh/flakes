@@ -1,9 +1,6 @@
 name: build-wezterm-envs
 
 on:
-  push:
-    branches:
-    - 'main'
   schedule:
   - cron: '30 0 * * Thu' # To update flake.lock
   workflow_dispatch:

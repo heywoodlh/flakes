@@ -1,9 +1,6 @@
 name: build-tmux-envs
 
 on:
-  push:
-    branches:
-    - 'main'
   schedule:
   - cron: '10 0 * * Thu' # To update flake.lock
   workflow_dispatch:

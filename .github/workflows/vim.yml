@@ -1,9 +1,6 @@
 name: build-vim-envs
 
 on:
-  push:
-    branches:
-    - 'main'
   schedule:
   - cron: '20 0 * * Thu' # To update flake.lock
   workflow_dispatch:
