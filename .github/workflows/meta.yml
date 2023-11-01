@@ -1,0 +1,40 @@
+name: build-meta-flake-envs
+
+on:
+  push:
+    branches:
+    - 'main'
+    paths:
+    - '*'
+    - '!**.md'
+  schedule:
+  - cron: '0 0 * * Wed' # To update flake.lock
+  workflow_dispatch:
+
+jobs:
+  build-nixos-env:
+    name: Build meta flake
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install Nix
+      uses: DeterminateSystems/nix-installer-action@main
+
+    - name: Setup Nix Magic Cache
+      uses: DeterminateSystems/magic-nix-cache-action@main
+
+    - name: If scheduled or manually triggered, update inputs again
+      if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
+      run: |
+        nix flake update .
+
+    - name: If scheduled or manually triggered, add updated flake.lock if changed, commit and push
+      if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
+      uses: EndBug/add-and-commit@v9
+      with:
+        add: './flake.lock'
+        author_name: 'github-actions'
+        author_email: 'github-actions@github.com'

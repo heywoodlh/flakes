@@ -2,17 +2,17 @@
   description = "heywoodlh wezterm flake";
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.tmux-configs.url = "github:heywoodlh/flakes?dir=tmux";
+  inputs.tmux-flake.url = "github:heywoodlh/flakes?dir=tmux";
   inputs.nixgl.url = "github:nix-community/nixGL";
 
-  outputs = { self, nixpkgs, tmux-configs, flake-utils, nixgl, }:
+  outputs = { self, nixpkgs, tmux-flake, flake-utils, nixgl, }:
     flake-utils.lib.eachDefaultSystem (system:
     let
       pkgs = import nixpkgs {
         inherit system;
         overlays = [ nixgl.overlay ];
       };
-      myTmux = tmux-configs.packages.${system}.tmux;
+      myTmux = tmux-flake.packages.${system}.tmux;
       jetbrains_nerdfont = (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; });
       settings = pkgs.writeText "wezterm.lua" ''
         -- Add config folder to watchlist for config reloads.

@@ -1,10 +1,13 @@
 {
   description = "heywoodlh vscode config";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   inputs.flake-utils.url = "github:numtide/flake-utils";
   inputs.nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
-  inputs.vscode-config.url = "gitlab:kylesferrazza/vscode-config";
+  inputs.vscode-config = {
+    url = "gitlab:kylesferrazza/vscode-config";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
 
   outputs = inputs@{
     self,
@@ -14,8 +17,7 @@
     vscode-config,
   }:
   flake-utils.lib.eachDefaultSystem (system: let
-
-      mkVSCode = inputs.vscode-config.mkVSCode.${system};
+      mkVSCode = vscode-config.mkVSCode.${system};
 
       allExtensions = nix-vscode-extensions.extensions.${system};
 
