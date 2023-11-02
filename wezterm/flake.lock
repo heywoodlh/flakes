@@ -7,11 +7,11 @@
       },
       "locked": {
         "dir": "fish",
-        "lastModified": 1698703451,
-        "narHash": "sha256-tyc/kfbEfqQnpS0ZkmjiA2h6Q2MDPH2HudGrxY/XMq8=",
+        "lastModified": 1698884046,
+        "narHash": "sha256-IbMRJ5sr/QOzIvN4UTmboo+PZSqu+HKXUNkzktMCyWs=",
         "owner": "heywoodlh",
         "repo": "flakes",
-        "rev": "323e65d7112c9e60da481075f47931965afb4fea",
+        "rev": "9518ac114b5c4b99e060c42b4d20dbac7eed5bc5",
         "type": "github"
       },
       "original": {
@@ -126,11 +126,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1698553279,
-        "narHash": "sha256-T/9P8yBSLcqo/v+FTOBK+0rjzjPMctVymZydbvR/Fak=",
+        "lastModified": 1698855203,
+        "narHash": "sha256-I9Vrh2ZXBZciGjgIXVhlHNc9XxRt0+bGlUGLGDXQ2r8=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "90e85bc7c1a6fc0760a94ace129d3a1c61c3d035",
+        "rev": "39d2f0847ebbb57beb8fe3b992b043ad39afa0af",
         "type": "github"
       },
       "original": {
@@ -140,11 +140,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1698553279,
-        "narHash": "sha256-T/9P8yBSLcqo/v+FTOBK+0rjzjPMctVymZydbvR/Fak=",
+        "lastModified": 1698855203,
+        "narHash": "sha256-I9Vrh2ZXBZciGjgIXVhlHNc9XxRt0+bGlUGLGDXQ2r8=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "90e85bc7c1a6fc0760a94ace129d3a1c61c3d035",
+        "rev": "39d2f0847ebbb57beb8fe3b992b043ad39afa0af",
         "type": "github"
       },
       "original": {
@@ -154,11 +154,11 @@
     },
     "nixpkgs_4": {
       "locked": {
-        "lastModified": 1698553279,
-        "narHash": "sha256-T/9P8yBSLcqo/v+FTOBK+0rjzjPMctVymZydbvR/Fak=",
+        "lastModified": 1698855203,
+        "narHash": "sha256-I9Vrh2ZXBZciGjgIXVhlHNc9XxRt0+bGlUGLGDXQ2r8=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "90e85bc7c1a6fc0760a94ace129d3a1c61c3d035",
+        "rev": "39d2f0847ebbb57beb8fe3b992b043ad39afa0af",
         "type": "github"
       },
       "original": {
@@ -171,7 +171,7 @@
         "flake-utils": "flake-utils",
         "nixgl": "nixgl",
         "nixpkgs": "nixpkgs_2",
-        "tmux-configs": "tmux-configs"
+        "tmux-flake": "tmux-flake"
       }
     },
     "systems": {
@@ -219,7 +219,7 @@
         "type": "github"
       }
     },
-    "tmux-configs": {
+    "tmux-flake": {
       "inputs": {
         "fish-configs": "fish-configs",
         "flake-utils": "flake-utils_4",
@@ -227,11 +227,11 @@
       },
       "locked": {
         "dir": "tmux",
-        "lastModified": 1698703806,
-        "narHash": "sha256-mvfXNEnNSQFpmaAKvA+N6fs1khup1CKE7jxeqDZ1vHA=",
+        "lastModified": 1698885715,
+        "narHash": "sha256-0Lr/F/D6t7w9uOiVrnV72Krl65QckqpRRr88dcjE1Uk=",
         "owner": "heywoodlh",
         "repo": "flakes",
-        "rev": "831f32cab0e882c253be42cf2f79e9f2198bc81b",
+        "rev": "a24e77103a471a5c077a0d6b2d6873d5c43b1acf",
         "type": "github"
       },
       "original": {
