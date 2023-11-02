@@ -29,6 +29,7 @@
     tmux-flake = {
       url = "./tmux";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.fish-flake.follows = "fish-flake";
     };
     wezterm-flake = {
       url = "./wezterm";

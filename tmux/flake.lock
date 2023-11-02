@@ -1,17 +1,17 @@
 {
   "nodes": {
-    "fish-configs": {
+    "fish-flake": {
       "inputs": {
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs"
       },
       "locked": {
         "dir": "fish",
-        "lastModified": 1698884046,
-        "narHash": "sha256-IbMRJ5sr/QOzIvN4UTmboo+PZSqu+HKXUNkzktMCyWs=",
+        "lastModified": 1698886169,
+        "narHash": "sha256-zAGAemu2O2Y+Vmvs7uh7o+fH3uM7S9z9Rza1uVq96d4=",
         "owner": "heywoodlh",
         "repo": "flakes",
-        "rev": "9518ac114b5c4b99e060c42b4d20dbac7eed5bc5",
+        "rev": "d8471c9bfdb43164cd6995926f218ceba15e9f57",
         "type": "github"
       },
       "original": {
@@ -73,11 +73,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1698855203,
-        "narHash": "sha256-I9Vrh2ZXBZciGjgIXVhlHNc9XxRt0+bGlUGLGDXQ2r8=",
+        "lastModified": 1698890957,
+        "narHash": "sha256-DJ+SppjpPBoJr0Aro9TAcP3sxApCSieY6BYBCoWGUX8=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "39d2f0847ebbb57beb8fe3b992b043ad39afa0af",
+        "rev": "c082856b850ec60cda9f0a0db2bc7bd8900d708c",
         "type": "github"
       },
       "original": {
@@ -87,7 +87,7 @@
     },
     "root": {
       "inputs": {
-        "fish-configs": "fish-configs",
+        "fish-flake": "fish-flake",
         "flake-utils": "flake-utils_2",
         "nixpkgs": "nixpkgs_2"
       }

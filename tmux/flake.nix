@@ -2,13 +2,13 @@
   description = "heywoodlh tmux flake";
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.fish-configs.url = "github:heywoodlh/flakes?dir=fish";
+  inputs.fish-flake.url = "github:heywoodlh/flakes?dir=fish";
 
-  outputs = { self, nixpkgs, flake-utils, fish-configs }:
+  outputs = { self, nixpkgs, flake-utils, fish-flake }:
     flake-utils.lib.eachDefaultSystem (system:
     let
       pkgs = nixpkgs.legacyPackages.${system};
-      myFish = fish-configs.packages.${system}.fish;
+      myFish = fish-flake.packages.${system}.fish;
       tmuxConf = pkgs.writeText "tmux.conf" ''
         # Set shell
         set -g default-shell ${myFish}/bin/fish
