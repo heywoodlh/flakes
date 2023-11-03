@@ -31,6 +31,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.fish-flake.follows = "fish-flake";
     };
+    st-flake = {
+      url = "./st";
+      inputs.tmux-flake.follows = "tmux-flake";
+    };
     wezterm-flake = {
       url = "./wezterm";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -48,6 +52,7 @@
     vim-flake,
     tmux-flake,
     vscode-flake,
+    st-flake,
     wezterm-flake,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
@@ -60,6 +65,7 @@
         tmux = tmux-flake.packages.${system}.tmux;
         vim = vim-flake.defaultPackage.${system};
         vscode = vscode-flake.packages.${system}.default;
+        st = st-flake.packages.${system}.st;
         wezterm = wezterm-flake.packages.${system}.wezterm;
         wezterm-gl = wezterm-flake.packages.${system}.wezterm-gl;
       };
