@@ -10,6 +10,18 @@
   inputs.nixhelm.url = "github:farcaller/nixhelm";
   inputs.nix-kube-generators.url = "github:farcaller/nix-kube-generators";
   inputs.tailscale.url = "github:tailscale/tailscale";
+  inputs.jellyfin-helm = {
+    url = "github:brianmcarey/jellyfin-helm";
+    flake = false;
+  };
+  inputs.longhorn = {
+    url = "github:longhorn/longhorn/19e8fefd3ace7fb66c3f3521fc471b60a829b155"; # v1.5.1
+    flake = false;
+  };
+  inputs.plex-helm = {
+    url = "github:plexinc/pms-docker";
+    flake = false;
+  };
 
   outputs = inputs @ {
     self,
@@ -18,6 +30,9 @@
     nfs-helm,
     nix-kube-generators,
     nixhelm,
+    jellyfin-helm,
+    longhorn,
+    plex-helm,
     tailscale,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
@@ -26,98 +41,33 @@
         config.allowUnfree = true;
       };
       kubelib = nix-kube-generators.lib { inherit pkgs; };
+      tailscale_operator_config = {
+        name ? "tailscale-operator",
+        namespace ? "default",
+        hostname ? "tailscale-operator",
+      }: (kubelib.buildHelmChart {
+        name = "${name}";
+        chart = "${tailscale}/cmd/k8s-operator/deploy/chart";
+        namespace = "${namespace}";
+        values = {
+          operatorConfig = {
+            image = {
+              repo = "docker.io/tailscale/k8s-operator";
+              tag = "unstable-v1.53";
+            };
+            hostname = "${hostname}";
+          };
+          proxyConfig = {
+            image = {
+              repo = "docker.io/tailscale/tailscale";
+              tag = "unstable-v1.53";
+            };
+            defaultTags = "tag:k8s";
+          };
+        };
+      });
     in {
       packages = {
-        "nfs-kube" = (kubelib.buildHelmChart {
-          name = "nfs-subdir-external-provisioner";
-          chart = "${nfs-helm}/charts/nfs-subdir-external-provisioner";
-          namespace = "default";
-          values = {
-            nfs = {
-              server = "100.107.238.93";
-              path = "/media/virtual-machines/kube";
-              volumeName = "nfs-subdir-external-provisioner-root";
-              mountOptions = [
-                "rw"
-                "bg"
-                "hard"
-                "rsize=1048576"
-                "wsize=1048576"
-                "tcp"
-                "timeo=600"
-              ];
-            };
-            storageClass = {
-              name = "nfs-kube";
-              annotations = {
-                "tailscale.com/tags" = "tag:nfs-client";
-              };
-            };
-            podAnnotations = {
-              "tailscale.com/tags" = "tag:nfs-client";
-            };
-          };
-        });
-        "nfs-media-disk1" = (kubelib.buildHelmChart {
-          name = "nfs-media-disk1";
-          chart = "${nfs-helm}/charts/nfs-subdir-external-provisioner";
-          namespace = "default";
-          values = {
-            nfs = {
-              server = "100.67.2.30";
-              path = "/media/disk1";
-              volumeName = "nfs-media-disk1";
-              mountOptions = [
-                "rw"
-                "bg"
-                "hard"
-                "rsize=1048576"
-                "wsize=1048576"
-                "tcp"
-                "timeo=600"
-              ];
-            };
-            storageClass = {
-              name = "nfs-media-disk1";
-              annotations = {
-                "tailscale.com/tags" = "tag:nfs-client";
-              };
-            };
-            podAnnotations = {
-              "tailscale.com/tags" = "tag:nfs-client";
-            };
-          };
-        });
-        "nfs-media-disk2" = (kubelib.buildHelmChart {
-          name = "nfs-media-disk2";
-          chart = "${nfs-helm}/charts/nfs-subdir-external-provisioner";
-          namespace = "default";
-          values = {
-            nfs = {
-              server = "100.67.2.30";
-              path = "/media/disk2";
-              volumeName = "nfs-media-disk2";
-              mountOptions = [
-                "rw"
-                "bg"
-                "hard"
-                "rsize=1048576"
-                "wsize=1048576"
-                "tcp"
-                "timeo=600"
-              ];
-            };
-            storageClass = {
-              name = "nfs-media-disk2";
-              annotations = {
-                "tailscale.com/tags" = "tag:nfs-client";
-              };
-            };
-            podAnnotations = {
-              "tailscale.com/tags" = "tag:nfs-client";
-            };
-          };
-        });
         "1password-connect" = (kubelib.buildHelmChart {
           name = "1password-connect";
           chart = (nixhelm.charts { inherit pkgs; })."1password".connect;
@@ -126,28 +76,76 @@
             connect.credentials = builtins.readFile /tmp/1password-credentials.json;
           };
         });
-        tailscale-operator = (kubelib.buildHelmChart {
-          name = "tailscale-operator";
-          chart = "${tailscale}/cmd/k8s-operator/deploy/chart";
-          namespace = "kube-system";
+        jellyfin = (kubelib.buildHelmChart {
+          name = "jellyfin";
+          chart = jellyfin-helm;
+          namespace = "default";
           values = {
-            operatorConfig = {
-              image = {
-                repo = "docker.io/tailscale/k8s-operator";
-                tag = "unstable-v1.53";
+            image = {
+              repository = "docker.io/jellyfin/jellyfin";
+              tag = "20231109.107-unstable";
+            };
+            service = {
+              port = 80;
+              annotations = {
+                "tailscale.com/expose" = "true";
+                "tailscale.com/hostname" = "jellyfin";
+                "tailscale.com/tags" = "tag:jellyfin,tag:k8s";
               };
             };
-            proxyConfig = {
-              image = {
-                repo = "docker.io/tailscale/tailscale";
-                tag = "unstable-v1.53";
+            persistence = {
+              config = {
+                enabled = true;
+                storageClass = "nfs-media";
+                subPath = "./jellyfin/config";
               };
-              defaultTags = "tag:k8s";
+              media = {
+                enabled = true;
+                storageClass = "nfs-media";
+                subPath = "./";
+              };
             };
           };
         });
+        longhorn = pkgs.stdenv.mkDerivation {
+          name = "longhorn";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${longhorn}/deploy/longhorn.yaml $out
+          '';
+        };
+        media-pvc = import ./storage/local-pvc.nix {
+          "name" = "media";
+          "path" = "/media/plex";
+          "namespace" = "media";
+        };
+        plex = (kubelib.buildHelmChart {
+          name = "plex";
+          chart = "${plex-helm}/charts/plex-media-server";
+          namespace = "media";
+          values = {};
+        });
+        tailscale-operator = tailscale_operator_config {
+          name = "tailscale-operator";
+          namespace = "default";
+          hostname = "tailscale-operator";
+        };
+        tailscale-operator-media = tailscale_operator_config {
+          name = "tailscale-operator-media";
+          namespace = "media";
+          hostname = "tailscale-operator-media";
+        };
+        tailscale-operator-kube-system = tailscale_operator_config {
+          name = "tailscale-operator-kube-system";
+          namespace = "kube-system";
+          hostname = "tailscale-operator-kube-system";
+        };
+        tailscale-operator-longhorn-system = tailscale_operator_config {
+          name = "tailscale-operator-longhorn-system";
+          namespace = "longhorn-system";
+          hostname = "tailscale-operator-longhorn-system";
+        };
       };
-
       devShell = pkgs.mkShell {
         name = "kubernetes-shell";
         buildInputs = with pkgs; [
