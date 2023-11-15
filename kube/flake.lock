@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "cloudflared-helm": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1664136077,
+        "narHash": "sha256-BRGxxesGnpPlNvoaQssuwZOuVUBq1UE3H6bc4U5EobE=",
+        "owner": "kylesferrazza",
+        "repo": "cloudflared-chart",
+        "rev": "26d5a98b96d115de2be5f913a5f48f5ed0f7b583",
+        "type": "gitlab"
+      },
+      "original": {
+        "owner": "kylesferrazza",
+        "repo": "cloudflared-chart",
+        "type": "gitlab"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -66,22 +82,6 @@
         "type": "github"
       }
     },
-    "jellyfin-helm": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1663454154,
-        "narHash": "sha256-a++s4k75rKJAYx1jtu8EpUAKzlV6Fs/YiUcQP7gFUtA=",
-        "owner": "brianmcarey",
-        "repo": "jellyfin-helm",
-        "rev": "5d31a2cfc8cc4922d96d08e8b85a493d908e72e6",
-        "type": "github"
-      },
-      "original": {
-        "owner": "brianmcarey",
-        "repo": "jellyfin-helm",
-        "type": "github"
-      }
-    },
     "longhorn": {
       "flake": false,
       "locked": {
@@ -96,6 +96,22 @@
         "owner": "longhorn",
         "repo": "longhorn",
         "rev": "19e8fefd3ace7fb66c3f3521fc471b60a829b155",
+        "type": "github"
+      }
+    },
+    "minecraft-helm": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1698966926,
+        "narHash": "sha256-FDNi/6hhMT1wnRU6HoAJznxVBzZGmxwc7l21FuE5Dt0=",
+        "owner": "itzg",
+        "repo": "minecraft-server-charts",
+        "rev": "c2f434f2d961465a6eef2ea13218eb894d41907e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "itzg",
+        "repo": "minecraft-server-charts",
         "type": "github"
       }
     },
@@ -210,32 +226,16 @@
         "type": "github"
       }
     },
-    "plex-helm": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1697575594,
-        "narHash": "sha256-GxQ2n4te93XJYeB1Qj+vnpqdfCbSGqdV36wJ4KsnPog=",
-        "owner": "plexinc",
-        "repo": "pms-docker",
-        "rev": "e557be3bf3c612bbee037d317a6f1d017eacb3a0",
-        "type": "github"
-      },
-      "original": {
-        "owner": "plexinc",
-        "repo": "pms-docker",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
+        "cloudflared-helm": "cloudflared-helm",
         "flake-utils": "flake-utils",
-        "jellyfin-helm": "jellyfin-helm",
         "longhorn": "longhorn",
+        "minecraft-helm": "minecraft-helm",
         "nfs-helm": "nfs-helm",
         "nix-kube-generators": "nix-kube-generators",
         "nixhelm": "nixhelm",
         "nixpkgs": "nixpkgs_2",
-        "plex-helm": "plex-helm",
         "tailscale": "tailscale"
       }
     },

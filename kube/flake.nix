@@ -3,6 +3,10 @@
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs";
   inputs.flake-utils.url = "github:numtide/flake-utils";
+  inputs.cloudflared-helm = {
+    url = "gitlab:kylesferrazza/cloudflared-chart";
+    flake = false;
+  };
   inputs.nfs-helm = {
     url = "github:kubernetes-sigs/nfs-subdir-external-provisioner";
     flake = false;
@@ -10,16 +14,12 @@
   inputs.nixhelm.url = "github:farcaller/nixhelm";
   inputs.nix-kube-generators.url = "github:farcaller/nix-kube-generators";
   inputs.tailscale.url = "github:tailscale/tailscale";
-  inputs.jellyfin-helm = {
-    url = "github:brianmcarey/jellyfin-helm";
-    flake = false;
-  };
   inputs.longhorn = {
     url = "github:longhorn/longhorn/19e8fefd3ace7fb66c3f3521fc471b60a829b155"; # v1.5.1
     flake = false;
   };
-  inputs.plex-helm = {
-    url = "github:plexinc/pms-docker";
+  inputs.minecraft-helm = {
+    url = "github:itzg/minecraft-server-charts";
     flake = false;
   };
 
@@ -30,10 +30,10 @@
     nfs-helm,
     nix-kube-generators,
     nixhelm,
-    jellyfin-helm,
     longhorn,
-    plex-helm,
     tailscale,
+    cloudflared-helm,
+    minecraft-helm,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs {
@@ -76,34 +76,55 @@
             connect.credentials = builtins.readFile /tmp/1password-credentials.json;
           };
         });
-        jellyfin = (kubelib.buildHelmChart {
-          name = "jellyfin";
-          chart = jellyfin-helm;
+        cloudflared = (kubelib.buildHelmChart {
+          name = "cloudflared";
+          chart = "${cloudflared-helm}";
+          namespace = "kube-system";
+          values = {
+            image = {
+              repository = "docker.io/cloudflare/cloudflared";
+              tag = "2023.10.0";
+            };
+            existingSecret = "cloudflare-tunnel-auth-secret";
+          };
+        });
+        minecraft-bedrock = (kubelib.buildHelmChart {
+          name = "minecraft-bedrock";
+          chart = "${minecraft-helm}/charts/minecraft-bedrock";
           namespace = "default";
           values = {
             image = {
-              repository = "docker.io/jellyfin/jellyfin";
-              tag = "20231109.107-unstable";
+              repository = "docker.io/itzg/minecraft-bedrock-server";
+              tag = "2023.8.1";
             };
-            service = {
-              port = 80;
-              annotations = {
-                "tailscale.com/expose" = "true";
-                "tailscale.com/hostname" = "jellyfin";
-                "tailscale.com/tags" = "tag:jellyfin,tag:k8s";
-              };
+            minecraftServer = {
+              eula = "TRUE";
+              version = "LATEST";
+              difficulty = "hard";
+              #whitelist = "user1,user2" ;
+              ops = [
+                ""
+              ];
+              maxPlayers = "40";
+              tickDistance = "8";
+              viewDistance = "20";
+              levelName = "heywoodlh world";
+              gameMode = "survival";
+              serverName = "heywoodlh server";
+              enableLanVisibility = "true";
+              serverPort = "19132";
             };
             persistence = {
-              config = {
-                enabled = true;
-                storageClass = "nfs-media";
-                subPath = "./jellyfin/config";
+              storageClass = "nfs-kube";
+              dataDir = {
+                enabled = "true";
+                Size = "50Gi";
               };
-              media = {
-                enabled = true;
-                storageClass = "nfs-media";
-                subPath = "./";
-              };
+            };
+            serviceAnnotations = {
+              "tailscale.com/expose" = true;
+              "tailscale.com/hostname" = "minecraft";
+              "tailscale.com/tags" = "tag:minecraft";
             };
           };
         });
@@ -114,36 +135,40 @@
             cp ${longhorn}/deploy/longhorn.yaml $out
           '';
         };
-        media-pvc = import ./storage/local-pvc.nix {
-          "name" = "media";
-          "path" = "/media/plex";
-          "namespace" = "media";
-        };
-        plex = (kubelib.buildHelmChart {
-          name = "plex";
-          chart = "${plex-helm}/charts/plex-media-server";
-          namespace = "media";
-          values = {};
+
+        nfs-kube = (kubelib.buildHelmChart {
+          name = "nfs-kube";
+          chart = "${nfs-helm}/charts/nfs-subdir-external-provisioner";
+          namespace = "default";
+          values = {
+            image.tag = "v4.0.2";
+            nfs = {
+              server = "100.107.238.93";
+              path = "/media/virtual-machines/kube";
+              mountOptions = [
+                "rw"
+                "bg"
+                "hard"
+                "rsize=1048576"
+                "wsize=1048576"
+                "tcp"
+                "timeo=600"
+              ];
+            };
+            storageClass = {
+              provisionerName = "nfs-kube";
+              name = "nfs-kube";
+              reclaimPolicy = "Retain";
+            };
+            podAnnotations = {
+              "tailscale.com/tags" = "tag:nfs-client";
+            };
+          };
         });
         tailscale-operator = tailscale_operator_config {
           name = "tailscale-operator";
-          namespace = "default";
-          hostname = "tailscale-operator";
-        };
-        tailscale-operator-media = tailscale_operator_config {
-          name = "tailscale-operator-media";
-          namespace = "media";
-          hostname = "tailscale-operator-media";
-        };
-        tailscale-operator-kube-system = tailscale_operator_config {
-          name = "tailscale-operator-kube-system";
           namespace = "kube-system";
-          hostname = "tailscale-operator-kube-system";
-        };
-        tailscale-operator-longhorn-system = tailscale_operator_config {
-          name = "tailscale-operator-longhorn-system";
-          namespace = "longhorn-system";
-          hostname = "tailscale-operator-longhorn-system";
+          hostname = "tailscale-operator";
         };
       };
       devShell = pkgs.mkShell {
