@@ -1,4 +1,4 @@
-name: build-meta-flake-envs
+name: build-flakes
 
 on:
   push:
@@ -26,30 +26,32 @@ jobs:
     - name: Setup Nix Magic Cache
       uses: DeterminateSystems/magic-nix-cache-action@main
 
-    - name: Build flakes
-      run: |
-        nix flake update ./fish
-        nix flake update ./vim
-        nix flake update ./tmux
-        nix flake update ./git
-        nix flake update ./vscode
-        nix flake update ./wezterm
-        nix flake update ./st
-
-    - name: Add updated flakes
-      uses: EndBug/add-and-commit@main
+    - name: Update fish
+      uses: DeterminateSystems/update-flake-lock@main
       with:
-        add: './'
-        author_name: 'github-actions'
-        author_email: 'github-actions@github.com'
+        path-to-flake-dir: 'fish/'
 
-    - name: Build meta flake
-      run: |
-        nix flake update .
-
-    - name: Updated flake.lock
-      uses: EndBug/add-and-commit@main
+    - name: Update tmux
+      uses: DeterminateSystems/update-flake-lock@main
       with:
-        add: './flake.lock'
-        author_name: 'github-actions'
-        author_email: 'github-actions@github.com'
+        path-to-flake-dir: 'tmux/'
+
+    - name: Update vim
+      uses: DeterminateSystems/update-flake-lock@main
+      with:
+        path-to-flake-dir: 'vim/'
+
+    - name: Update wezterm
+      uses: DeterminateSystems/update-flake-lock@main
+      with:
+        path-to-flake-dir: 'wezterm/'
+
+    - name: Update st
+      uses: DeterminateSystems/update-flake-lock@main
+      with:
+        path-to-flake-dir: 'st/'
+
+    - name: Update vscode
+      uses: DeterminateSystems/update-flake-lock@main
+      with:
+        path-to-flake-dir: 'vscode/'
