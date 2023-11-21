@@ -7,11 +7,11 @@
       },
       "locked": {
         "dir": "fish",
-        "lastModified": 1698886169,
-        "narHash": "sha256-zAGAemu2O2Y+Vmvs7uh7o+fH3uM7S9z9Rza1uVq96d4=",
+        "lastModified": 1700093673,
+        "narHash": "sha256-RDy2Gf25GNC01haE7nAM4k/K+o8Po4zzmyTaF4iUVHE=",
         "owner": "heywoodlh",
         "repo": "flakes",
-        "rev": "d8471c9bfdb43164cd6995926f218ceba15e9f57",
+        "rev": "75b26353ddb47fa6d67efe086ed057e9bda8d051",
         "type": "github"
       },
       "original": {
@@ -93,11 +93,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1698855203,
-        "narHash": "sha256-I9Vrh2ZXBZciGjgIXVhlHNc9XxRt0+bGlUGLGDXQ2r8=",
+        "lastModified": 1700014976,
+        "narHash": "sha256-dSGpS2YeJrXW5aH9y7Abd235gGufY3RuZFth6vuyVtU=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "39d2f0847ebbb57beb8fe3b992b043ad39afa0af",
+        "rev": "592047fc9e4f7b74a4dc85d1b9f5243dfe4899e3",
         "type": "github"
       },
       "original": {
@@ -107,11 +107,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1698890957,
-        "narHash": "sha256-DJ+SppjpPBoJr0Aro9TAcP3sxApCSieY6BYBCoWGUX8=",
+        "lastModified": 1700014976,
+        "narHash": "sha256-dSGpS2YeJrXW5aH9y7Abd235gGufY3RuZFth6vuyVtU=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "c082856b850ec60cda9f0a0db2bc7bd8900d708c",
+        "rev": "592047fc9e4f7b74a4dc85d1b9f5243dfe4899e3",
         "type": "github"
       },
       "original": {
@@ -179,11 +179,11 @@
       },
       "locked": {
         "dir": "tmux",
-        "lastModified": 1699041058,
-        "narHash": "sha256-4ISp+qyFzdWgJ8HZpqlcvcKUlxuCIZ/nyuaXu/pLIKQ=",
+        "lastModified": 1700595675,
+        "narHash": "sha256-nyvFzmnbQ2Zq+QiGVITmma9orm/xvm6IbppKBSk7TKc=",
         "owner": "heywoodlh",
         "repo": "flakes",
-        "rev": "588f3c4447df09b8e56a3d89fe139bb9be8b0901",
+        "rev": "26ef66c4338a8f71f17e17d63da3945c5279e74d",
         "type": "github"
       },
       "original": {

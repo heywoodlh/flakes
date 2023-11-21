@@ -7,11 +7,11 @@
       },
       "locked": {
         "dir": "fish",
-        "lastModified": 1700093673,
-        "narHash": "sha256-RDy2Gf25GNC01haE7nAM4k/K+o8Po4zzmyTaF4iUVHE=",
+        "lastModified": 1700595675,
+        "narHash": "sha256-nyvFzmnbQ2Zq+QiGVITmma9orm/xvm6IbppKBSk7TKc=",
         "owner": "heywoodlh",
         "repo": "flakes",
-        "rev": "75b26353ddb47fa6d67efe086ed057e9bda8d051",
+        "rev": "26ef66c4338a8f71f17e17d63da3945c5279e74d",
         "type": "github"
       },
       "original": {
@@ -73,11 +73,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1700014976,
-        "narHash": "sha256-dSGpS2YeJrXW5aH9y7Abd235gGufY3RuZFth6vuyVtU=",
+        "lastModified": 1700538105,
+        "narHash": "sha256-uZhOCmwv8VupEmPZm3erbr9XXmyg7K67Ul3+Rx2XMe0=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "592047fc9e4f7b74a4dc85d1b9f5243dfe4899e3",
+        "rev": "51a01a7e5515b469886c120e38db325c96694c2f",
         "type": "github"
       },
       "original": {
