@@ -1,11 +1,11 @@
-name: build-flakes
+name: build-all-flakes
 
 on:
   push:
     branches:
     - 'main'
     paths:
-    - '**'
+    - '*'
     - '!**.md'
   schedule:
   - cron: '0 0 * * Wed' # To update flake.lock
@@ -18,7 +18,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@main
+      uses: actions/checkout@v2
 
     - name: Install Nix
       uses: DeterminateSystems/nix-installer-action@main
@@ -26,32 +26,21 @@ jobs:
     - name: Setup Nix Magic Cache
       uses: DeterminateSystems/magic-nix-cache-action@main
 
-    - name: Update fish
-      uses: DeterminateSystems/update-flake-lock@main
-      with:
-        path-to-flake-dir: 'fish/'
+    - name: Build flakes
+      run: |
+        nix flake update ./fish
+        nix flake update ./vim
+        nix flake update ./tmux
+        nix flake update ./git
+        nix flake update ./vscode
+        nix flake update ./wezterm
+        nix flake update ./st
+        nix flake update .
 
-    - name: Update tmux
-      uses: DeterminateSystems/update-flake-lock@main
+    - name: If scheduled or manually triggered, add updated flake.lock if changed, commit and push
+      uses: EndBug/add-and-commit@v9
       with:
-        path-to-flake-dir: 'tmux/'
+        add: './'
+        author_name: 'github-actions'
+        author_email: 'github-actions@github.com'
 
-    - name: Update vim
-      uses: DeterminateSystems/update-flake-lock@main
-      with:
-        path-to-flake-dir: 'vim/'
-
-    - name: Update wezterm
-      uses: DeterminateSystems/update-flake-lock@main
-      with:
-        path-to-flake-dir: 'wezterm/'
-
-    - name: Update st
-      uses: DeterminateSystems/update-flake-lock@main
-      with:
-        path-to-flake-dir: 'st/'
-
-    - name: Update vscode
-      uses: DeterminateSystems/update-flake-lock@main
-      with:
-        path-to-flake-dir: 'vscode/'
