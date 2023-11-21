@@ -5,7 +5,7 @@ on:
     branches:
     - 'main'
     paths:
-    - '*'
+    - '**'
     - '!**.md'
   schedule:
   - cron: '0 0 * * Wed' # To update flake.lock
@@ -18,7 +18,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@main
 
     - name: Install Nix
       uses: DeterminateSystems/nix-installer-action@main
@@ -35,11 +35,21 @@ jobs:
         nix flake update ./vscode
         nix flake update ./wezterm
         nix flake update ./st
-        nix flake update .
 
-    - name: If scheduled or manually triggered, add updated flake.lock if changed, commit and push
-      uses: EndBug/add-and-commit@v9
+    - name: Add updated flakes
+      uses: EndBug/add-and-commit@main
       with:
         add: './'
+        author_name: 'github-actions'
+        author_email: 'github-actions@github.com'
+
+    - name: Build meta flake
+      run: |
+        nix flake update .
+
+    - name: Updated flake.lock
+      uses: EndBug/add-and-commit@main
+      with:
+        add: './flake.lock'
         author_name: 'github-actions'
         author_email: 'github-actions@github.com'

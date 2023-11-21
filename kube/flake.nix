@@ -1,26 +1,28 @@
 {
   description = "heywoodlh kubernetes flake";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs";
-  inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.cloudflared-helm = {
-    url = "gitlab:kylesferrazza/cloudflared-chart";
-    flake = false;
-  };
-  inputs.nfs-helm = {
-    url = "github:kubernetes-sigs/nfs-subdir-external-provisioner";
-    flake = false;
-  };
-  inputs.nixhelm.url = "github:farcaller/nixhelm";
-  inputs.nix-kube-generators.url = "github:farcaller/nix-kube-generators";
-  inputs.tailscale.url = "github:tailscale/tailscale";
-  inputs.longhorn = {
-    url = "github:longhorn/longhorn/19e8fefd3ace7fb66c3f3521fc471b60a829b155"; # v1.5.1
-    flake = false;
-  };
-  inputs.minecraft-helm = {
-    url = "github:itzg/minecraft-server-charts";
-    flake = false;
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs";
+    flake-utils.url = "github:numtide/flake-utils";
+    cloudflared-helm = {
+      url = "gitlab:kylesferrazza/cloudflared-chart";
+      flake = false;
+    };
+    nfs-helm = {
+      url = "github:kubernetes-sigs/nfs-subdir-external-provisioner";
+      flake = false;
+    };
+    nixhelm.url = "github:farcaller/nixhelm";
+    nix-kube-generators.url = "github:farcaller/nix-kube-generators";
+    tailscale.url = "github:tailscale/tailscale";
+    longhorn = {
+      url = "github:longhorn/longhorn/19e8fefd3ace7fb66c3f3521fc471b60a829b155"; # v1.5.1
+      flake = false;
+    };
+    minecraft-helm = {
+      url = "github:itzg/minecraft-server-charts";
+      flake = false;
+    };
   };
 
   outputs = inputs @ {
@@ -135,7 +137,6 @@
             cp ${longhorn}/deploy/longhorn.yaml $out
           '';
         };
-
         nfs-kube = (kubelib.buildHelmChart {
           name = "nfs-kube";
           chart = "${nfs-helm}/charts/nfs-subdir-external-provisioner";
