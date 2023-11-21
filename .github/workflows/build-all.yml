@@ -1,13 +1,19 @@
-name: build-vscode-envs
+name: build-meta-flake-envs
 
 on:
+  push:
+    branches:
+    - 'main'
+    paths:
+    - '*'
+    - '!**.md'
   schedule:
-  - cron: '25 0 * * Thu' # To update flake.lock
+  - cron: '0 0 * * Wed' # To update flake.lock
   workflow_dispatch:
 
 jobs:
-  build-nixos-env:
-    name: Build flake
+  build-flakes:
+    name: Build all flakes
     runs-on: ubuntu-latest
 
     steps:
@@ -20,20 +26,20 @@ jobs:
     - name: Setup Nix Magic Cache
       uses: DeterminateSystems/magic-nix-cache-action@main
 
-    - name: If scheduled or manually triggered, update inputs again
-      if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
+    - name: Build flakes
       run: |
+        nix flake update ./fish
+        nix flake update ./vim
+        nix flake update ./tmux
+        nix flake update ./git
         nix flake update ./vscode
-
-    - name: Build vscode flake
-      run: |
-        # Build vscode flake
-        nix build ./vscode#
+        nix flake update ./wezterm
+        nix flake update ./st
+        nix flake update .
 
     - name: If scheduled or manually triggered, add updated flake.lock if changed, commit and push
-      if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
       uses: EndBug/add-and-commit@v9
       with:
-        add: 'vscode/flake.lock'
+        add: './'
         author_name: 'github-actions'
         author_email: 'github-actions@github.com'
