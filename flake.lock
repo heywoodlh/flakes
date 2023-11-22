@@ -311,7 +311,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-j7kRyqE1wSFJF2ghaPXBZnTDQdeDb9/FMWFG/ttVEi4=",
+        "narHash": "sha256-YonTFc3PpQtK+OfGmOjXCcK6Nm+mJXj5a/6PdlzW5Jw=",
         "path": "./git",
         "type": "path"
       },
@@ -346,11 +346,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1700529719,
-        "narHash": "sha256-AoixaVMkxY7fWx4+uXoLTOqNTRvdAYF9mMPhMBgE+ZU=",
+        "lastModified": 1700616109,
+        "narHash": "sha256-RtcYmcqzS1sWAw4q85YiOxEsPL4yo0EhGJIUatExh1A=",
         "owner": "nix-community",
         "repo": "nix-vscode-extensions",
-        "rev": "26ffe10b4bde2631dc38f523ea08a739856f8081",
+        "rev": "744feda10f39afb587354bb98d04415662b57236",
         "type": "github"
       },
       "original": {
@@ -534,7 +534,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-y1j70DReRpJzfG3wmUyXBvt+893+3PlWVFyMwj74T60=",
+        "narHash": "sha256-l+NVjUw4g8+Z3ShCI/GeK3v27tqfVQhR17gYdea8Kgs=",
         "path": "./st",
         "type": "path"
       },
@@ -750,7 +750,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-VlYPzk0nGkH4mHAWgmiFtomOuQu0lF0xyupL33EW0eI=",
+        "narHash": "sha256-dSt6LpPZWrshfo8mFTrOiAA8DgEHnQPeXCrmYg2LfcI=",
         "path": "./tmux",
         "type": "path"
       },
@@ -771,7 +771,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-qvaeHtjZ1SMC8XgEjDEHwZSwR4U78+2cC0a+647XRfw=",
+        "narHash": "sha256-uO9s3SLnykfr5Ue8Qd7ph7vNU2YDphzkBztpBr/bGTw=",
         "path": "./vim",
         "type": "path"
       },
@@ -815,7 +815,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-UvPsOOVl3lf7PloQCfWS4ZkAka6yTTv12aak7DO6SS8=",
+        "narHash": "sha256-AneFOJsWd9eTic+YyaU6C6frlNuaA9dYIBrqPJYhmpA=",
         "path": "./vscode",
         "type": "path"
       },
@@ -837,7 +837,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-mKTY/iFSLGeYkOqiWSzF3lEtm6LrlWiqWXmpBGNMm40=",
+        "narHash": "sha256-ZU1TUL8gEq0iWN6FU/9pkGzYSbFFUJic/vwP60C6yu4=",
         "path": "./wezterm",
         "type": "path"
       },
