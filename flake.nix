@@ -5,38 +5,38 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     fish-flake = {
-      url = "./fish";
+      url = "path:./fish";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     vim-flake = {
-      url = "./vim";
+      url = "path:./vim";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.fish-flake.follows = "fish-flake";
     };
     git-flake = {
-      url = "./git";
+      url = "path:./git";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.vim-flake.follows = "vim-flake";
     };
     vscode-flake = {
-      url = "./vscode";
+      url = "path:./vscode";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nushell-flake = {
-      url = "./nushell";
+      url = "path:./nushell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     tmux-flake = {
-      url = "./tmux";
+      url = "path:./tmux";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.fish-flake.follows = "fish-flake";
     };
     st-flake = {
-      url = "./st";
+      url = "path:./st";
       inputs.tmux-flake.follows = "tmux-flake";
     };
     wezterm-flake = {
-      url = "./wezterm";
+      url = "path:./wezterm";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.tmux-flake.follows = "tmux-flake";
     };
