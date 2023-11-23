@@ -1,0 +1,30 @@
+apiVersion: k0sctl.k0sproject.io/v1beta1
+kind: Cluster
+metadata:
+  name: k0s-cluster
+spec:
+  hosts:
+  - ssh:
+      address: 100.78.144.145
+      user: heywoodlh
+    privateInterface: tailscale0
+    role: controller
+  - ssh:
+      address: 100.90.239.142
+      user: heywoodlh
+    privateInterface: tailscale0
+    role: worker
+  - ssh:
+      address: 100.111.229.29
+      user: heywoodlh
+    privateInterface: tailscale0
+    role: worker
+  - ssh:
+      address: 100.74.143.40
+      user: heywoodlh
+    privateInterface: tailscale0
+    role: worker
+  k0s:
+    version: v1.28.4+k0s.0
+    dynamicConfig: false
+    config: {}

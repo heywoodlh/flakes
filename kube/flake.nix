@@ -43,31 +43,6 @@
         config.allowUnfree = true;
       };
       kubelib = nix-kube-generators.lib { inherit pkgs; };
-      tailscale_operator_config = {
-        name ? "tailscale-operator",
-        namespace ? "default",
-        hostname ? "tailscale-operator",
-      }: (kubelib.buildHelmChart {
-        name = "${name}";
-        chart = "${tailscale}/cmd/k8s-operator/deploy/chart";
-        namespace = "${namespace}";
-        values = {
-          operatorConfig = {
-            image = {
-              repo = "docker.io/tailscale/k8s-operator";
-              tag = "unstable-v1.53";
-            };
-            hostname = "${hostname}";
-          };
-          proxyConfig = {
-            image = {
-              repo = "docker.io/tailscale/tailscale";
-              tag = "unstable-v1.53";
-            };
-            defaultTags = "tag:k8s";
-          };
-        };
-      });
     in {
       packages = {
         "1password-connect" = (kubelib.buildHelmChart {
@@ -146,15 +121,6 @@
             nfs = {
               server = "100.107.238.93";
               path = "/media/virtual-machines/kube";
-              mountOptions = [
-                "rw"
-                "bg"
-                "hard"
-                "rsize=1048576"
-                "wsize=1048576"
-                "tcp"
-                "timeo=600"
-              ];
             };
             storageClass = {
               provisionerName = "nfs-kube";
@@ -163,18 +129,39 @@
             };
             podAnnotations = {
               "tailscale.com/tags" = "tag:nfs-client";
+              "tailscale.com/expose" = "true";
+            };
+            nodeSelector = {
+              "env" = "home";
             };
           };
         });
-        tailscale-operator = tailscale_operator_config {
+        tailscale-operator = (kubelib.buildHelmChart {
           name = "tailscale-operator";
-          namespace = "kube-system";
-          hostname = "tailscale-operator";
-        };
+          chart = "${tailscale}/cmd/k8s-operator/deploy/chart";
+          namespace = "tailscale";
+          values = {
+            operatorConfig = {
+              image = {
+                repo = "docker.io/tailscale/k8s-operator";
+                tag = "v1.54.0";
+              };
+              hostname = "tailscale-operator";
+            };
+            proxyConfig = {
+              image = {
+                repo = "docker.io/tailscale/tailscale";
+                tag = "v1.54.0";
+              };
+              defaultTags = "tag:k8s";
+            };
+          };
+        });
       };
       devShell = pkgs.mkShell {
         name = "kubernetes-shell";
         buildInputs = with pkgs; [
+          k0sctl
           k9s
           kubectl
           kubernetes-helm
