@@ -5,25 +5,37 @@ metadata:
 spec:
   hosts:
   - ssh:
-      address: 100.78.144.145
+      address: 100.98.130.108
       user: heywoodlh
     privateInterface: tailscale0
-    role: controller
+    privateAddress: 100.98.130.108
+    role: controller+worker
+    installFlags:
+      - --kubelet-extra-args="--node-ip=100.98.130.108"
   - ssh:
-      address: 100.90.239.142
+      address: 100.117.166.149
       user: heywoodlh
     privateInterface: tailscale0
+    privateAddress: 100.117.166.149
     role: worker
+    installFlags:
+      - --kubelet-extra-args="--node-ip=100.117.166.149"
   - ssh:
-      address: 100.111.229.29
+      address: 100.91.102.147
       user: heywoodlh
     privateInterface: tailscale0
+    privateAddress: 100.91.102.147
     role: worker
+    installFlags:
+      - --kubelet-extra-args="--node-ip=100.91.102.147"
   - ssh:
-      address: 100.74.143.40
+      address: 100.76.146.144
       user: heywoodlh
     privateInterface: tailscale0
+    privateAddress: 100.76.146.144
     role: worker
+    installFlags:
+      - --kubelet-extra-args="--node-ip=100.76.146.144"
   k0s:
     version: v1.28.4+k0s.0
     dynamicConfig: false
