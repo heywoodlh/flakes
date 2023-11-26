@@ -178,7 +178,7 @@
       devShell = pkgs.mkShell {
         name = "kubernetes-shell";
         buildInputs = with pkgs; [
-          k0sctl
+          talosctl
           k9s
           kubectl
           kubernetes-helm
