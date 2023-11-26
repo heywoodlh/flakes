@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "cilium-helm": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1699909271,
+        "narHash": "sha256-FTqK5HzIb2OC+zm6ySRjTKCKXecckotHqE4IvapRmo4=",
+        "owner": "cilium",
+        "repo": "charts",
+        "rev": "5a4126644d7d185760534178c7ac55c75647b4aa",
+        "type": "github"
+      },
+      "original": {
+        "owner": "cilium",
+        "repo": "charts",
+        "type": "github"
+      }
+    },
     "cloudflared-helm": {
       "flake": false,
       "locked": {
@@ -228,6 +244,7 @@
     },
     "root": {
       "inputs": {
+        "cilium-helm": "cilium-helm",
         "cloudflared-helm": "cloudflared-helm",
         "flake-utils": "flake-utils",
         "longhorn": "longhorn",

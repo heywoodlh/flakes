@@ -4,6 +4,10 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs";
     flake-utils.url = "github:numtide/flake-utils";
+    cilium-helm = {
+      url = "github:cilium/charts";
+      flake = false;
+    };
     cloudflared-helm = {
       url = "gitlab:kylesferrazza/cloudflared-chart";
       flake = false;
@@ -36,6 +40,7 @@
     tailscale,
     cloudflared-helm,
     minecraft-helm,
+    cilium-helm,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs {
@@ -43,6 +48,13 @@
         config.allowUnfree = true;
       };
       kubelib = nix-kube-generators.lib { inherit pkgs; };
+      ts-env = pkgs.writeShellScriptBin "tsenv" ''
+        TS_CLIENT_ID="$(op-wrapper.sh read 'op://Personal/odnjqovwnyxpltktqd3a5yzqpy/password')"
+        TS_SECRET="$(op-wrapper.sh read 'op://Personal/qv3mc3sgnpgw6yfuxtgf6xseou/password')"
+
+        echo export TS_CLIENT_ID="$TS_CLIENT_ID"
+        echo export TS_SECRET="$TS_SECRET"
+      '';
     in {
       packages = {
         "1password-connect" = (kubelib.buildHelmChart {
@@ -147,6 +159,11 @@
                 tag = "v1.54.0";
               };
               hostname = "tailscale-operator";
+              logging = "info";
+            };
+            oauth = {
+              clientId = "\"" + builtins.getEnv "TS_CLIENT_ID" + "\"";
+              clientSecret = "\"" + builtins.getEnv "TS_SECRET" + "\"";
             };
             proxyConfig = {
               image = {
@@ -165,6 +182,7 @@
           k9s
           kubectl
           kubernetes-helm
+          ts-env
         ];
       };
       formatter = pkgs.alejandra;
