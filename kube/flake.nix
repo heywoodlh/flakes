@@ -4,10 +4,6 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs";
     flake-utils.url = "github:numtide/flake-utils";
-    cilium-helm = {
-      url = "github:cilium/charts";
-      flake = false;
-    };
     cloudflared-helm = {
       url = "gitlab:kylesferrazza/cloudflared-chart";
       flake = false;
@@ -40,7 +36,6 @@
     tailscale,
     cloudflared-helm,
     minecraft-helm,
-    cilium-helm,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs {
@@ -172,6 +167,7 @@
               };
               defaultTags = "tag:k8s";
             };
+            apiServerProxyConfig.mode = "true";
           };
         });
       };
