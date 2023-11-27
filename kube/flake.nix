@@ -63,7 +63,7 @@
         cloudflared = (kubelib.buildHelmChart {
           name = "cloudflared";
           chart = "${cloudflared-helm}";
-          namespace = "kube-system";
+          namespace = "cloudflared";
           values = {
             image = {
               repository = "docker.io/cloudflare/cloudflared";
@@ -79,7 +79,8 @@
           values = {
             image = {
               repository = "docker.io/itzg/minecraft-bedrock-server";
-              tag = "2023.8.1";
+              tag = "latest";
+              pullPolicy = "Always";
             };
             minecraftServer = {
               eula = "TRUE";
@@ -174,7 +175,7 @@
       devShell = pkgs.mkShell {
         name = "kubernetes-shell";
         buildInputs = with pkgs; [
-          talosctl
+          k0sctl
           k9s
           kubectl
           kubernetes-helm
