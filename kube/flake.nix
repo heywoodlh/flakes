@@ -50,6 +50,36 @@
         echo export TS_CLIENT_ID="$TS_CLIENT_ID"
         echo export TS_SECRET="$TS_SECRET"
       '';
+      cf-env = pkgs.writeShellScriptBin "cfenv" ''
+        TS_CLIENT_ID="$(op-wrapper.sh read 'op://Personal/odnjqovwnyxpltktqd3a5yzqpy/password')"
+        TS_SECRET="$(op-wrapper.sh read 'op://Personal/qv3mc3sgnpgw6yfuxtgf6xseou/password')"
+
+        echo export TS_CLIENT_ID="$TS_CLIENT_ID"
+        echo export TS_SECRET="$TS_SECRET"
+      '';
+      onepassworditem = pkgs.writers.writePython3Bin "onepassitem.py" { libraries = [ pkgs.python3Packages.PyGithub ]; } ''
+      import argparse
+
+      parser = argparse.ArgumentParser(description="Create a OnePasswordItem")
+      parser.add_argument("--name", help="Name of secret", required=True)
+      parser.add_argument("--namespace", help="Namespace", required=True)
+      parser.add_argument("--itemPath", help="Path of item", required=True)
+
+      args = parser.parse_args()
+
+      item = """
+      ---
+      apiVersion: onepassword.com/v1
+      kind: OnePasswordItem
+      metadata:
+        name: "{0}"
+        namespace: "{1}"
+      spec:
+        itemPath: "{2}"
+      """
+
+      print(item.format(args.name, args.namespace, args.itemPath))
+      '';
     in {
       packages = {
         "1password-connect" = (kubelib.buildHelmChart {
@@ -57,9 +87,18 @@
           chart = (nixhelm.charts { inherit pkgs; })."1password".connect;
           namespace = "kube-system";
           values = {
+            # op connect server create k0s-cluster --vaults Kubernetes && mv 1password-credentials.json /tmp/
             connect.credentials = builtins.readFile /tmp/1password-credentials.json;
+            operator = {
+              create = true;
+              # op connect token create --server k0s-cluster --vault Kubernetes k0s-cluster > /tmp/token.txt
+              token.value = builtins.readFile /tmp/token.txt;
+              # Automatically restart the operator if secrets are updated
+              autoRestart = true;
+            };
           };
         });
+        "1password-item" = onepassworditem;
         cloudflared = (kubelib.buildHelmChart {
           name = "cloudflared";
           chart = "${cloudflared-helm}";
@@ -69,7 +108,8 @@
               repository = "docker.io/cloudflare/cloudflared";
               tag = "2023.10.0";
             };
-            existingSecret = "cloudflare-tunnel-auth-secret";
+            tunnelID = "k0s-cluster";
+            existingSecret = "cloudflared";
           };
         });
         minecraft-bedrock = (kubelib.buildHelmChart {
@@ -179,6 +219,7 @@
           k9s
           kubectl
           kubernetes-helm
+          cf-env
           ts-env
         ];
       };
