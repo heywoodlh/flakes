@@ -7,6 +7,7 @@ on:
     paths:
     - '*'
     - '!**.md'
+    - '!kube/**'
   schedule:
   - cron: '0 0 * * Wed' # To update flake.lock
   workflow_dispatch:
