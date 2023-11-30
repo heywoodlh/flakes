@@ -38,6 +38,16 @@ nix run .#1password-item -- --name cloudflared --namespace default --itemPath "v
 
 ## Notes on node setup
 
+My nodes are running K0s on Ubuntu 22.04.
+
+### NFS
+
+In order for nodes to use the NFS StorageClass, run the following command on each node that may be mounting NFS shares:
+
+```
+sudo apt-get install -y nfs-common
+```
+
 ### Home Assistant
 
 For Home Assistant to work with wifi and bluetooth, the following commands were necessary on each node:
