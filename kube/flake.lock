@@ -3,17 +3,17 @@
     "cloudflared-helm": {
       "flake": false,
       "locked": {
-        "lastModified": 1664136077,
-        "narHash": "sha256-BRGxxesGnpPlNvoaQssuwZOuVUBq1UE3H6bc4U5EobE=",
-        "owner": "kylesferrazza",
-        "repo": "cloudflared-chart",
-        "rev": "26d5a98b96d115de2be5f913a5f48f5ed0f7b583",
-        "type": "gitlab"
+        "lastModified": 1694029361,
+        "narHash": "sha256-gfMiEQ39bK+XbDwG6GwlP8UUkiWXMTp/xDRKQoe5A3Q=",
+        "owner": "cloudflare",
+        "repo": "helm-charts",
+        "rev": "b85225eb49e1b0b40328c70d4541a27ec5e2b82e",
+        "type": "github"
       },
       "original": {
-        "owner": "kylesferrazza",
-        "repo": "cloudflared-chart",
-        "type": "gitlab"
+        "owner": "cloudflare",
+        "repo": "helm-charts",
+        "type": "github"
       }
     },
     "flake-compat": {
@@ -236,7 +236,8 @@
         "nix-kube-generators": "nix-kube-generators",
         "nixhelm": "nixhelm",
         "nixpkgs": "nixpkgs_2",
-        "tailscale": "tailscale"
+        "tailscale": "tailscale",
+        "truecharts-helm": "truecharts-helm"
       }
     },
     "systems": {
@@ -286,6 +287,22 @@
       "original": {
         "owner": "tailscale",
         "repo": "tailscale",
+        "type": "github"
+      }
+    },
+    "truecharts-helm": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1701217449,
+        "narHash": "sha256-OQafkCFcqfvXK5KRCLBvNwJ56orsVNw4Ww2pcBRLFmc=",
+        "owner": "truecharts",
+        "repo": "charts",
+        "rev": "f0ef8c05ccb381d85cc0d5eb910a869fbb164527",
+        "type": "github"
+      },
+      "original": {
+        "owner": "truecharts",
+        "repo": "charts",
         "type": "github"
       }
     }

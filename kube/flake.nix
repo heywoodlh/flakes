@@ -5,7 +5,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs";
     flake-utils.url = "github:numtide/flake-utils";
     cloudflared-helm = {
-      url = "gitlab:kylesferrazza/cloudflared-chart";
+      url = "github:cloudflare/helm-charts";
       flake = false;
     };
     nfs-helm = {
@@ -23,6 +23,10 @@
       url = "github:itzg/minecraft-server-charts";
       flake = false;
     };
+    truecharts-helm = {
+      url = "github:truecharts/charts";
+      flake = false;
+    };
   };
 
   outputs = inputs @ {
@@ -36,6 +40,7 @@
     tailscale,
     cloudflared-helm,
     minecraft-helm,
+    truecharts-helm,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs {
@@ -101,17 +106,40 @@
         "1password-item" = onepassworditem;
         cloudflared = (kubelib.buildHelmChart {
           name = "cloudflared";
-          chart = "${cloudflared-helm}";
+          chart = "${cloudflared-helm}/charts/cloudflare-tunnel";
           namespace = "cloudflared";
           values = {
             image = {
               repository = "docker.io/cloudflare/cloudflared";
-              tag = "2023.10.0";
+              tag = "2023.8.2";
             };
-            tunnelID = "k0s-cluster";
-            existingSecret = "cloudflared";
+            cloudflare = {
+              tunnelName = "k0s-cluster";
+              secretName = "cloudflared";
+            };
+            serviceAccount.annotations = {
+              "tailscale.com/tags" = "tag:cloudflared";
+            };
           };
         });
+        home-assistant = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/home-assistant.yaml;
+            namespace = "default";
+            timezone = "America/Denver";
+            tag = "2023.11.3";
+            servicePort = 80;
+            storageClass = "nfs-kube";
+            replicas = 1;
+            nodename = "k8s-node-2";
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "home-assistant";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
         minecraft-bedrock = (kubelib.buildHelmChart {
           name = "minecraft-bedrock";
           chart = "${minecraft-helm}/charts/minecraft-bedrock";
@@ -192,10 +220,10 @@
             operatorConfig = {
               image = {
                 repo = "docker.io/tailscale/k8s-operator";
-                tag = "v1.54.0";
+                tag = "unstable-v1.55.68";
               };
               hostname = "tailscale-operator";
-              logging = "info";
+              logging = "debug";
             };
             oauth = {
               clientId = "\"" + builtins.getEnv "TS_CLIENT_ID" + "\"";

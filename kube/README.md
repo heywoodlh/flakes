@@ -35,3 +35,47 @@ I would use the following command to generate a OnePasswordItem:
 ```
 nix run .#1password-item -- --name cloudflared --namespace default --itemPath "vaults/Kubernetes/items/m4i7whzvm5amrmxntpoleuaxxe"
 ```
+
+## Notes on node setup
+
+### Home Assistant
+
+For Home Assistant to work with wifi and bluetooth, the following commands were necessary on each node:
+
+```
+sudo apt-get install -y bluetooth network-manager && sudo systemctl enable --now bluetooth.service
+```
+
+For the `macmini7,1` model, install the broadcom wifi driver like so:
+
+```
+sudo apt-get install --reinstall bcmwl-kernel-source
+```
+
+To discover devices, Avahi must be running:
+
+```
+sudo apt-get install -y avahi-daemon
+sudo systemctl enable --now avahi-daemon.service
+```
+
+Additionally, set the following setting in `/etc/avahi/avahi-daemon.conf`:
+
+```
+[reflector]
+enable-reflector=yes
+reflect-ipv=no
+```
+
+And restart Avahi:
+
+```
+sudo systemctl restart avahi-daemon.service
+```
+
+Additionally, allow UDP port 5353 and TCP port 21063 on your node running HA:
+
+```
+sudo ufw allow from any to any port 5353 proto udp
+sudo ufw allow from any to any port 21063 proto tcp
+```
