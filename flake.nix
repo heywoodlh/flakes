@@ -40,6 +40,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.tmux-flake.follows = "tmux-flake";
     };
+    jetporch-flake = {
+      url = "./jetporch";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
@@ -54,6 +58,7 @@
     vscode-flake,
     st-flake,
     wezterm-flake,
+    jetporch-flake,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = nixpkgs.legacyPackages.${system};
@@ -68,6 +73,7 @@
         st = st-flake.packages.${system}.st;
         wezterm = wezterm-flake.packages.${system}.wezterm;
         wezterm-gl = wezterm-flake.packages.${system}.wezterm-gl;
+        ubuntu-22-desktop = jetporch-flake.packages.${system}.ubuntu-22-desktop;
       };
       formatter = pkgs.alejandra;
     });
