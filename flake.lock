@@ -32,10 +32,8 @@
       },
       "locked": {
         "dir": "fish",
-        "dirtyRev": "895c66a78fa4a3c5b17f8a448ef78bfb75cc9b57-dirty",
-        "dirtyShortRev": "895c66a-dirty",
-        "lastModified": 1701814147,
-        "narHash": "sha256-2U4dTyPIuBBCzZRYCKvPCB8LlpVAVo1304a0qCTGCRs=",
+        "lastModified": 1701814275,
+        "narHash": "sha256-oAQDndKLyM8caOcy7VR5XqLAkpH2alOyx2dnr5Pk22U=",
         "type": "git",
         "url": "file:./?dir=fish"
       },
@@ -742,10 +740,8 @@
       },
       "locked": {
         "dir": "git",
-        "dirtyRev": "895c66a78fa4a3c5b17f8a448ef78bfb75cc9b57-dirty",
-        "dirtyShortRev": "895c66a-dirty",
-        "lastModified": 1701814147,
-        "narHash": "sha256-2U4dTyPIuBBCzZRYCKvPCB8LlpVAVo1304a0qCTGCRs=",
+        "lastModified": 1701814275,
+        "narHash": "sha256-oAQDndKLyM8caOcy7VR5XqLAkpH2alOyx2dnr5Pk22U=",
         "type": "git",
         "url": "file:./?dir=git"
       },
@@ -815,10 +811,8 @@
       },
       "locked": {
         "dir": "jetporch",
-        "dirtyRev": "895c66a78fa4a3c5b17f8a448ef78bfb75cc9b57-dirty",
-        "dirtyShortRev": "895c66a-dirty",
-        "lastModified": 1701814147,
-        "narHash": "sha256-2U4dTyPIuBBCzZRYCKvPCB8LlpVAVo1304a0qCTGCRs=",
+        "lastModified": 1701814275,
+        "narHash": "sha256-oAQDndKLyM8caOcy7VR5XqLAkpH2alOyx2dnr5Pk22U=",
         "type": "git",
         "url": "file:./?dir=jetporch"
       },
@@ -1461,10 +1455,8 @@
       },
       "locked": {
         "dir": "nushell",
-        "dirtyRev": "895c66a78fa4a3c5b17f8a448ef78bfb75cc9b57-dirty",
-        "dirtyShortRev": "895c66a-dirty",
-        "lastModified": 1701814147,
-        "narHash": "sha256-2U4dTyPIuBBCzZRYCKvPCB8LlpVAVo1304a0qCTGCRs=",
+        "lastModified": 1701814275,
+        "narHash": "sha256-oAQDndKLyM8caOcy7VR5XqLAkpH2alOyx2dnr5Pk22U=",
         "type": "git",
         "url": "file:./?dir=nushell"
       },
@@ -1618,10 +1610,8 @@
       },
       "locked": {
         "dir": "st",
-        "dirtyRev": "895c66a78fa4a3c5b17f8a448ef78bfb75cc9b57-dirty",
-        "dirtyShortRev": "895c66a-dirty",
-        "lastModified": 1701814147,
-        "narHash": "sha256-2U4dTyPIuBBCzZRYCKvPCB8LlpVAVo1304a0qCTGCRs=",
+        "lastModified": 1701814275,
+        "narHash": "sha256-oAQDndKLyM8caOcy7VR5XqLAkpH2alOyx2dnr5Pk22U=",
         "type": "git",
         "url": "file:./?dir=st"
       },
@@ -2120,10 +2110,8 @@
       },
       "locked": {
         "dir": "tmux",
-        "dirtyRev": "895c66a78fa4a3c5b17f8a448ef78bfb75cc9b57-dirty",
-        "dirtyShortRev": "895c66a-dirty",
-        "lastModified": 1701814147,
-        "narHash": "sha256-2U4dTyPIuBBCzZRYCKvPCB8LlpVAVo1304a0qCTGCRs=",
+        "lastModified": 1701814275,
+        "narHash": "sha256-oAQDndKLyM8caOcy7VR5XqLAkpH2alOyx2dnr5Pk22U=",
         "type": "git",
         "url": "file:./?dir=tmux"
       },
@@ -2172,10 +2160,8 @@
       },
       "locked": {
         "dir": "vim",
-        "dirtyRev": "895c66a78fa4a3c5b17f8a448ef78bfb75cc9b57-dirty",
-        "dirtyShortRev": "895c66a-dirty",
-        "lastModified": 1701814147,
-        "narHash": "sha256-2U4dTyPIuBBCzZRYCKvPCB8LlpVAVo1304a0qCTGCRs=",
+        "lastModified": 1701814275,
+        "narHash": "sha256-oAQDndKLyM8caOcy7VR5XqLAkpH2alOyx2dnr5Pk22U=",
         "type": "git",
         "url": "file:./?dir=vim"
       },
@@ -2270,10 +2256,8 @@
       },
       "locked": {
         "dir": "vscode",
-        "dirtyRev": "895c66a78fa4a3c5b17f8a448ef78bfb75cc9b57-dirty",
-        "dirtyShortRev": "895c66a-dirty",
-        "lastModified": 1701814147,
-        "narHash": "sha256-2U4dTyPIuBBCzZRYCKvPCB8LlpVAVo1304a0qCTGCRs=",
+        "lastModified": 1701814275,
+        "narHash": "sha256-oAQDndKLyM8caOcy7VR5XqLAkpH2alOyx2dnr5Pk22U=",
         "type": "git",
         "url": "file:./?dir=vscode"
       },
@@ -2324,10 +2308,8 @@
       },
       "locked": {
         "dir": "wezterm",
-        "dirtyRev": "895c66a78fa4a3c5b17f8a448ef78bfb75cc9b57-dirty",
-        "dirtyShortRev": "895c66a-dirty",
-        "lastModified": 1701814147,
-        "narHash": "sha256-2U4dTyPIuBBCzZRYCKvPCB8LlpVAVo1304a0qCTGCRs=",
+        "lastModified": 1701814275,
+        "narHash": "sha256-oAQDndKLyM8caOcy7VR5XqLAkpH2alOyx2dnr5Pk22U=",
         "type": "git",
         "url": "file:./?dir=wezterm"
       },
