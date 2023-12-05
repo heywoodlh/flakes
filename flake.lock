@@ -31,16 +31,14 @@
         ]
       },
       "locked": {
-        "dir": "fish",
-        "lastModified": 1701814275,
-        "narHash": "sha256-oAQDndKLyM8caOcy7VR5XqLAkpH2alOyx2dnr5Pk22U=",
-        "type": "git",
-        "url": "file:./?dir=fish"
+        "lastModified": 1,
+        "narHash": "sha256-h4cIpXcoAMDmUlKJgxCk/qzxxm51hCXsLbvonFr1WQI=",
+        "path": "fish",
+        "type": "path"
       },
       "original": {
-        "dir": "fish",
-        "type": "git",
-        "url": "file:./?dir=fish"
+        "path": "fish",
+        "type": "path"
       }
     },
     "fish-flake_2": {
@@ -739,16 +737,14 @@
         ]
       },
       "locked": {
-        "dir": "git",
-        "lastModified": 1701814275,
-        "narHash": "sha256-oAQDndKLyM8caOcy7VR5XqLAkpH2alOyx2dnr5Pk22U=",
-        "type": "git",
-        "url": "file:./?dir=git"
+        "lastModified": 1,
+        "narHash": "sha256-DSul+JyzAoRHgvWQ16hrsBDNI/WffIDmSHdO/eLBdJA=",
+        "path": "git",
+        "type": "path"
       },
       "original": {
-        "dir": "git",
-        "type": "git",
-        "url": "file:./?dir=git"
+        "path": "git",
+        "type": "path"
       }
     },
     "git-flake_2": {
@@ -810,16 +806,14 @@
         ]
       },
       "locked": {
-        "dir": "jetporch",
-        "lastModified": 1701814275,
-        "narHash": "sha256-oAQDndKLyM8caOcy7VR5XqLAkpH2alOyx2dnr5Pk22U=",
-        "type": "git",
-        "url": "file:./?dir=jetporch"
+        "lastModified": 1,
+        "narHash": "sha256-vpxXuMTJ3tqdKjpX0nLxm2qT4GNkm9/yJLeitrbbNeY=",
+        "path": "jetporch",
+        "type": "path"
       },
       "original": {
-        "dir": "jetporch",
-        "type": "git",
-        "url": "file:./?dir=jetporch"
+        "path": "jetporch",
+        "type": "path"
       }
     },
     "jetporch-nixpkgs": {
@@ -1454,16 +1448,14 @@
         ]
       },
       "locked": {
-        "dir": "nushell",
-        "lastModified": 1701814275,
-        "narHash": "sha256-oAQDndKLyM8caOcy7VR5XqLAkpH2alOyx2dnr5Pk22U=",
-        "type": "git",
-        "url": "file:./?dir=nushell"
+        "lastModified": 1,
+        "narHash": "sha256-C3sxepteL7hvM9q3XMD0wW/GKobf7p1vsXMQzilVba0=",
+        "path": "nushell",
+        "type": "path"
       },
       "original": {
-        "dir": "nushell",
-        "type": "git",
-        "url": "file:./?dir=nushell"
+        "path": "nushell",
+        "type": "path"
       }
     },
     "osquery-fix-nixpkgs": {
@@ -1609,16 +1601,14 @@
         ]
       },
       "locked": {
-        "dir": "st",
-        "lastModified": 1701814275,
-        "narHash": "sha256-oAQDndKLyM8caOcy7VR5XqLAkpH2alOyx2dnr5Pk22U=",
-        "type": "git",
-        "url": "file:./?dir=st"
+        "lastModified": 1,
+        "narHash": "sha256-ul8XDb2kV2wE7UM9Otd/ZrxNqdVM2Ww/EjEAdN1ooDY=",
+        "path": "st",
+        "type": "path"
       },
       "original": {
-        "dir": "st",
-        "type": "git",
-        "url": "file:./?dir=st"
+        "path": "st",
+        "type": "path"
       }
     },
     "systems": {
@@ -2109,16 +2099,14 @@
         ]
       },
       "locked": {
-        "dir": "tmux",
-        "lastModified": 1701814275,
-        "narHash": "sha256-oAQDndKLyM8caOcy7VR5XqLAkpH2alOyx2dnr5Pk22U=",
-        "type": "git",
-        "url": "file:./?dir=tmux"
+        "lastModified": 1,
+        "narHash": "sha256-+Xy2BwCuK59Q8LG51wWiq53oHhi7Kg4NX2l2Cr+ZQSs=",
+        "path": "tmux",
+        "type": "path"
       },
       "original": {
-        "dir": "tmux",
-        "type": "git",
-        "url": "file:./?dir=tmux"
+        "path": "tmux",
+        "type": "path"
       }
     },
     "vim-flake": {
@@ -2159,16 +2147,14 @@
         ]
       },
       "locked": {
-        "dir": "vim",
-        "lastModified": 1701814275,
-        "narHash": "sha256-oAQDndKLyM8caOcy7VR5XqLAkpH2alOyx2dnr5Pk22U=",
-        "type": "git",
-        "url": "file:./?dir=vim"
+        "lastModified": 1,
+        "narHash": "sha256-Eh9p+M6VHf4jxb8gm1VpLE5jOytCMjXiGKbFjuFfjkw=",
+        "path": "vim",
+        "type": "path"
       },
       "original": {
-        "dir": "vim",
-        "type": "git",
-        "url": "file:./?dir=vim"
+        "path": "vim",
+        "type": "path"
       }
     },
     "vscode-config": {
@@ -2255,16 +2241,14 @@
         "vscode-config": "vscode-config_2"
       },
       "locked": {
-        "dir": "vscode",
-        "lastModified": 1701814275,
-        "narHash": "sha256-oAQDndKLyM8caOcy7VR5XqLAkpH2alOyx2dnr5Pk22U=",
-        "type": "git",
-        "url": "file:./?dir=vscode"
+        "lastModified": 1,
+        "narHash": "sha256-TI2FsgatT08+zznq7IZeQgjZfEHlGIptGvNbEcDrx/4=",
+        "path": "vscode",
+        "type": "path"
       },
       "original": {
-        "dir": "vscode",
-        "type": "git",
-        "url": "file:./?dir=vscode"
+        "path": "vscode",
+        "type": "path"
       }
     },
     "wezterm-flake": {
@@ -2307,16 +2291,14 @@
         ]
       },
       "locked": {
-        "dir": "wezterm",
-        "lastModified": 1701814275,
-        "narHash": "sha256-oAQDndKLyM8caOcy7VR5XqLAkpH2alOyx2dnr5Pk22U=",
-        "type": "git",
-        "url": "file:./?dir=wezterm"
+        "lastModified": 1,
+        "narHash": "sha256-Lu+JOeSgv40zZGfl3cvHn5Go+vOL6Nbn6XmGILCT07k=",
+        "path": "wezterm",
+        "type": "path"
       },
       "original": {
-        "dir": "wezterm",
-        "type": "git",
-        "url": "file:./?dir=wezterm"
+        "path": "wezterm",
+        "type": "path"
       }
     }
   },
