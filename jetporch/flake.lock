@@ -649,11 +649,11 @@
         "ssh-keys": "ssh-keys"
       },
       "locked": {
-        "lastModified": 1701891341,
-        "narHash": "sha256-6vL6GP+t+trmmwKLtgXI+SFzPJ4AcDT4aPd5um6r+P4=",
+        "lastModified": 1702064556,
+        "narHash": "sha256-2gMg6esDDcAgzzYV+1/S6scHg1HN6ZsayMIdd4Y71u4=",
         "owner": "heywoodlh",
         "repo": "nixos-configs",
-        "rev": "8b5fb38e92005ed5b7d3f6d4e2d397c57280fd9e",
+        "rev": "ec438819db2837c4f87aeb23700031c48978d109",
         "type": "github"
       },
       "original": {
@@ -763,11 +763,11 @@
     },
     "nixpkgs_11": {
       "locked": {
-        "lastModified": 1702002396,
-        "narHash": "sha256-Nj/NfM2XDWqe06Yz4VJhnFPwIlvHeSDFQq63meMzu/g=",
+        "lastModified": 1702064309,
+        "narHash": "sha256-HPU6KbLh+9/qGAD4SlTSUZ11ZkLJA1J2tJG6U+dId78=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "35a1da9231a0dfcd158a22710e9137c35d1338f0",
+        "rev": "be4864e86482722a5d7d1a501595419f7b90dde5",
         "type": "github"
       },
       "original": {
