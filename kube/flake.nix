@@ -122,6 +122,20 @@
             };
           };
         });
+        cloudtube = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/cloudtube.yaml;
+            namespace = "default";
+            tag = "2023_10";
+            replicas = 1;
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "cloudtube";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
         home-assistant = let
           yaml = pkgs.substituteAll ({
             src = ./templates/home-assistant.yaml;
@@ -212,6 +226,20 @@
             };
           };
         });
+        second = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/second.yaml;
+            namespace = "default";
+            tag = "2023_12";
+            replicas = 1;
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "second";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
         tailscale-operator = (kubelib.buildHelmChart {
           name = "tailscale-operator";
           chart = "${tailscale}/cmd/k8s-operator/deploy/chart";
