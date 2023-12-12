@@ -297,6 +297,22 @@
             apiServerProxyConfig.mode = "true";
           };
         });
+        teddit = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/teddit.yaml;
+            namespace = "default";
+            port = 80;
+            replicas = 1;
+            redis_tag = "7.2.3";
+            redis_replicas = 1;
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "teddit";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
       };
       devShell = pkgs.mkShell {
         name = "kubernetes-shell";

@@ -1,0 +1,185 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+automountServiceAccountToken: true
+metadata:
+  name: teddit-redis
+  namespace: @namespace@
+  labels:
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/instance: teddit
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: teddit
+  labels:
+    app.kubernetes.io/name: teddit
+    app.kubernetes.io/instance: teddit
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: teddit-redis
+  namespace: @namespace@
+  labels:
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/instance: teddit
+  annotations: {}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - name: tcp-redis
+      port: 6379
+      targetPort: redis
+  selector:
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/instance: teddit
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: teddit
+  labels:
+    app.kubernetes.io/name: teddit
+    app.kubernetes.io/instance: teddit
+  annotations:
+    tailscale.com/expose: "true"
+    tailscale.com/hostname: "teddit"
+    tailscale.com/tags: "tag:http"
+spec:
+  type: ClusterIP
+  ports:
+    - port: @port@
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: teddit
+    app.kubernetes.io/instance: teddit
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: teddit
+  labels:
+    app.kubernetes.io/name: teddit
+spec:
+  replicas: @replicas@
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: teddit
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: teddit
+        app.kubernetes.io/instance: teddit
+    spec:
+      serviceAccountName: teddit
+      securityContext:
+        {}
+      containers:
+        - name: teddit
+          securityContext: {}
+          image: "docker.io/teddit/teddit:latest"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources: {}
+          env:
+            - name: DOMAIN
+              value: "teddit.@namespace@.svc.cluster.local"
+            - name: REDIS_HOST
+              value: "teddit-redis.@namespace@.svc.cluster.local"
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: teddit-redis
+  namespace: @namespace@
+  labels:
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/instance: teddit
+spec:
+  replicas: @redis_replicas@
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: redis
+      app.kubernetes.io/instance: teddit
+      app.kubernetes.io/component: master
+  serviceName: teddit-redis-headless
+  updateStrategy:
+    rollingUpdate: {}
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: redis
+        app.kubernetes.io/instance: teddit
+        app.kubernetes.io/component: master
+    spec:
+      securityContext:
+        fsGroup: 1001
+      serviceAccountName: teddit-redis
+      affinity:
+        podAffinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: redis
+                    app.kubernetes.io/instance: teddit
+                    app.kubernetes.io/component: master
+                namespaces:
+                  - "@namespace@"
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity:
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: redis
+          image: docker.io/redis:@redis_tag@
+          imagePullPolicy: "IfNotPresent"
+          securityContext:
+            runAsUser: 1001
+          command:
+            - redis-server
+          env:
+            - name: REDIS_REPLICATION_MODE
+              value: master
+            - name: ALLOW_EMPTY_PASSWORD
+              value: "yes"
+            - name: REDIS_PORT
+              value: "6379"
+          ports:
+            - name: redis
+              containerPort: 6379
+          resources:
+            limits: {}
+            requests: {}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "teddit-test-connection"
+  labels:
+    app.kubernetes.io/name: teddit-test
+spec:
+  containers:
+    - name: curl
+      image: busybox
+      command: ['curl']
+      args: ['teddit.@namespace@.svc.cluster.local:80']
+  restartPolicy: OnFailure
