@@ -82,6 +82,22 @@
         "type": "github"
       }
     },
+    "github-actions-runner-helm": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1702040482,
+        "narHash": "sha256-UB/vvpRrmLNtYK8W6T1ZaFiE8Qi9ueahpZzCQFFEZ/k=",
+        "owner": "actions",
+        "repo": "actions-runner-controller",
+        "rev": "0fd8eac305dbcacab02d114d5facecc82cf60c1e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "actions",
+        "repo": "actions-runner-controller",
+        "type": "github"
+      }
+    },
     "longhorn": {
       "flake": false,
       "locked": {
@@ -230,6 +246,7 @@
       "inputs": {
         "cloudflared-helm": "cloudflared-helm",
         "flake-utils": "flake-utils",
+        "github-actions-runner-helm": "github-actions-runner-helm",
         "longhorn": "longhorn",
         "minecraft-helm": "minecraft-helm",
         "nfs-helm": "nfs-helm",

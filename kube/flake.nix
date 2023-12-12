@@ -27,6 +27,10 @@
       url = "github:truecharts/charts";
       flake = false;
     };
+    github-actions-runner-helm = {
+      url = "github:actions/actions-runner-controller";
+      flake = false;
+    };
   };
 
   outputs = inputs @ {
@@ -41,6 +45,7 @@
     cloudflared-helm,
     minecraft-helm,
     truecharts-helm,
+    github-actions-runner-helm,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs {
@@ -104,6 +109,31 @@
           };
         });
         "1password-item" = onepassworditem;
+        # apply with: kubectl apply -f ./result --server-side
+        actions-runner-controller = (kubelib.buildHelmChart {
+          name = "actions-runner-controller";
+          chart = "${github-actions-runner-helm}/charts/gha-runner-scale-set-controller";
+          namespace = "actions-runner";
+          values = {
+            image = {
+              tag = "0.7.0";
+            };
+            githubConfigSecret = "controller-manager";
+          };
+        });
+        actions-runner-flakes = (kubelib.buildHelmChart {
+          name = "actions-runner-flakes";
+          chart = "${github-actions-runner-helm}/charts/gha-runner-scale-set";
+          namespace = "actions";
+          values = {
+            githubConfigUrl = "https://github.com/heywoodlh/flakes";
+            githubConfigSecret = "github-token";
+            controllerServiceAccount = {
+              name = "actions-runner-controller-gha-rs-controller";
+              namespace = "actions-runner";
+            };
+          };
+        });
         cloudflared = (kubelib.buildHelmChart {
           name = "cloudflared";
           chart = "${cloudflared-helm}/charts/cloudflare-tunnel";
