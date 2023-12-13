@@ -33,22 +33,6 @@ spec:
     app.kubernetes.io/name: home-assistant
   type: ClusterIP
 ---
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  labels:
-    app: home-assistant
-    app.kubernetes.io/name: home-assistant
-  name: home-assistant-config-root
-  namespace: @namespace@
-spec:
-  storageClassName: @storageClass@
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -89,6 +73,13 @@ spec:
             port: 8123
           timeoutSeconds: 1
         name: home-assistant-app
+        securityContext:
+          privileged: true
+          capabilities:
+            add:
+              - NET_ADMIN
+              - NET_RAW
+              - SYS_ADMIN
         ports:
         - containerPort: 8123
           name: http
@@ -101,13 +92,6 @@ spec:
             port: 8123
           timeoutSeconds: 1
         resources: {}
-        securityContext:
-          privileged: true
-          capabilities:
-            add:
-              - NET_ADMIN
-              - NET_RAW
-              - SYS_ADMIN
         startupProbe:
           failureThreshold: 30
           initialDelaySeconds: 0
@@ -126,8 +110,8 @@ spec:
       restartPolicy: Always
       volumes:
       - name: ha-config-root
-        persistentVolumeClaim:
-          claimName: home-assistant-config-root
+        hostPath:
+          path: /opt/home-assistant
         # Bluetooth
       - name: ttyacm
         hostPath:

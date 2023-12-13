@@ -3,18 +3,6 @@ kind: Namespace
 metadata:
   name: @namespace@
 ---
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: jellyfin-config
-spec:
-  storageClassName: nfs-kube
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 1Mi
----
 apiVersion: v1
 kind: Service
 metadata:
@@ -82,8 +70,9 @@ spec:
           resources: {}
       volumes:
       - name: config
-        persistentVolumeClaim:
-          claimName: jellyfin-config
+        nfs:
+          server: 100.107.238.93
+          path: /media/virtual-machines/kube/jellyfin
       - name: media
         nfs:
           server: 100.107.238.93
