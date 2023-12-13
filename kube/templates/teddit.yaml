@@ -99,7 +99,7 @@ spec:
           resources: {}
           env:
             - name: DOMAIN
-              value: "teddit.@namespace@.svc.cluster.local"
+              value: "@domain@"
             - name: REDIS_HOST
               value: "teddit-redis.@namespace@.svc.cluster.local"
 ---

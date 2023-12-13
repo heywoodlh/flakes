@@ -256,6 +256,18 @@
             };
           };
         });
+        nfs-media-server = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/nfs-media.yaml;
+            namespace = "media";
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "nfs-media-server";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
         jellyfin = let
           yaml = pkgs.substituteAll ({
             src = ./templates/jellyfin.yaml;
@@ -314,6 +326,7 @@
         teddit = let
           yaml = pkgs.substituteAll ({
             src = ./templates/teddit.yaml;
+            domain = "teddit.heywoodlh.io";
             namespace = "default";
             port = 80;
             replicas = 1;
