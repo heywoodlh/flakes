@@ -256,30 +256,20 @@
             };
           };
         });
-        nfs-media = (kubelib.buildHelmChart {
-          name = "nfs-media";
-          chart = "${nfs-helm}/charts/nfs-subdir-external-provisioner";
-          namespace = "default";
-          values = {
-            image.tag = "v4.0.2";
-            nfs = {
-              server = "100.107.238.93";
-              path = "/media/home-media";
-            };
-            storageClass = {
-              provisionerName = "nfs-media";
-              name = "nfs-media";
-              reclaimPolicy = "Retain";
-            };
-            podAnnotations = {
-              "tailscale.com/tags" = "tag:nfs-client";
-              "tailscale.com/expose" = "true";
-            };
-            nodeSelector = {
-              "env" = "home";
-            };
-          };
-        });
+        jellyfin = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/jellyfin.yaml;
+            namespace = "media";
+            tag = "20231213.1-unstable";
+            replicas = 1;
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "jellyfin";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
         second = let
           yaml = pkgs.substituteAll ({
             src = ./templates/second.yaml;
