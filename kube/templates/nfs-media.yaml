@@ -47,7 +47,7 @@ metadata:
   name: media-nfs
   namespace: @namespace@
   annotations:
-    tailscale.com/expose: true
+    tailscale.com/expose: "true"
     tailscale.com/hostname: "nfs-media"
     tailscale.com/tags: "tag:nfs-media"
 spec:

@@ -107,15 +107,22 @@ spec:
           name: ttyacm
         - mountPath: /run/dbus
           name: dbus
+        - mountPath: /dev/ttyUSB0
+          name: ttyusb
       restartPolicy: Always
       volumes:
       - name: ha-config-root
         hostPath:
           path: /opt/home-assistant
-        # Bluetooth
+      # Bluetooth
       - name: ttyacm
         hostPath:
           path: /dev/ttyACM0
+      # Zigbee USB
+      - name: ttyusb
+        hostPath:
+          path: /dev/ttyUSB0
+
       - name: dbus
         hostPath:
           path: /run/dbus
