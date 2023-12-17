@@ -65,11 +65,13 @@
         eval (${pkgs.direnv}/bin/direnv hook fish)
 
         # Use 1password SSH agent if it exists
-        if test -e $HOME/.1password/agent.sock
-            set -gx SSH_AUTH_SOCK "$HOME/.1password/agent.sock"
-        end
-        if test -e "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
-            set -gx SSH_AUTH_SOCK "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+        if test -z $SSH_CONNECTION
+            if test -e $HOME/.1password/agent.sock
+                set -gx SSH_AUTH_SOCK "$HOME/.1password/agent.sock"
+            end
+            if test -e "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+                set -gx SSH_AUTH_SOCK "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+            end
         end
 
         # Add ~/bin to $PATH (ALWAYS)
@@ -103,6 +105,10 @@
         source ${./functions.fish}
         source ${./nix.fish}
         source ${aws_config}
+
+        # Always re-source ~/.config/fish/config.fish last
+        # Prioritize local config
+        source ~/.config/fish/config.fish
       '';
     in {
       packages = rec {
