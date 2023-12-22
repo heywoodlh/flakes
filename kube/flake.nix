@@ -268,7 +268,7 @@
         jellyfin = let
           yaml = pkgs.substituteAll ({
             src = ./templates/jellyfin.yaml;
-            namespace = "media";
+            namespace = "default";
             tag = "20231213.1-unstable";
             replicas = 1;
           });

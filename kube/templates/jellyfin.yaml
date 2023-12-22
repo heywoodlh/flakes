@@ -1,7 +1,16 @@
+---
 apiVersion: v1
-kind: Namespace
+kind: PersistentVolumeClaim
 metadata:
-  name: @namespace@
+  name: jellyfin-config
+  namespace: @namespace@
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 2Gi
 ---
 apiVersion: v1
 kind: Service
@@ -70,9 +79,8 @@ spec:
           resources: {}
       volumes:
       - name: config
-        nfs:
-          server: 100.107.238.93
-          path: /media/virtual-machines/kube/jellyfin
+        persistentVolumeClaim:
+          claimName: jellyfin-config
       - name: media
         nfs:
           server: 100.107.238.93
