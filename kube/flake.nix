@@ -129,24 +129,20 @@
             };
           };
         });
-        cloudflared = (kubelib.buildHelmChart {
+        cloudflared = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/cloudflared.yaml;
+            namespace = "cloudflared";
+            tag = "2023.10.0";
+            replicas = 2;
+          });
+        in pkgs.stdenv.mkDerivation {
           name = "cloudflared";
-          chart = "${cloudflared-helm}/charts/cloudflare-tunnel";
-          namespace = "cloudflared";
-          values = {
-            image = {
-              repository = "docker.io/cloudflare/cloudflared";
-              tag = "2023.8.2";
-            };
-            cloudflare = {
-              tunnelName = "k0s-cluster";
-              secretName = "cloudflared";
-            };
-            serviceAccount.annotations = {
-              "tailscale.com/tags" = "tag:cloudflared";
-            };
-          };
-        });
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
         cloudtube = let
           yaml = pkgs.substituteAll ({
             src = ./templates/cloudtube.yaml;

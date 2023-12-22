@@ -1,0 +1,62 @@
+---
+apiVersion: onepassword.com/v1
+kind: OnePasswordItem
+metadata:
+  finalizers:
+  - onepassword.com/finalizer.secret
+  generation: 1
+  name: cloudflared
+  namespace: @namespace@
+spec:
+  itemPath: vaults/Kubernetes/items/m4i7whzvm5amrmxntpoleuaxxe
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cloudflared-cloudflare-tunnel
+  namespace: @namespace@
+  labels:
+    app.kubernetes.io/name: cloudflare-tunnel
+    app.kubernetes.io/instance: cloudflared
+    app.kubernetes.io/version: "@tag@"
+  annotations:
+    tailscale.com/tags: tag:cloudflared
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudflared-cloudflare-tunnel
+  namespace: @namespace@
+  labels:
+    app.kubernetes.io/name: cloudflare-tunnel
+    app.kubernetes.io/instance: cloudflared
+    app.kubernetes.io/version: "@tag@"
+spec:
+  replicas: @replicas@
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cloudflare-tunnel
+      app.kubernetes.io/instance: cloudflared
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: cloudflare-tunnel
+        app.kubernetes.io/instance: cloudflared
+    spec:
+      serviceAccountName: cloudflared-cloudflare-tunnel
+      restartPolicy: Always
+      containers:
+        - name: cloudflare-tunnel
+          image: "docker.io/cloudflare/cloudflared:@tag@"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: CLOUDFLARED_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: cloudflared
+                  key: token
+          args:
+            - tunnel
+            - --no-autoupdate
+            - run
+            - --token=$(CLOUDFLARED_TOKEN)
