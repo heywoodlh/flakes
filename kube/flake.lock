@@ -98,23 +98,6 @@
         "type": "github"
       }
     },
-    "longhorn": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1689764298,
-        "narHash": "sha256-ekOm9ajoDtRwExOEm2Kjeu+hYGP3PRr/zUYSaWlVgms=",
-        "owner": "longhorn",
-        "repo": "longhorn",
-        "rev": "19e8fefd3ace7fb66c3f3521fc471b60a829b155",
-        "type": "github"
-      },
-      "original": {
-        "owner": "longhorn",
-        "repo": "longhorn",
-        "rev": "19e8fefd3ace7fb66c3f3521fc471b60a829b155",
-        "type": "github"
-      }
-    },
     "minecraft-helm": {
       "flake": false,
       "locked": {
@@ -247,7 +230,6 @@
         "cloudflared-helm": "cloudflared-helm",
         "flake-utils": "flake-utils",
         "github-actions-runner-helm": "github-actions-runner-helm",
-        "longhorn": "longhorn",
         "minecraft-helm": "minecraft-helm",
         "nfs-helm": "nfs-helm",
         "nix-kube-generators": "nix-kube-generators",

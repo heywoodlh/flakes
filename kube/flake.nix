@@ -15,10 +15,6 @@
     nixhelm.url = "github:farcaller/nixhelm";
     nix-kube-generators.url = "github:farcaller/nix-kube-generators";
     tailscale.url = "github:tailscale/tailscale";
-    longhorn = {
-      url = "github:longhorn/longhorn/19e8fefd3ace7fb66c3f3521fc471b60a829b155"; # v1.5.1
-      flake = false;
-    };
     minecraft-helm = {
       url = "github:itzg/minecraft-server-charts";
       flake = false;
@@ -40,7 +36,6 @@
     nfs-helm,
     nix-kube-generators,
     nixhelm,
-    longhorn,
     tailscale,
     cloudflared-helm,
     minecraft-helm,
@@ -225,11 +220,17 @@
             };
           };
         });
-        longhorn = pkgs.stdenv.mkDerivation {
+        longhorn = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/longhorn.yaml;
+            namespace = "longhorn-system";
+            version = "1.5.3";
+          });
+        in pkgs.stdenv.mkDerivation {
           name = "longhorn";
           phases = [ "installPhase" ];
           installPhase = ''
-            cp ${longhorn}/deploy/longhorn.yaml $out
+            cp ${yaml} $out
           '';
         };
         nfs-kube = (kubelib.buildHelmChart {
@@ -291,6 +292,20 @@
           });
         in pkgs.stdenv.mkDerivation {
           name = "second";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
+        syncthing = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/syncthing.yaml;
+            namespace = "syncthing";
+            tag = "1.27.1";
+            replicas = 1;
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "syncthing";
           phases = [ "installPhase" ];
           installPhase = ''
             cp ${yaml} $out
