@@ -229,6 +229,18 @@
             cp ${yaml} $out
           '';
         };
+        media-server = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/media-server.yaml;
+            namespace = "default";
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "media-server";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
         nfs-kube = (kubelib.buildHelmChart {
           name = "nfs-kube";
           chart = "${nfs-helm}/charts/nfs-subdir-external-provisioner";
@@ -253,18 +265,6 @@
             };
           };
         });
-        nfs-media-server = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/nfs-media.yaml;
-            namespace = "media";
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "nfs-media-server";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
-        };
         jellyfin = let
           yaml = pkgs.substituteAll ({
             src = ./templates/jellyfin.yaml;
