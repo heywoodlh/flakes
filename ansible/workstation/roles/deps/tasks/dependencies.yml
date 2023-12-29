@@ -1,0 +1,41 @@
+---
+- name: install arch packages
+  community.general.pacman:
+    name: "{{ item }}"
+    update_cache: yes
+  with_items:
+  - cronie
+  - git
+  - curl
+  - python-pip
+  - sudo
+  - syncthing
+  - tailscale
+  - ufw
+  - vim
+  - zsh
+  when: ansible_os_family == 'Archlinux' 
+- name: install debian packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    update_cache: yes
+  with_items:
+  - git
+  - curl
+  - python3-pip
+  - sudo
+  - syncthing
+  - ufw
+  - vim
+  - zsh
+  when: ansible_os_family == 'Debian' 
+- name: enable cronie service
+  ansible.builtin.systemd:
+    name: cronie.service
+    enabled: yes
+    state: started
+  when: ansible_os_family == 'Archlinux'
+- name: import ubuntu.yml
+  import_tasks: ubuntu.yml
+  when: ansible_distribution == 'Ubuntu'
+

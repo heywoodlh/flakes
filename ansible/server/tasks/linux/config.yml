@@ -1,0 +1,28 @@
+---
+- name: Copy journald.conf
+  ansible.builtin.copy:
+    src: systemd/journald.conf
+    dest: /etc/systemd/journald.conf
+    force: true
+  register: journald_config
+
+- name: Restart journald
+  ansible.builtin.systemd:
+    name: systemd-journald.service
+    state: restarted
+  when: journald_config.changed
+
+- name: Check if http proxy is accessible
+  ansible.builtin.wait_for:
+    host: 100.113.9.57
+    port: 3128
+    timeout: 1
+  register: proxy_check
+  ignore_errors: true
+
+- name: Copy environment file
+  ansible.builtin.copy:
+    src: etc/environment
+    dest: /etc/environment
+    mode: "0644"
+  when: proxy_check is not failed

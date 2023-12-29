@@ -1,0 +1,43 @@
+---
+- name: install gnome and gdm
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    update_cache: yes
+  with_items:
+  - gdm3
+  - gnome-control-center
+  - gnome-shell
+  - gnome-terminal
+  - firefox
+  - kitty
+  - network-manager
+  when: ansible_os_family == 'Debian'
+- name: install gnome and gdm
+  community.general.pacman:
+    name: "{{ item }}"
+    update_cache: yes
+  with_items:
+  - gdm
+  - gnome-control-center
+  - gnome-shell
+  - gnome-terminal
+  - firefox
+  - kitty
+  - networkmanager
+  when: ansible_os_family == 'Archlinux'
+- name: enable gdm
+  ansible.builtin.systemd:
+    name: gdm
+    enabled: yes
+  when: ansible_os_family == 'Archlinux'
+- name: enable network manager 
+  ansible.builtin.systemd:
+    name: NetworkManager.service 
+    enabled: yes
+  when: ansible_os_family == 'Archlinux'
+- name: disable wayland in gdm on ubuntu
+  ansible.builtin.replace:
+    path: /etc/gdm3/custom.conf
+    regexp: "#WaylandEnable=false"
+    replace: "WaylandEnable=false" 
+  when: ansible_distribution == 'Ubuntu'
