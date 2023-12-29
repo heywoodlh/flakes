@@ -44,6 +44,10 @@
       url = "./jetporch";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    ansible-flake = {
+      url = "./ansible";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
@@ -59,6 +63,7 @@
     st-flake,
     wezterm-flake,
     jetporch-flake,
+    ansible-flake,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = nixpkgs.legacyPackages.${system};
@@ -73,7 +78,8 @@
         st = st-flake.packages.${system}.st;
         wezterm = wezterm-flake.packages.${system}.wezterm;
         wezterm-gl = wezterm-flake.packages.${system}.wezterm-gl;
-        ubuntu-22-desktop = jetporch-flake.packages.${system}.ubuntu-22-desktop;
+        workstation = ansible-flake.packages.${system}.workstation;
+        server = ansible-flake.packages.${system}.server;
       };
       formatter = pkgs.alejandra;
     });

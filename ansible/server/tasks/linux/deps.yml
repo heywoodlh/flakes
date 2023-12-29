@@ -1,0 +1,81 @@
+---
+- name: Arch Linux tasks
+  when:
+    - ansible_os_family == 'Archlinux'
+  block:
+    - name: Arch Linux ARM mirrorlist repo configuration
+      ansible.builtin.copy:
+        src: "archlinux/mirrorlist-{{ ansible_architecture }}"
+        dest: /etc/pacman.d/mirrorlist
+        backup: true
+        owner: root
+        mode: 644
+
+    - name: Ensure that /etc/pacman.d/mirrorlist has 644 permissions
+      ansible.builtin.file:
+        path: /etc/pacman.d/mirrorlist
+        mode: '0644'
+        force: true
+      register: mirrorlist_perms
+
+    - name: Restart archlinux-keyring-wkd-sync.service
+      ansible.builtin.systemd:
+        name: archlinux-keyring-wkd-sync.service
+        state: restarted
+      when: mirrorlist_perms.changed
+
+- name: Debian tasks
+  when:
+    - ansible_os_family == "Debian"
+  block:
+    - name: get ubuntu version
+      ansible.builtin.shell: "cat /etc/os-release | grep UBUNTU_CODENAME | cut -d= -f2"
+      when: ansible_distribution == "Ubuntu"
+      register: ubuntu_version
+
+    - name: set ubuntu_codename
+      ansible.builtin.set_fact:
+        ubuntu_codename: "{{ ubuntu_version.stdout }}"
+      when: ansible_distribution == "Ubuntu"
+
+    - name: setup ubuntu repositories
+      ansible.builtin.template:
+        src: "ubuntu/sources.list-{{ ansible_architecture }}.j2"
+        dest: /etc/apt/sources.list
+      when: ansible_distribution == "Ubuntu"
+
+    - name: update apt cache
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: install debian packages
+      ansible.builtin.apt:
+        name: "{{ item }}"
+      with_items:
+      - git
+      - autoconf
+      - gcc
+      - libc6
+      - libmcrypt-dev
+      - make
+      - libssl-dev
+      - wget
+      - bc
+      - gawk
+      - dc
+      - build-essential
+      - snmp
+      - libnet-snmp-perl
+      - gettext
+      - lsb-release
+      - sudo
+      - ufw
+
+- name: Generic tasks
+  block:
+    - name: Install Tailscale
+      block:
+        - ansible.builtin.get_url:
+            url: https://tailscale.com/install.sh
+            dest: /tmp/tailscale.sh
+        - ansible.builtin.command: bash /tmp/tailscale.sh

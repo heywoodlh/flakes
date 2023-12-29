@@ -1,0 +1,42 @@
+---
+- name: Gather facts
+  ansible.builtin.gather_facts:
+
+- name: Proxmox tasks
+  block:
+    - name: Check if /etc/pve directory exists
+      ansible.builtin.stat:
+        path: /etc/pve
+      register: pve_check
+
+    - name: Include proxmox tasks
+      ansible.builtin.include_tasks: proxmox.yml
+      when: pve_check.stat.exists
+
+- name: Debian/Arch Linux tasks
+  when: >
+    (ansible_os_family == "Debian") or
+    (ansible_os_family == "Archlinux")
+  block:
+    - name: Include deps tasks
+      ansible.builtin.include_tasks: deps.yml
+
+    - name: Include nix tasks
+      ansible.builtin.include_tasks: nix.yml
+
+    - name: Include config tasks
+      ansible.builtin.include_tasks: config.yml
+
+    - name: Include security tasks
+      ansible.builtin.include_tasks: security.yml
+
+    - name: Include users tasks
+      ansible.builtin.include_tasks: users.yml
+
+- name: NixOS tasks
+  when:
+    - ansible_os_family == "NixOS"
+  block:
+    - name: Include NixOS tasks
+      ansible.builtin.include_tasks: nixos.yml
+

@@ -1,0 +1,13 @@
+---
+- name: import arch.yml tasks
+  import_tasks: arch.yml
+  when: ansible_os_family == 'Archlinux'
+- name: import debian.yml tasks
+  import_tasks: debian.yml
+  when: ansible_os_family == 'Debian'
+- name: import debian_thirdparty.yml tasks
+  import_tasks: debian_thirdparty.yml
+  when: ansible_os_family == 'Debian'
+- name: import thirdparty.yml tasks
+  import_tasks: thirdparty.yml
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Archlinux'

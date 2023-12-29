@@ -1,0 +1,57 @@
+---
+- name: create heywoodlh (don't set shell until home-manager is setup)
+  ansible.builtin.user:
+    name: heywoodlh
+- name: remove sudo configuration from archinstall script if exists
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers
+    state: absent
+    regexp: "^heywoodlh"
+    line: "heywoodlh ALL=(ALL) ALL"
+    validate: 'visudo -cf %s'
+- name: sudo configuration from archinstall script if exists
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers.d/heywoodlh
+    line: "heywoodlh ALL=(ALL) ALL"
+    validate: 'visudo -cf %s'
+    create: yes
+- name: check if /nix exists
+  ansible.builtin.stat:
+    path: /nix
+  register: nix_check
+- name: install nix in single-user mode
+  ansible.builtin.shell: curl -L https://nixos.org/nix/install | sh -s -- --no-daemon --yes
+  become_user: heywoodlh
+  when: nix_check.stat.exists == false
+- name: add /home/heywoodlh/.nix-profile/bin/zsh to /etc/shells
+  ansible.builtin.lineinfile:
+    path: /etc/shells
+    line: "/home/heywoodlh/.nix-profile/bin/zsh"
+- name: check if /home/heywoodlh/.nix-profile/bin/zsh exists (again, after install)
+  ansible.builtin.stat:
+    path: /home/heywoodlh/.nix-profile/bin/zsh
+  register: nix_zsh
+- name: set heywoodlh's shell to /home/heywoodlh/.nix-profile/bin/zsh
+  ansible.builtin.user:
+    name: heywoodlh
+    shell: /home/heywoodlh/.nix-profile/bin/zsh
+  when: nix_zsh.stat.exists
+- name: create /home/heywoodlh/.zsh.d
+  ansible.builtin.file:
+    path: /home/heywoodlh/.zsh.d
+    state: directory
+    mode: '0700' 
+    owner: heywoodlh
+- name: add ansible-switch alias to /home/heywoodlh/.zsh.d/custom
+  ansible.builtin.lineinfile:
+    path: /home/heywoodlh/.zsh.d/custom
+    line: "alias ansible-switch='sudo ansible-pull -c=local -U https://github.com/heywoodlh/ansible setup.yml; sudo ansible-pull -c=local -U https://github.com/heywoodlh/ansible playbooks/workstation/workstation.yml'"
+    create: true
+    owner: heywoodlh
+- name: enable and start syncthing service for heywoodlh
+  ansible.builtin.systemd:
+    name: syncthing
+    state: started
+    enabled: true
+    scope: user
+  become_user: heywoodlh

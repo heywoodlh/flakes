@@ -1,0 +1,12 @@
+---
+- name: update cache (so we don't have to for each package that gets installed)
+  community.general.pacman:
+    update_cache: yes
+- name: install global packages
+  community.general.pacman:
+    name: "{{ item }}"
+  with_items: "{{ global_packages }}"
+- name: install arch-specific packages
+  community.general.pacman:
+    name: "{{ item }}"
+  with_items: "{{ arch_packages }}"
