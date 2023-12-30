@@ -149,94 +149,87 @@ spec:
     app: sonarr
   type: ClusterIP
 # Sabnzbd
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: sabnzbd-config
-  namespace: @namespace@
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: longhorn
-  resources:
-    requests:
-      storage: 2Gi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: sabnzbd-downloads
-  namespace: @namespace@
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: longhorn
-  resources:
-    requests:
-      storage: 400Gi
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: sabnzbd
-  name: sabnzbd
-  namespace: @namespace@
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: sabnzbd
-  template:
-    metadata:
-      labels:
-        app: sabnzbd
-    spec:
-      nodeSelector:
-        env: home
-      containers:
-      - image: lscr.io/linuxserver/sabnzbd:latest
-        name: sabnzbd
-        ports:
-        - name: web-ui
-          containerPort: 8080
-        volumeMounts:
-        - name: sabnzbd-config
-          mountPath: /config
-        - name: sabnzbd-downloads
-          mountPath: /downloads
-        - name: media
-          mountPath: /media/home-media
-      volumes:
-      - name: sabnzbd-config
-        persistentVolumeClaim:
-          claimName: sabnzbd-config
-      - name: sabnzbd-downloads
-        persistentVolumeClaim:
-          claimName: sabnzbd-downloads
-      - name: media
-        nfs:
-          server: 100.107.238.93
-          path: /media/home-media
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: sabnzbd
-  name: sabnzbd
-  namespace: @namespace@
-  annotations:
-    tailscale.com/expose: "true"
-    tailscale.com/hostname: "sabnzbd"
-    tailscale.com/tags: "tag:http"
-spec:
-  ports:
-  - name: web-ui
-    port: 80
-    protocol: TCP
-    targetPort: web-ui
-  selector:
-    app: sabnzbd
-  type: ClusterIP
+#---
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: sabnzbd-config
+#  namespace: @namespace@
+#spec:
+#  accessModes:
+#    - ReadWriteOnce
+#  storageClassName: longhorn
+#  resources:
+#    requests:
+#      storage: 20Gi
+#---
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  labels:
+#    app: sabnzbd
+#  name: sabnzbd
+#  namespace: @namespace@
+#spec:
+#  replicas: 1
+#  selector:
+#    matchLabels:
+#      app: sabnzbd
+#  template:
+#    metadata:
+#      labels:
+#        app: sabnzbd
+#    spec:
+#      nodeSelector:
+#        env: home
+#      containers:
+#      - image: lscr.io/linuxserver/sabnzbd:latest
+#        name: sabnzbd
+#        env:
+#        - name: PUID
+#          value: "995"
+#        - name: PGID
+#          value: "992"
+#        ports:
+#        - name: web-ui
+#          containerPort: 8080
+#        volumeMounts:
+#        - name: sabnzbd-config
+#          mountPath: /config
+#        - name: sabnzbd-downloads
+#          mountPath: /downloads
+#        - name: media
+#          mountPath: /media/home-media
+#      volumes:
+#      - name: sabnzbd-config
+#        persistentVolumeClaim:
+#          claimName: sabnzbd-config
+#      - name: sabnzbd-downloads
+#        nfs:
+#          server: 100.107.238.93
+#          path: /media/home-media/disk1/downloads
+#      - name: media
+#        nfs:
+#          server: 100.107.238.93
+#          path: /media/home-media
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  labels:
+#    app: sabnzbd
+#  name: sabnzbd
+#  namespace: @namespace@
+#  annotations:
+#    tailscale.com/expose: "true"
+#    tailscale.com/hostname: "sabnzbd"
+#    tailscale.com/tags: "tag:http"
+#spec:
+#  ports:
+#  - name: web-ui
+#    port: 80
+#    protocol: TCP
+#    targetPort: web-ui
+#  selector:
+#    app: sabnzbd
+#  type: ClusterIP
