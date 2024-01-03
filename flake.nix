@@ -48,6 +48,10 @@
       url = "./ansible";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    vimb-flake = {
+      url = "./vimb";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
@@ -64,6 +68,7 @@
     wezterm-flake,
     jetporch-flake,
     ansible-flake,
+    vimb-flake,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = nixpkgs.legacyPackages.${system};
@@ -80,6 +85,8 @@
         wezterm-gl = wezterm-flake.packages.${system}.wezterm-gl;
         workstation = ansible-flake.packages.${system}.workstation;
         server = ansible-flake.packages.${system}.server;
+        vimb = vimb-flake.packages.${system}.vimb;
+        vimb-gl = vimb-flake.packages.${system}.vimb-gl;
       };
       formatter = pkgs.alejandra;
     });
