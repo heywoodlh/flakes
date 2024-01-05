@@ -14,7 +14,7 @@
       };
       myTmux = tmux-flake.packages.${system}.tmux;
       jetbrains_nerdfont = (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; });
-      settings = pkgs.writeText "wezterm.lua" ''
+      settings = ''
         -- Add config folder to watchlist for config reloads.
         local wezterm = require 'wezterm';
         wezterm.add_to_config_reload_watch_list(wezterm.config_dir)
@@ -33,12 +33,6 @@
 
         -- Nord color scheme:
         config.color_scheme = 'nord'
-        config.font = wezterm.font_with_fallback {
-          'JetBrainsMono Nerd Font Mono',
-          'Iosevka Nerd Font Mono',
-          'SF Mono Regular',
-          'DejaVu Sans Mono',
-        }
         config.font_size = 14.0
 
         -- Appearance tweaks
@@ -52,17 +46,47 @@
 
         -- Use Jetbrains font directory
         config.font_dirs = { "${jetbrains_nerdfont}/share/fonts" }
+      '';
+      berkeleymono-settings = pkgs.writeText "wezterm.lua" ''
+        ${settings}
 
-        -- and finally, return the configuration to wezterm
+        config.font = wezterm.font_with_fallback {
+          'Berkeley Mono',
+          'JetBrainsMono Nerd Font Mono',
+          'Iosevka Nerd Font Mono',
+          'SF Mono Regular',
+          'DejaVu Sans Mono',
+        }
+        return config
+      '';
+      non-berkeleymono-settings = pkgs.writeText "wezterm.lua" ''
+        ${settings}
+
+        config.font = wezterm.font_with_fallback {
+          'JetBrainsMono Nerd Font Mono',
+          'Iosevka Nerd Font Mono',
+          'SF Mono Regular',
+          'DejaVu Sans Mono',
+        }
         return config
       '';
     in {
       packages = rec {
         wezterm = pkgs.writeShellScriptBin "wezterm" ''
-            ${pkgs.wezterm}/bin/wezterm --config-file ${settings}
+            if ${pkgs.wezterm}/bin/wezterm ls-fonts --list-system | grep -iq 'Berkeley Mono'
+            then
+                ${pkgs.wezterm}/bin/wezterm --config-file ${berkeleymono-settings} $@
+            else
+                ${pkgs.wezterm}/bin/wezterm --config-file ${non-berkeleymono-settings} $@
+            fi
           '';
         wezterm-gl = pkgs.writeShellScriptBin "wezterm" ''
-            ${pkgs.nixgl.auto.nixGLDefault}/bin/nixGL ${pkgs.wezterm}/bin/wezterm --config-file ${settings}
+            if ${pkgs.wezterm}/bin/wezterm ls-fonts --list-system | grep -iq 'Berkeley Mono'
+            then
+              ${pkgs.nixgl.auto.nixGLDefault}/bin/nixGL ${pkgs.wezterm}/bin/wezterm --config-file ${berkeleymono-settings} $@
+            else
+              ${pkgs.nixgl.auto.nixGLDefault}/bin/nixGL ${pkgs.wezterm}/bin/wezterm --config-file ${non-berkeleymono-settings} $@
+            fi
           '';
           default = wezterm;
         };
