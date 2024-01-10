@@ -9,3 +9,5 @@ This repo contains Nix flake configurations that are mission critical for myself
 [VSCode](./vscode)
 
 [Wezterm](./wezterm)
+
+[1Password Helper](./1password)

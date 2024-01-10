@@ -52,6 +52,10 @@
       url = "./vimb";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    op-flake = {
+      url = "./1password";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
@@ -69,6 +73,7 @@
     jetporch-flake,
     ansible-flake,
     vimb-flake,
+    op-flake,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = nixpkgs.legacyPackages.${system};
@@ -87,6 +92,7 @@
         server = ansible-flake.packages.${system}.server;
         vimb = vimb-flake.packages.${system}.vimb;
         vimb-gl = vimb-flake.packages.${system}.vimb-gl;
+        op = op-flake.packages.${system}.op;
       };
       formatter = pkgs.alejandra;
     });
