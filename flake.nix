@@ -56,6 +56,10 @@
       url = "./1password";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    lima-flake = {
+      url = "./lima";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
@@ -74,6 +78,7 @@
     ansible-flake,
     vimb-flake,
     op-flake,
+    lima-flake,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = nixpkgs.legacyPackages.${system};
@@ -93,6 +98,7 @@
         vimb = vimb-flake.packages.${system}.vimb;
         vimb-gl = vimb-flake.packages.${system}.vimb-gl;
         op = op-flake.packages.${system}.op;
+        ubuntu-vm = lima-flake.packages.${system}.ubuntu-vm;
       };
       formatter = pkgs.alejandra;
     });
