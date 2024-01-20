@@ -188,10 +188,10 @@
             minecraftServer = {
               eula = "TRUE";
               version = "LATEST";
-              difficulty = "hard";
+              difficulty = "normal";
               #whitelist = "user1,user2" ;
               ops = [
-                ""
+                "2533274841530057"
               ];
               maxPlayers = "40";
               tickDistance = "8";
@@ -200,10 +200,11 @@
               gameMode = "survival";
               serverName = "heywoodlh server";
               enableLanVisibility = "true";
+              cheats = "true";
               serverPort = "19132";
             };
             persistence = {
-              storageClass = "nfs-kube";
+              storageClass = "longhorn";
               dataDir = {
                 enabled = "true";
                 Size = "50Gi";
