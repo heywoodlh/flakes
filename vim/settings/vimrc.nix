@@ -49,5 +49,8 @@
 
     "This unsets the "last search pattern" register by hitting return
     nnoremap <CR> :noh<CR><CR>
+
+    " Automatically wrap markdown files
+    autocmd FileType markdown setlocal textwidth=80 wrapmargin=2
   '';
 }
