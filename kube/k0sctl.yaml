@@ -12,6 +12,7 @@ spec:
     privateInterface: tailscale0
     installFlags:
       - --kubelet-extra-args="--node-ip=100.122.112.166"
+      - --no-taints
   - role: worker
     ssh:
       user: heywoodlh
