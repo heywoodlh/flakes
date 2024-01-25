@@ -157,6 +157,25 @@
             cp ${yaml} $out
           '';
         };
+        coder = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/coder.yaml;
+            namespace = "coder";
+            version = "2.7.1";
+            access_url = "https://coder.heywoodlh.io";
+            replicas = "1";
+            port = "80";
+            postgres_version = "16.1.0";
+            postgres_replicas = "1";
+            postgres_storage_class = "longhorn";
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "coder";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
         home-assistant = let
           yaml = pkgs.substituteAll ({
             src = ./templates/home-assistant.yaml;
