@@ -176,6 +176,21 @@
             cp ${yaml} $out
           '';
         };
+        drawio = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/draw-io.yaml;
+            namespace = "drawio";
+            tag = "23.0.0";
+            port = "80";
+            replicas = "1";
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "drawio";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
         home-assistant = let
           yaml = pkgs.substituteAll ({
             src = ./templates/home-assistant.yaml;
