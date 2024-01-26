@@ -102,12 +102,27 @@
         # Hammerspoon
         add-to-path /Applications/Hammerspoon.app/Contents/Frameworks/hs
 
-        source ${./functions.fish}
+        # Custom functions
+
+        function op-unlock
+            env | grep -iqE "^OP_SESSION" || eval $(${pkgs._1password}/bin/op signin)
+        end
+
+        function geoiplookup
+            ${pkgs.curl}/bin/curl -s ipinfo.io/$argv[1]
+        end
+
+        function nix-flake-init
+            ${pkgs.nix}/bin/nix flake init -t gitlab:kylesferrazza/nix-flake-templates
+        end
+
         source ${./nix.fish}
         source ${aws_config}
 
         # Always re-source ~/.config/fish/config.fish last
         # Prioritize local config
+        mkdir -p ~/.config/fish
+        touch ~/.config/fish/config.fish
         source ~/.config/fish/config.fish
       '';
     in {
