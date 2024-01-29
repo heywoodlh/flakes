@@ -276,6 +276,22 @@
             cp ${yaml} $out
           '';
         };
+        motioneye = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/motioneye.yaml;
+            namespace = "default";
+            storageclass = "longhorn";
+            tag = "dev-amd64";
+            replicas = 1;
+            port = 80;
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "motioneye";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
         nfs-kube = (kubelib.buildHelmChart {
           name = "nfs-kube";
           chart = "${nfs-helm}/charts/nfs-subdir-external-provisioner";
