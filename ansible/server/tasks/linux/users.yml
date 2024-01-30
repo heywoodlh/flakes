@@ -70,11 +70,11 @@
         path: "/home/heywoodlh/.nix-profile/bin/tmux"
       register: tmux_check
 
-    - name: Add /home/heywoodlh/.nix-profile/bin/tmux to /etc/shells
+    - name: Launch tmux with bash
       ansible.builtin.lineinfile:
         path: /home/heywoodlh/.bashrc
         create: true
-        line: "[ -z ${TMUX} ] && { /home/heywoodlh/.nix-profile/bin/tmux attach || exec /home/heywoodlh/.nix-profile/bin/tmux new-session && exit;}"
+        line: "[ -z ${TMUX} ] && { /home/heywoodlh/.nix-profile/bin/tmux && exit;}"
         owner: heywoodlh
       when: tmux_check.stat.exists
 
