@@ -191,6 +191,23 @@
             cp ${yaml} $out
           '';
         };
+        "grafana" = (kubelib.buildHelmChart {
+          name = "grafana";
+          chart = (nixhelm.charts { inherit pkgs; }).grafana.grafana;
+          namespace = "monitoring";
+          values = {
+            image.tag = "10.3.1";
+            persistence = {
+              enabled = true;
+              storageClassName = "longhorn";
+            };
+            admin = {
+              existingSecret = "grafana-admin";
+              userKey = "username";
+              passwordKey = "password";
+            };
+          };
+        });
         home-assistant = let
           yaml = pkgs.substituteAll ({
             src = ./templates/home-assistant.yaml;
