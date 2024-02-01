@@ -5,19 +5,6 @@ metadata:
   creationTimestamp: null
   name: @namespace@
 ---
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: syncthing-pvc
-  namespace: @namespace@
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: longhorn
-  resources:
-    requests:
-      storage: 100Gi
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -36,7 +23,7 @@ spec:
         app: syncthing
     spec:
       nodeSelector:
-        env: home
+        kubernetes.io/hostname: @nodename@
       containers:
       - image: docker.io/syncthing/syncthing:@tag@
         name: syncthing
@@ -52,8 +39,9 @@ spec:
           mountPath: /var/syncthing
       volumes:
       - name: syncthing-data
-        persistentVolumeClaim:
-          claimName: syncthing-pvc
+        hostPath:
+          path: @hostfolder@
+          type: Directory
 ---
 apiVersion: v1
 kind: Service

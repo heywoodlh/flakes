@@ -8,7 +8,7 @@ metadata:
   name: cloudflared
   namespace: @namespace@
 spec:
-  itemPath: vaults/Kubernetes/items/m4i7whzvm5amrmxntpoleuaxxe
+  itemPath: vaults/Kubernetes/items/vz6qpnbbus6btqwc4otx3bocqq
 ---
 apiVersion: apps/v1
 kind: Deployment

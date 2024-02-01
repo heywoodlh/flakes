@@ -214,10 +214,10 @@
             namespace = "default";
             timezone = "America/Denver";
             tag = "2023.11.3";
-            servicePort = 80;
+            port = 80;
             storageClass = "nfs-kube";
             replicas = 1;
-            nodename = "k8s-node-2";
+            nodename = "nix-nvidia";
           });
         in pkgs.stdenv.mkDerivation {
           name = "home-assistant";
@@ -297,7 +297,7 @@
           yaml = pkgs.substituteAll ({
             src = ./templates/motioneye.yaml;
             namespace = "default";
-            storageclass = "longhorn";
+            storageclass = "local-path";
             tag = "dev-amd64";
             replicas = 1;
             port = 80;
@@ -379,6 +379,8 @@
           yaml = pkgs.substituteAll ({
             src = ./templates/syncthing.yaml;
             namespace = "syncthing";
+            nodename = "nix-nvidia";
+            hostfolder = "/opt/syncthing";
             tag = "1.27.1";
             replicas = 1;
           });
@@ -409,7 +411,7 @@
             proxyConfig = {
               image = {
                 repo = "docker.io/tailscale/tailscale";
-                tag = "v1.54.0";
+                tag = "unstable-v1.55.68";
               };
               defaultTags = "tag:k8s";
             };

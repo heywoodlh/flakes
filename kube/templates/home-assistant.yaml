@@ -21,11 +21,11 @@ metadata:
   annotations:
     tailscale.com/expose: "true"
     tailscale.com/hostname: "home-assistant"
-    tailscale.com/tags: "tag:home-assistant"
+    tailscale.com/tags: "tag:http"
 spec:
   ports:
   - name: http
-    port: @servicePort@
+    port: @port@
     protocol: TCP
     targetPort: http
   selector:
@@ -58,7 +58,7 @@ spec:
     spec:
       nodeSelector:
         kubernetes.io/hostname: @nodename@
-      hostNetwork: true
+      #hostNetwork: true
       containers:
       - envFrom:
         - configMapRef:

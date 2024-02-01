@@ -29,7 +29,7 @@ spec:
     privateInterface: tailscale0
     installFlags:
       - --kubelet-extra-args="--node-ip=100.118.109.137"
-  - role: controller+worker
+  - role: worker
     ssh:
       user: heywoodlh
       port: 22
@@ -37,9 +37,8 @@ spec:
     privateInterface: tailscale0
     installFlags:
       - --kubelet-extra-args="--node-ip=100.108.69.46"
-      - --no-taints
   k0s:
-    version: v1.28.4+k0s.0
+    version: v1.29.1+k0s.0
     dynamicConfig: false
     config:
       spec:
