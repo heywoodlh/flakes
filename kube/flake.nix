@@ -191,7 +191,7 @@
             cp ${yaml} $out
           '';
         };
-        "grafana" = (kubelib.buildHelmChart {
+        grafana = (kubelib.buildHelmChart {
           name = "grafana";
           chart = (nixhelm.charts { inherit pkgs; }).grafana.grafana;
           namespace = "monitoring";
@@ -199,12 +199,24 @@
             image.tag = "10.3.1";
             persistence = {
               enabled = true;
-              storageClassName = "longhorn";
+              storageClassName = "local-path";
             };
             admin = {
               existingSecret = "grafana-admin";
               userKey = "username";
               passwordKey = "password";
+            };
+            datasources.datasources.yaml = {
+              apiVersion = "1";
+              datasources = [
+                {
+                  name = "prometheus";
+                  type = "prometheus";
+                  url = "http://prometheus-server";
+                  access = "proxy";
+                  isDefault = "true";
+                }
+              ];
             };
           };
         });
@@ -331,6 +343,26 @@
             nodeSelector = {
               "env" = "home";
             };
+          };
+        });
+        prometheus = (kubelib.buildHelmChart {
+          name = "prometheus";
+          chart = (nixhelm.charts { inherit pkgs; }).prometheus-community.prometheus;
+          namespace = "monitoring";
+          values = {
+            server.image.tag = "v2.49.1";
+            prometheus-node-exporter.enabled = false;
+            extraScrapeConfigs = ''
+              - job_name: "node"
+                static_configs:
+                - targets:
+                  - nix-precision.barn-banana.ts.net:9100
+                  - nix-nvidia.barn-banana.ts.net:9100
+                  - nix-drive.barn-banana.ts.net:9100
+                  - nix-ext-net.barn-banana.ts.net:9100
+                  - nix-backups.barn-banana.ts.net:9100
+                  - nixos-matrix.barn-banana.ts.net:9100
+            '';
           };
         });
         jellyfin = let
