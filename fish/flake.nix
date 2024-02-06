@@ -122,8 +122,7 @@
         # Always re-source ~/.config/fish/config.fish last
         # Prioritize local config
         mkdir -p ~/.config/fish
-        touch ~/.config/fish/config.fish &>/dev/null
-        source ~/.config/fish/config.fish
+        test -e ~/.config/fish/config.fish && source ~/.config/fish/config.fish
       '';
     in {
       packages = rec {
