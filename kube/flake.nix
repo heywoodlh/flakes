@@ -379,6 +379,22 @@
             cp ${yaml} $out
           '';
         };
+        protonmail-bridge = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/protonmail-bridge.yaml;
+            namespace = "default";
+            image = "docker.io/shenxn/protonmail-bridge:3.0.21-1";
+            nodename = "nix-nvidia";
+            hostfolder = "/opt/protonmail-bridge/data";
+            replicas = 1;
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "protonmail-bridge";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
         redlib = let
           yaml = pkgs.substituteAll ({
             src = ./templates/redlib.yaml;
