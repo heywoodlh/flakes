@@ -423,6 +423,22 @@
             cp ${yaml} $out
           '';
         };
+        squid = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/squid.yaml;
+            namespace = "default";
+            image = "docker.io/heywoodlh/squid:5.7";
+            nodename = "nix-nvidia";
+            hostfolder = "/opt/squid";
+            replicas = 1;
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "squid";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
         syncthing = let
           yaml = pkgs.substituteAll ({
             src = ./templates/syncthing.yaml;
