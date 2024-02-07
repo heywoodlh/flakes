@@ -424,6 +424,22 @@
             cp ${yaml} $out
           '';
         };
+        rustdesk = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/rustdesk.yaml;
+            namespace = "default";
+            image = "docker.io/rustdesk/rustdesk-server:1.1.10-3";
+            nodename = "nix-nvidia";
+            hostfolder = "/opt/rustdesk";
+            replicas = 1;
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "rustdesk";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
         second = let
           yaml = pkgs.substituteAll ({
             src = ./templates/second.yaml;
