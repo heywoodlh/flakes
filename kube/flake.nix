@@ -359,7 +359,6 @@
                   - nix-precision.barn-banana.ts.net:9100
                   - nix-nvidia.barn-banana.ts.net:9100
                   - nix-drive.barn-banana.ts.net:9100
-                  - nix-ext-net.barn-banana.ts.net:9100
                   - nix-backups.barn-banana.ts.net:9100
                   - nixos-matrix.barn-banana.ts.net:9100
             '';
