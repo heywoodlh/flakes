@@ -379,6 +379,22 @@
             cp ${yaml} $out
           '';
         };
+        ntfy = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/ntfy.yaml;
+            namespace = "default";
+            image = "docker.io/binwiederhier/ntfy:v2.8.0";
+            nodename = "nix-nvidia";
+            hostfolder = "/opt/ntfy";
+            replicas = 1;
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "ntfy";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
         protonmail-bridge = let
           yaml = pkgs.substituteAll ({
             src = ./templates/protonmail-bridge.yaml;

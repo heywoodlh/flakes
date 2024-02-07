@@ -1,0 +1,68 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ntfy
+  name: ntfy
+  namespace: @namespace@
+spec:
+  replicas: @replicas@
+  selector:
+    matchLabels:
+      app: ntfy
+  template:
+    metadata:
+      labels:
+        app: ntfy
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: @nodename@
+      containers:
+      - image: @image@
+        name: ntfy
+        command: ["ntfy"]
+        args: ["serve", "--cache-file", "/var/cache/ntfy/cache.db"]
+        ports:
+        - name: ntfy
+          containerPort: 80
+        volumeMounts:
+        - name: ntfy-cache
+          mountPath: /var/cache/ntfy
+        - name: ntfy-etc
+          mountPath: /etc/ntfy
+        env:
+          - name: NTFY_BASE_URL
+            value: "https://ntfy.heywoodlh.io"
+          - name: NTFY_UPSTREAM_BASE_URL
+            value: "https://ntfy.sh"
+      volumes:
+      - name: ntfy-cache
+        hostPath:
+          path: @hostfolder@/cache
+          type: Directory
+      - name: ntfy-etc
+        hostPath:
+          path: @hostfolder@/etc
+          type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: ntfy
+  name: ntfy
+  namespace: @namespace@
+  annotations:
+    tailscale.com/expose: "true"
+    tailscale.com/hostname: "ntfy"
+    tailscale.com/tags: "tag:http"
+spec:
+  ports:
+  - name: ntfy
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: ntfy
+  type: ClusterIP
