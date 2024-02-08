@@ -11,16 +11,20 @@ data:
       status_dir: "test"
     ping:
       hosts:
-        - 1.1.1.1
-        - google.com
-        - bad-garbage-site.net
+        - nix-backups
+        - nix-drive
+        - nix-m1-mac-mini
+        - nix-precision
+        - nixos-matrix
       options: "-c 1 -W 1"
       silent: "true"
     curl:
       urls:
-        - "http://google.com"
-        - "http://bad-garbage-site.net"
-        - "http://localhost:9000"
+        - "http://syncthing.syncthing"
+        - "http://redlib.default"
+        - "http://cloudtube.default"
+        - "http://second.default"
+        - "http://home-assistant.default"
       options: "-LI --silent"
       silent: "true"
 ---
