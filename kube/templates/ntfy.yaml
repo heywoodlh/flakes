@@ -33,7 +33,7 @@ spec:
           mountPath: /etc/ntfy
         env:
           - name: NTFY_BASE_URL
-            value: "https://ntfy.heywoodlh.io"
+            value: "http://ntfy.barn-banana.ts.net"
           - name: NTFY_UPSTREAM_BASE_URL
             value: "https://ntfy.sh"
       volumes:
