@@ -167,7 +167,7 @@
             port = "80";
             postgres_version = "16.1.0";
             postgres_replicas = "1";
-            postgres_storage_class = "longhorn";
+            postgres_storage_class = "local-path";
           });
         in pkgs.stdenv.mkDerivation {
           name = "coder";
