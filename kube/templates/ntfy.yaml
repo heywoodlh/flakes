@@ -36,6 +36,8 @@ spec:
             value: "http://ntfy.barn-banana.ts.net"
           - name: NTFY_UPSTREAM_BASE_URL
             value: "https://ntfy.sh"
+          - name: TZ
+            value: "America/Denver"
       volumes:
       - name: ntfy-cache
         hostPath:
