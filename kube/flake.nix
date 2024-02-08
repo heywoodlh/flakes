@@ -424,6 +424,22 @@
             cp ${yaml} $out
           '';
         };
+        retroarcher = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/retroarcher.yaml;
+            namespace = "default";
+            image = "docker.io/lizardbyte/retroarcher:v2024.202.160042";
+            nodename = "nix-nvidia";
+            hostfolder = "/opt/retroarcher";
+            replicas = 1;
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "rustdesk";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
         rustdesk = let
           yaml = pkgs.substituteAll ({
             src = ./templates/rustdesk.yaml;
