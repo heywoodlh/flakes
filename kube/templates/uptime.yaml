@@ -1,0 +1,57 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: uptime-config
+  namespace: @namespace@
+data:
+  uptime.yaml: |
+    global:
+      track_status: true
+      status_dir: "test"
+    ping:
+      hosts:
+        - 1.1.1.1
+        - google.com
+        - bad-garbage-site.net
+      options: "-c 1 -W 1"
+      silent: "true"
+    curl:
+      urls:
+        - "http://google.com"
+        - "http://bad-garbage-site.net"
+        - "http://localhost:9000"
+      options: "-LI --silent"
+      silent: "true"
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: uptime
+  namespace: @namespace@
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - image: @image@
+            name: uptime
+            command:
+            - "/bin/sh"
+            - "-c"
+            args:
+            - "/app/uptime.sh | grep DOWN | xargs -I {} curl -d \"{}\" http://ntfy.barn-banana.ts.net/uptime-notifications"
+            volumeMounts:
+            - name: uptime-config
+              mountPath: /app/uptime.yaml
+              subPath: uptime.yaml
+          restartPolicy: OnFailure
+          volumes:
+          - name: uptime-config
+            configMap:
+              name: uptime-config
+              items:
+              - key: uptime.yaml
+                path: uptime.yaml

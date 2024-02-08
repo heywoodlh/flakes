@@ -513,6 +513,20 @@
             apiServerProxyConfig.mode = "true";
           };
         });
+        uptime = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/uptime.yaml;
+            namespace = "monitoring";
+            replicas = 1;
+            image = "docker.io/heywoodlh/bash-uptime:0.0.3";
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "uptime";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
       };
       devShell = pkgs.mkShell {
         name = "kubernetes-shell";
