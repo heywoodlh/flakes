@@ -43,10 +43,10 @@ spec:
           - image: @image@
             name: uptime
             command:
-            - "/bin/sh"
+            - "/bin/bash"
             - "-c"
             args:
-            - "/app/uptime.sh | grep DOWN | xargs -I {} curl -d \"{}\" http://ntfy.barn-banana.ts.net/uptime-notifications"
+            - "/app/uptime.sh | tee /tmp/uptime.log; grep DOWN /tmp/uptime.log | xargs -I {} curl -d \"{}\" @ntfy_url@"
             volumeMounts:
             - name: uptime-config
               mountPath: /app/uptime.yaml
