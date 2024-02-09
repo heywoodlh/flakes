@@ -2,5 +2,16 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended"
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": ["kube/flake.nix$"],
+      "matchStringsStrategy": "any",
+      "matchStrings": [
+        "image =.*\"(?<currentValue>.*[\/](?<depName>.*):.*)\";$"
+      ],
+      "datasourceTemplate": "docker"
+    }
   ]
 }
