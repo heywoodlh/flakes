@@ -15,4 +15,4 @@ collections:
   - name: community.general
     version: "8.3.0"
   - name: ansible.windows
-    version: "1.13.0"
+    version: "2.2.0"
