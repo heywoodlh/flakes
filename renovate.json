@@ -6,7 +6,7 @@
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": ["kube/flake.nix$"],
+      "fileMatch": [".*kube\/flake.nix$"],
       "matchStringsStrategy": "any",
       "matchStrings": [
         "image =.*\"(?<currentValue>.*[\/](?<depName>.*):.*)\";$"
