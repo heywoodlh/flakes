@@ -9,7 +9,7 @@
       "fileMatch": [".*kube\/flake.nix$"],
       "matchStringsStrategy": "any",
       "matchStrings": [
-        "image =.*\"(?<currentValue>.*[\/](?<depName>.*):.*)\";$"
+        "image =.*\"(?<depName>.*):(?<currentValue>.*)\";$"
       ],
       "datasourceTemplate": "docker"
     }
