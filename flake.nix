@@ -60,6 +60,10 @@
       url = "./lima";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    chromium-widevine-flake = {
+      url = "./chromium-widevine";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
@@ -79,6 +83,7 @@
     vimb-flake,
     op-flake,
     lima-flake,
+    chromium-widevine-flake,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = nixpkgs.legacyPackages.${system};
@@ -99,6 +104,7 @@
         vimb-gl = vimb-flake.packages.${system}.vimb-gl;
         op = op-flake.packages.${system}.op;
         ubuntu-vm = lima-flake.packages.${system}.ubuntu-vm;
+        chromium-widevine = chromium-widevine-flake.packages.aarch64-linux.chromium-widevine;
       };
       formatter = pkgs.alejandra;
     });
