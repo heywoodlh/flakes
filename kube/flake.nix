@@ -442,7 +442,7 @@
           yaml = pkgs.substituteAll ({
             src = ./templates/retroarcher.yaml;
             namespace = "default";
-            image = "docker.io/lizardbyte/retroarcher:v2024.202.160042";
+            image = "docker.io/lizardbyte/retroarcher:v2024.210.22900";
             nodename = "nix-nvidia";
             hostfolder = "/opt/retroarcher";
             replicas = 1;
