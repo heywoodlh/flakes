@@ -424,6 +424,20 @@
             cp ${yaml} $out
           '';
         };
+        regexr = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/regexr.yaml;
+            namespace = "regexr";
+            image = "docker.io/heywoodlh/regexr:1e38271";
+            replicas = 1;
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "regexr";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
         retroarcher = let
           yaml = pkgs.substituteAll ({
             src = ./templates/retroarcher.yaml;
