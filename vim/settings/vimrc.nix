@@ -50,7 +50,14 @@
     "This unsets the "last search pattern" register by hitting return
     nnoremap <CR> :noh<CR><CR>
 
-    " Automatically wrap markdown files
+    " Text wrapping commands
+    command WrapLines setlocal textwidth=80 wrapmargin=2
+    command NoWrapLines setlocal textwidth& wrapmargin&
+
+    " Markdown configuration
+    " Auto wrap
     autocmd FileType markdown setlocal textwidth=80 wrapmargin=2
+    " Spell check
+    autocmd FileType markdown setlocal spell spelllang=en_us
   '';
 }
