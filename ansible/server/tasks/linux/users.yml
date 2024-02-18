@@ -58,13 +58,6 @@
         mode: '0600'
         owner: heywoodlh
 
-    - name: Install flakes
-      include_tasks: ./include/flake.yml
-      loop:
-      - tmux
-      - vim
-      - git
-
     - name: Check if /home/heywoodlh/.nix-profile/bin/tmux exists
       ansible.builtin.stat:
         path: "/home/heywoodlh/.nix-profile/bin/tmux"
@@ -83,7 +76,7 @@
         path: /home/heywoodlh/.config/fish/config.fish
         create: true
         owner: heywoodlh
-        line: alias ansible-switch "sudo ansible-pull -c=local -U https://github.com/heywoodlh/ansible setup.yml; sudo ansible-pull -c=local -U https://github.com/heywoodlh/ansible operator/roles/server/standalone.yml"
+        line: alias ansible-switch "nix run 'github:heywoodlh/flakes/main?dir=ansible#server'"
       when: tmux_check.stat.exists
       become_user: heywoodlh
       become: true
