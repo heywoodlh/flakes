@@ -58,10 +58,17 @@
         mode: '0600'
         owner: heywoodlh
 
-    - name: Check if /home/heywoodlh/.nix-profile/bin/tmux exists
-      ansible.builtin.stat:
-        path: "/home/heywoodlh/.nix-profile/bin/tmux"
+    - name: Install flakes
+      include_tasks: ./include/flake.yml
+      loop:
+      - tmux
+      - vim
+      - git
+
+    - name: Check if tmux flake installed
+      ansible.builtin.command: "ls -l /home/heywoodlh/.nix-profile/bin/tmux"
       register: tmux_check
+      ignore_errors: true
 
     - name: Launch tmux with bash
       ansible.builtin.lineinfile:
@@ -69,7 +76,7 @@
         create: true
         line: "[ -z ${TMUX} ] && { /home/heywoodlh/.nix-profile/bin/tmux && exit;}"
         owner: heywoodlh
-      when: tmux_check.stat.exists
+      when: tmux_check is succeeded
 
     - name: Add ansible-switch alias to /home/heywoodlh/.config/fish/config.fish
       ansible.builtin.lineinfile:

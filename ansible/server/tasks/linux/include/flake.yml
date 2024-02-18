@@ -1,12 +1,12 @@
 ---
 - name: "Check if /home/heywoodlh/.nix-profile/bin/{{ item }} exists"
-  ansible.builtin.stat:
-    path: "/home/heywoodlh/.nix-profile/bin/{{ item }}"
+  ansible.builtin.command: "ls -l /home/heywoodlh/.nix-profile/bin/{{ item }}"
   register: flake_check
+  ignore_errors: true
 
 - name: Install flake if it doesn't exist
   ansible.builtin.shell: "/nix/var/nix/profiles/default/bin/nix --extra-experimental-features 'nix-command flakes' profile install github:heywoodlh/flakes#{{ item }} --no-write-lock-file"
-  when: not flake_check.stat.exists
+  when: flake_check is failed
   args:
     executable: /bin/bash
   become_user: heywoodlh
