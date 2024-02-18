@@ -44,9 +44,15 @@
         line: "heywoodlh ALL=(ALL) ALL"
         validate: 'visudo -cf %s'
 
+    - name:
+      shell: >
+        getent passwd heywoodlh | cut -d: -f6
+      changed_when: false
+      register: user_home
+
     - name: Create heywoodlh .ssh directory
       ansible.builtin.file:
-        path: /home/heywoodlh/.ssh
+        path: "{{ user_home.stdout }}/.ssh"
         mode: '0700'
         owner: heywoodlh
         state: directory
@@ -54,7 +60,7 @@
     - name: Grab authorized_keys file
       ansible.builtin.get_url:
         url: https://github.com/heywoodlh.keys
-        dest: /home/heywoodlh/.ssh/authorized_keys
+        dest: "{{ user_home.stdout }}/.ssh/authorized_keys"
         mode: '0600'
         owner: heywoodlh
 
@@ -66,24 +72,24 @@
       - git
 
     - name: Check if tmux flake installed
-      ansible.builtin.command: "ls -l /home/heywoodlh/.nix-profile/bin/tmux"
+      ansible.builtin.command: "ls -l {{ user_home.stdout }}/.nix-profile/bin/tmux"
       register: tmux_check
       ignore_errors: true
 
     - name: Launch tmux with bash
       ansible.builtin.lineinfile:
-        path: /home/heywoodlh/.bashrc
+        path: "{{ user_home.stdout }}/.bashrc"
         create: true
-        line: "[ -z ${TMUX} ] && { /home/heywoodlh/.nix-profile/bin/tmux && exit;}"
+        line: "[ -z ${TMUX} ] && { {{ user_home.stdout }}/.nix-profile/bin/tmux && exit;}"
         owner: heywoodlh
       when: tmux_check is succeeded
 
-    - name: Add ansible-switch alias to /home/heywoodlh/.config/fish/config.fish
+    - name: "Add ansible-switch alias to {{ user_home.stdout }}/.config/fish/config.fish"
       ansible.builtin.lineinfile:
-        path: /home/heywoodlh/.config/fish/config.fish
+        path: "{{ user_home.stdout }}/.config/fish/config.fish"
         create: true
         owner: heywoodlh
-        line: alias ansible-switch "nix run 'github:heywoodlh/flakes/main?dir=ansible#server'"
-      when: tmux_check.stat.exists
+        line: "alias ansible-switch \"nix run 'github:heywoodlh/flakes/main?dir=ansible#server'\""
+      when: tmux_check is succeeded
       become_user: heywoodlh
       become: true

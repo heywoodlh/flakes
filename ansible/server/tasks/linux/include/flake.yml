@@ -1,6 +1,12 @@
 ---
-- name: "Check if /home/heywoodlh/.nix-profile/bin/{{ item }} exists"
-  ansible.builtin.command: "ls -l /home/heywoodlh/.nix-profile/bin/{{ item }}"
+- name:
+  shell: >
+    getent passwd heywoodlh | cut -d: -f6
+  changed_when: false
+  register: user_home
+
+- name: "Check if {{ user_home.stdout }}/.nix-profile/bin/{{ item }} exists"
+  ansible.builtin.command: "ls -l {{ user_home.stdout }}/.nix-profile/bin/{{ item }}"
   register: flake_check
   ignore_errors: true
 
