@@ -238,6 +238,31 @@
             cp ${yaml} $out
           '';
         };
+        longhorn = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/longhorn.yaml;
+            namespace = "longhorn-system";
+            version = "1.5.3";
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "longhorn";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
+        media-server = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/media-server.yaml;
+            namespace = "default";
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "media-server";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
         minecraft-bedrock = (kubelib.buildHelmChart {
           name = "minecraft-bedrock";
           chart = "${minecraft-helm}/charts/minecraft-bedrock";
@@ -280,26 +305,19 @@
             };
           };
         });
-        longhorn = let
+        miniflux = let
           yaml = pkgs.substituteAll ({
-            src = ./templates/longhorn.yaml;
-            namespace = "longhorn-system";
-            version = "1.5.3";
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "longhorn";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
-        };
-        media-server = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/media-server.yaml;
+            src = ./templates/miniflux.yaml;
             namespace = "default";
+            image = "docker.io/miniflux/miniflux:2.1.0";
+            postgres_image = "docker.io/postgres:15";
+            postgres_replicas = 1;
+            nodename = "nix-nvidia";
+            hostfolder = "/opt/miniflux";
+            replicas = 1;
           });
         in pkgs.stdenv.mkDerivation {
-          name = "media-server";
+          name = "miniflux";
           phases = [ "installPhase" ];
           installPhase = ''
             cp ${yaml} $out
