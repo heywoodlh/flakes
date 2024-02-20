@@ -103,7 +103,7 @@
         vimb = vimb-flake.packages.${system}.vimb;
         vimb-gl = vimb-flake.packages.${system}.vimb-gl;
         op = op-flake.packages.${system}.op;
-        ubuntu-vm = lima-flake.packages.${system}.ubuntu-vm;
+        nixos-vm = lima-flake.packages.${system}.lima-vm;
         chromium-widevine = chromium-widevine-flake.packages.aarch64-linux.chromium-widevine;
       };
       formatter = pkgs.alejandra;
