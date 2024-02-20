@@ -238,6 +238,20 @@
             cp ${yaml} $out
           '';
         };
+        jellyfin = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/jellyfin.yaml;
+            namespace = "default";
+            tag = "20231213.1-unstable";
+            replicas = 1;
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "jellyfin";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
         longhorn = let
           yaml = pkgs.substituteAll ({
             src = ./templates/longhorn.yaml;
@@ -363,6 +377,22 @@
             };
           };
         });
+        ntfy = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/ntfy.yaml;
+            namespace = "default";
+            image = "docker.io/binwiederhier/ntfy:v2.8.0";
+            nodename = "nix-nvidia";
+            hostfolder = "/opt/ntfy";
+            replicas = 1;
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "ntfy";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
         prometheus = (kubelib.buildHelmChart {
           name = "prometheus";
           chart = (nixhelm.charts { inherit pkgs; }).prometheus-community.prometheus;
@@ -382,36 +412,6 @@
             '';
           };
         });
-        jellyfin = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/jellyfin.yaml;
-            namespace = "default";
-            tag = "20231213.1-unstable";
-            replicas = 1;
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "jellyfin";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
-        };
-        ntfy = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/ntfy.yaml;
-            namespace = "default";
-            image = "docker.io/binwiederhier/ntfy:v2.8.0";
-            nodename = "nix-nvidia";
-            hostfolder = "/opt/ntfy";
-            replicas = 1;
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "ntfy";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
-        };
         protonmail-bridge = let
           yaml = pkgs.substituteAll ({
             src = ./templates/protonmail-bridge.yaml;
@@ -467,6 +467,26 @@
           });
         in pkgs.stdenv.mkDerivation {
           name = "rustdesk";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
+        rsshub = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/rsshub.yaml;
+            namespace = "default";
+            replicas = 1;
+            image = "docker.io/diygod/rsshub:2024-02-19";
+            browserless_image = "docker.io/browserless/chrome:1.61-puppeteer-13.1.3";
+            browserless_replicas = 1;
+            redis_image = "docker.io/redis:7.2.4";
+            redis_replicas = 1;
+            nodename = "nix-nvidia";
+            hostfolder = "/opt/rsshub";
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "rsshub";
           phases = [ "installPhase" ];
           installPhase = ''
             cp ${yaml} $out
