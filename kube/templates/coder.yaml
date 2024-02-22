@@ -123,7 +123,7 @@ spec:
       hostIPC: false
       containers:
         - name: postgresql
-          image: docker.io/bitnami/postgresql:@postgres_version@-debian-11-r22
+          image: @postgres_image@
           imagePullPolicy: "IfNotPresent"
           securityContext:
             allowPrivilegeEscalation: false
@@ -386,7 +386,7 @@ spec:
               name: coder-db
         - name: CODER_ACCESS_URL
           value: @access_url@
-        image: ghcr.io/coder/coder:v@version@
+        image: @image@
         imagePullPolicy: IfNotPresent
         lifecycle: {}
         livenessProbe:

@@ -58,7 +58,7 @@ spec:
         - name: cloudtube
           securityContext:
             {}
-          image: "docker.io/heywoodlh/cloudtube:@tag@"
+          image: "@image@"
           imagePullPolicy: Always
           ports:
             - name: http

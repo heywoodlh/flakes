@@ -111,6 +111,7 @@
           namespace = "actions-runner";
           values = {
             image = {
+              repository = "ghcr.io/actions/gha-runner-scale-set-controller";
               tag = "0.7.0";
             };
             githubConfigSecret = "controller-manager";
@@ -133,7 +134,7 @@
           yaml = pkgs.substituteAll ({
             src = ./templates/cloudflared.yaml;
             namespace = "cloudflared";
-            tag = "2023.10.0";
+            image = "docker.io/cloudflare/cloudflared:2023.10.0";
             replicas = 2;
           });
         in pkgs.stdenv.mkDerivation {
@@ -147,7 +148,7 @@
           yaml = pkgs.substituteAll ({
             src = ./templates/cloudtube.yaml;
             namespace = "default";
-            tag = "2023_10";
+            image = "docker.io/heywoodlh/cloudtube:2024_02";
             replicas = 1;
           });
         in pkgs.stdenv.mkDerivation {
@@ -162,10 +163,12 @@
             src = ./templates/coder.yaml;
             namespace = "coder";
             version = "2.7.1";
+            image = "ghcr.io/coder/coder:2.7.1";
             access_url = "https://coder.heywoodlh.io";
             replicas = "1";
             port = "80";
             postgres_version = "16.1.0";
+            postgres_image = "docker.io/bitnami/postgresql:16.1.0";
             postgres_replicas = "1";
             postgres_storage_class = "local-path";
           });
@@ -196,7 +199,11 @@
           chart = (nixhelm.charts { inherit pkgs; }).grafana.grafana;
           namespace = "monitoring";
           values = {
-            image.tag = "10.3.1";
+            image = {
+              registry = "";
+              repository = "docker.io/grafana/grafana";
+              tag = "10.3.1";
+            };
             persistence = {
               enabled = true;
               storageClassName = "local-path";
@@ -225,7 +232,7 @@
             src = ./templates/home-assistant.yaml;
             namespace = "default";
             timezone = "America/Denver";
-            tag = "2023.11.3";
+            image = "ghcr.io/home-assistant/home-assistant:2023.11.3";
             port = 80;
             storageClass = "nfs-kube";
             replicas = 1;
@@ -398,7 +405,10 @@
           chart = (nixhelm.charts { inherit pkgs; }).prometheus-community.prometheus;
           namespace = "monitoring";
           values = {
-            server.image.tag = "v2.49.1";
+            server.image = {
+              repository = "quay.io/prometheus/prometheus";
+              tag = "v2.49.1";
+            };
             prometheus-node-exporter.enabled = false;
             extraScrapeConfigs = ''
               - job_name: "node"
@@ -434,6 +444,7 @@
             namespace = "default";
             port = 80;
             replicas = 1;
+            image = "quay.io/redlib/redlib:latest";
           });
         in pkgs.stdenv.mkDerivation {
           name = "teddit";
@@ -512,7 +523,7 @@
           yaml = pkgs.substituteAll ({
             src = ./templates/second.yaml;
             namespace = "default";
-            tag = "2023_12";
+            image = "docker.io/heywoodlh/second:2023_12";
             replicas = 1;
           });
         in pkgs.stdenv.mkDerivation {
@@ -544,7 +555,7 @@
             namespace = "syncthing";
             nodename = "nix-nvidia";
             hostfolder = "/opt/syncthing";
-            tag = "1.27.1";
+            image = "docker.io/syncthing/syncthing:1.27.1";
             replicas = 1;
           });
         in pkgs.stdenv.mkDerivation {

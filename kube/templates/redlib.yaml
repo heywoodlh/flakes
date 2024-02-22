@@ -52,7 +52,7 @@ spec:
       containers:
         - name: redlib
           securityContext: {}
-          image: "quay.io/redlib/redlib:latest"
+          image: "@image@"
           imagePullPolicy: Always
           ports:
             - name: http
