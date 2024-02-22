@@ -27,6 +27,10 @@
       url = "github:actions/actions-runner-controller";
       flake = false;
     };
+    open-webui = {
+      url = "github:open-webui/open-webui";
+      flake = false;
+    };
   };
 
   outputs = inputs @ {
@@ -41,6 +45,7 @@
     minecraft-helm,
     truecharts-helm,
     github-actions-runner-helm,
+    open-webui,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs {
@@ -395,6 +400,21 @@
           });
         in pkgs.stdenv.mkDerivation {
           name = "ntfy";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
+        open-webui = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/open-webui.yaml;
+            namespace = "open-webui";
+            ollama_image = "docker.io/ollama/ollama:0.1.26";
+            webui_image = "ghcr.io/open-webui/open-webui:git-1b91e7f";
+            hostfolder = "/opt/open-webui";
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "open-webui";
           phases = [ "installPhase" ];
           installPhase = ''
             cp ${yaml} $out

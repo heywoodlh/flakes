@@ -1,0 +1,117 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: @namespace@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ollama-service
+  namespace: @namespace@
+spec:
+  type: ClusterIP
+  selector:
+    app: ollama
+  ports:
+  - protocol: TCP
+    port: 11434
+    targetPort: 11434
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: open-webui
+  namespace: @namespace@
+  annotations:
+    tailscale.com/expose: "true"
+    tailscale.com/hostname: "open-webui"
+    tailscale.com/tags: "tag:http"
+spec:
+  type: NodePort
+  selector:
+    app: open-webui
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: open-webui-deployment
+  namespace: @namespace@
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: open-webui
+  template:
+    metadata:
+      labels:
+        app: open-webui
+    spec:
+      containers:
+      - name: open-webui
+        image: @webui_image@
+        ports:
+        - containerPort: 8080
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+          requests:
+            cpu: 500m
+            memory: 500Mi
+        volumeMounts:
+        - name: webui-data
+          mountPath: /app/backend/data
+        env:
+        - name: OLLAMA_API_BASE_URL
+          value: "http://ollama-service.@namespace@.svc.cluster.local:11434/api"
+        tty: true
+      volumes:
+      - name: webui-data
+        hostPath:
+          path: @hostfolder@/data
+          type: Directory
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ollama
+  namespace: @namespace@
+spec:
+  serviceName: "ollama"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ollama
+  template:
+    metadata:
+      labels:
+        app: ollama
+    spec:
+      containers:
+      - name: ollama
+        image: @ollama_image@
+        ports:
+        - containerPort: 11434
+        env:
+        resources:
+          limits:
+            cpu: 4000m
+            memory: 4Gi
+            nvidia.com/gpu: "0"
+          requests:
+            cpu: 2000m
+            memory: 2Gi
+        volumeMounts:
+        - name: ollama-data
+          mountPath: /root/.ollama
+        tty: true
+      volumes:
+      - name: ollama-data
+        hostPath:
+          path: @hostfolder@/ollama
+          type: Directory
