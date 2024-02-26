@@ -137,6 +137,42 @@
               name = "actions-runner-controller-gha-rs-controller";
               namespace = "actions-runner";
             };
+            containerMode = {
+              type = "kubernetes";
+              kubernetesModeWorkVolumeClaim = {
+                accessModes = ["ReadWriteOnce"];
+                storageClassName = "local-path";
+                resources.requests.storage = "50Gi";
+              };
+            };
+            template.spec.containers = [
+              {
+                name = "runner";
+                image = "ghcr.io/actions/actions-runner:2.314.0";
+                imagePullPolicy = "Always";
+                command = ["/home/runner/run.sh"];
+                env = [
+                {
+                  name = "ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER";
+                  value = "false";
+                }
+                {
+                  name = "ACTIONS_RUNNER_CONTAINER_HOOK_TEMPLATE";
+                  value = "/home/runner/pod-template.yaml";
+                }
+                ];
+                resources = {
+                  requests = {
+                    memory = "200Mi";
+                    cpu = "250m";
+                  };
+                  limits = {
+                    memory = "400Mi";
+                    cpu = "500m";
+                  };
+                };
+              }
+            ];
           };
         });
         cloudflared = let
