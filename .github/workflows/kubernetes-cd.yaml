@@ -1,0 +1,71 @@
+name: kubernetes cd
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron:  '0 0 * * Mon'
+  push:
+    branches:
+      - main
+    paths:
+      - 'kube/**'
+
+jobs:
+  deploy-services:
+    name: Build and check all deployments
+    runs-on: [actions-runner-flakes]
+    strategy:
+      matrix:
+        deployment:
+          - "1password-connect"
+          - "actions-runner-controller"
+          - "actions-runner-flakes"
+          - "cloudflared"
+          - "cloudtube"
+          - "coder"
+          - "drawio"
+          - "grafana"
+          - "home-assistant"
+          - "media-server"
+          - "miniflux"
+          - "motioneye"
+          - "ntfy"
+          - "open-webui"
+          - "prometheus"
+          - "protonmail-bridge"
+          - "redlib"
+          - "regexr"
+          - "retroarcher"
+          - "rsshub"
+          - "rustdesk"
+          - "second"
+          - "squid"
+          - "syncthing"
+          - "tailscale-operator"
+          - "uptime"
+    outputs:
+      deployment: ${{ steps.check.outputs.changed }}
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install Nix
+      uses: DeterminateSystems/nix-installer-action@main
+
+    - name: Setup Nix Magic Cache
+      uses: DeterminateSystems/magic-nix-cache-action@main
+
+    - name: Check Kubernetes deployment diff
+      id: check
+      run: |
+        cd kube
+        nix build -o ./result .#"${deployment}"
+        kubectl diff -f ./result | grep -vE 'generation|LIVE|MERGED' | grep -E '^-|^\+' && echo "changed=true" >> $GITHUB_OUTPUT || true
+
+    - name: Apply Kubernetes deployment if changed
+      if: steps.check.outputs.deployment == 'true'
+      approvers: heywoodlh
+      run: |
+        cd kube
+        nix build -o ./result .#"${deployment}"
+        kubectl apply -f ./result
