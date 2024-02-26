@@ -62,9 +62,14 @@ jobs:
         nix build -o ./result .#"${deployment}"
         kubectl diff -f ./result | grep -vE 'generation|LIVE|MERGED' | grep -E '^-|^\+' && echo "changed=true" >> $GITHUB_OUTPUT || true
 
+    - uses: trstringer/manual-approval@v1
+      if: steps.check.outputs.deployment == 'true'
+      with:
+        issue-body: "Please approve or deny the deployment of ${deployment}"
+        approvers: heywoodlh
+
     - name: Apply Kubernetes deployment if changed
       if: steps.check.outputs.deployment == 'true'
-      approvers: heywoodlh
       run: |
         cd kube
         nix build -o ./result .#"${deployment}"
