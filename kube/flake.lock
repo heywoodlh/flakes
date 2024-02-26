@@ -271,6 +271,22 @@
         "type": "github"
       }
     },
+    "open-webui": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1708926819,
+        "narHash": "sha256-pbaf/z9pHpx2XNQC2aJWqUyqViJt08mLfFrfzbSTCUY=",
+        "owner": "open-webui",
+        "repo": "open-webui",
+        "rev": "6df2505bf0352a7580b33f17ce6844afe04fb7be",
+        "type": "github"
+      },
+      "original": {
+        "owner": "open-webui",
+        "repo": "open-webui",
+        "type": "github"
+      }
+    },
     "poetry2nix": {
       "inputs": {
         "flake-utils": "flake-utils_3",
@@ -306,6 +322,7 @@
         "nix-kube-generators": "nix-kube-generators",
         "nixhelm": "nixhelm",
         "nixpkgs": "nixpkgs_2",
+        "open-webui": "open-webui",
         "tailscale": "tailscale",
         "truecharts-helm": "truecharts-helm"
       }

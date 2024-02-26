@@ -117,9 +117,11 @@
           values = {
             image = {
               repository = "ghcr.io/actions/gha-runner-scale-set-controller";
-              tag = "0.7.0";
+              tag = "0.8.2";
             };
-            githubConfigSecret = "controller-manager";
+            #kubectl create ns actions-runner
+            #nix run .#1password-item -- --name github-token --namespace actions-runner --itemPath "vaults/Kubernetes/items/d54zu5ohvjkd2fou7rh2rrhnee" | kubectl apply -f -
+            githubConfigSecret = "github-token";
           };
         });
         actions-runner-flakes = (kubelib.buildHelmChart {
@@ -128,6 +130,8 @@
           namespace = "actions";
           values = {
             githubConfigUrl = "https://github.com/heywoodlh/flakes";
+            #kubectl create ns actions
+            #nix run .#1password-item -- --name github-token --namespace actions --itemPath "vaults/Kubernetes/items/d54zu5ohvjkd2fou7rh2rrhnee" | kubectl apply -f -
             githubConfigSecret = "github-token";
             controllerServiceAccount = {
               name = "actions-runner-controller-gha-rs-controller";
