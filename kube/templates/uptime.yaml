@@ -25,6 +25,7 @@ data:
         - "http://cloudtube.default"
         - "http://second.default"
         - "http://home-assistant.default"
+        - "http://miniflux.default"
       options: "-LI --silent"
       silent: "true"
 ---
