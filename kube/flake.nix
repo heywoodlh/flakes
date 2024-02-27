@@ -148,7 +148,7 @@
             template.spec.containers = [
               {
                 name = "runner";
-                image = "ghcr.io/actions/actions-runner:2.314.0";
+                image = "ghcr.io/actions/actions-runner:2.314.1";
                 imagePullPolicy = "Always";
                 command = ["/home/runner/run.sh"];
                 env = [
