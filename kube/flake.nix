@@ -207,8 +207,8 @@
           yaml = pkgs.substituteAll ({
             src = ./templates/coder.yaml;
             namespace = "coder";
-            version = "2.7.1";
-            image = "ghcr.io/coder/coder:2.8.3";
+            version = "2.8.3";
+            image = "ghcr.io/coder/coder:v2.8.3";
             access_url = "https://coder.heywoodlh.io";
             replicas = "1";
             port = "80";
