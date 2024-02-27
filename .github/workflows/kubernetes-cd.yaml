@@ -27,7 +27,6 @@ jobs:
           - "drawio"
           - "grafana"
           - "home-assistant"
-          - "media-server"
           - "miniflux"
           - "motioneye"
           - "ntfy"
