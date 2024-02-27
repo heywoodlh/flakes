@@ -179,7 +179,7 @@
           yaml = pkgs.substituteAll ({
             src = ./templates/cloudflared.yaml;
             namespace = "cloudflared";
-            image = "docker.io/cloudflare/cloudflared:2023.10.0";
+            image = "docker.io/cloudflare/cloudflared:2024.2.1";
             replicas = 2;
           });
         in pkgs.stdenv.mkDerivation {
