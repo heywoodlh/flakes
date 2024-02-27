@@ -376,7 +376,7 @@
             src = ./templates/miniflux.yaml;
             namespace = "default";
             image = "docker.io/miniflux/miniflux:2.1.0";
-            postgres_image = "docker.io/postgres:16";
+            postgres_image = "docker.io/postgres:15.6";
             postgres_replicas = 1;
             nodename = "nix-nvidia";
             hostfolder = "/opt/miniflux";
