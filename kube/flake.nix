@@ -245,8 +245,8 @@
           namespace = "monitoring";
           values = {
             image = {
-              registry = "";
-              repository = "docker.io/grafana/grafana";
+              registry = "docker.io";
+              repository = "grafana/grafana";
               tag = "10.3.1";
             };
             persistence = {
