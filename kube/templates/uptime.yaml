@@ -13,7 +13,7 @@ data:
       hosts:
         - nix-backups
         - nix-drive
-        - nix-m1-mac-mini
+        - mac-mini
         - nix-precision
         - nixos-matrix
       options: "-c 1 -W 1"
