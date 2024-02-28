@@ -117,7 +117,7 @@
           values = {
             image = {
               repository = "ghcr.io/actions/gha-runner-scale-set-controller";
-              tag = "0.8.2";
+              tag = "0.8.3";
             };
             #kubectl create ns actions-runner
             #nix run .#1password-item -- --name github-token --namespace actions-runner --itemPath "vaults/Kubernetes/items/d54zu5ohvjkd2fou7rh2rrhnee" | kubectl apply -f -
