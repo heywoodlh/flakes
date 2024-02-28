@@ -30,6 +30,7 @@ jobs:
           - "miniflux"
           - "motioneye"
           - "ntfy"
+          - "nuclei"
           - "open-webui"
           - "prometheus"
           - "protonmail-bridge"

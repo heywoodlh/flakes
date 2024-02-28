@@ -445,6 +445,22 @@
             cp ${yaml} $out
           '';
         };
+        nuclei = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/nuclei.yaml;
+            namespace = "nuclei";
+            image = "docker.io/heywoodlh/nuclei:v3.2.0-dev";
+            interactsh_image = "docker.io/projectdiscovery/interactsh-server:v1.1.9";
+            httpd_image = "docker.io/httpd:2.4.58";
+            replicas = 1;
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "nuclei";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
         open-webui = let
           yaml = pkgs.substituteAll ({
             src = ./templates/open-webui.yaml;
