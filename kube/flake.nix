@@ -194,6 +194,7 @@
             src = ./templates/cloudtube.yaml;
             namespace = "default";
             image = "docker.io/heywoodlh/cloudtube:2024_02";
+            second_image = "docker.io/heywoodlh/second:2023_12";
             replicas = 1;
           });
         in pkgs.stdenv.mkDerivation {
@@ -488,6 +489,7 @@
             prometheus-node-exporter.enabled = false;
             extraScrapeConfigs = ''
               - job_name: "node"
+                scrape_interval: 2m
                 static_configs:
                 - targets:
                   - nix-precision.barn-banana.ts.net:9100
@@ -590,20 +592,6 @@
           });
         in pkgs.stdenv.mkDerivation {
           name = "rustdesk";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
-        };
-        second = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/second.yaml;
-            namespace = "default";
-            image = "docker.io/heywoodlh/second:2023_12";
-            replicas = 1;
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "second";
           phases = [ "installPhase" ];
           installPhase = ''
             cp ${yaml} $out

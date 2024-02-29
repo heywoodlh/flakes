@@ -39,7 +39,6 @@ jobs:
           - "retroarcher"
           - "rsshub"
           - "rustdesk"
-          - "second"
           - "squid"
           - "syncthing"
           - "tailscale-operator"
