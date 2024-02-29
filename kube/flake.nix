@@ -330,48 +330,21 @@
             cp ${yaml} $out
           '';
         };
-        minecraft-bedrock = (kubelib.buildHelmChart {
+        minecraft-bedrock = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/minecraft-bedrock.yaml;
+            namespace = "default";
+            image = "docker.io/itzg/minecraft-bedrock-server:latest";
+            nodename = "nix-nvidia";
+            hostfolder = "/opt/minecraft-bedrock";
+          });
+        in pkgs.stdenv.mkDerivation {
           name = "minecraft-bedrock";
-          chart = "${minecraft-helm}/charts/minecraft-bedrock";
-          namespace = "default";
-          values = {
-            image = {
-              repository = "docker.io/itzg/minecraft-bedrock-server";
-              tag = "latest";
-              pullPolicy = "Always";
-            };
-            minecraftServer = {
-              eula = "TRUE";
-              version = "LATEST";
-              difficulty = "normal";
-              #whitelist = "user1,user2" ;
-              ops = [
-                "2533274841530057"
-              ];
-              maxPlayers = "40";
-              tickDistance = "8";
-              viewDistance = "20";
-              levelName = "heywoodlh world";
-              gameMode = "survival";
-              serverName = "heywoodlh server";
-              enableLanVisibility = "true";
-              cheats = "true";
-              serverPort = "19132";
-            };
-            persistence = {
-              storageClass = "longhorn";
-              dataDir = {
-                enabled = "true";
-                Size = "50Gi";
-              };
-            };
-            serviceAnnotations = {
-              "tailscale.com/expose" = true;
-              "tailscale.com/hostname" = "minecraft";
-              "tailscale.com/tags" = "tag:minecraft";
-            };
-          };
-        });
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
         miniflux = let
           yaml = pkgs.substituteAll ({
             src = ./templates/miniflux.yaml;
