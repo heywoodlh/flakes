@@ -19,7 +19,6 @@ jobs:
       fail-fast: false
       matrix:
         deployment:
-          - "actions-runner-controller"
           - "actions-runner-flakes"
           - "cloudflared"
           - "cloudtube"
