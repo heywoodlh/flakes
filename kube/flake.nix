@@ -278,7 +278,7 @@
             src = ./templates/home-assistant.yaml;
             namespace = "default";
             timezone = "America/Denver";
-            image = "ghcr.io/home-assistant/home-assistant:2024.2.4";
+            image = "ghcr.io/home-assistant/home-assistant:2024.2.5";
             port = 80;
             storageClass = "nfs-kube";
             replicas = 1;
