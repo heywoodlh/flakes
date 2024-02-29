@@ -633,6 +633,8 @@
           name = "tailscale-operator";
           chart = "${tailscale}/cmd/k8s-operator/deploy/chart";
           namespace = "tailscale";
+          # oauth configured with this command
+          # nix run .#1password-item -- --name operator-oauth --namespace tailscale --itemPath "vaults/Kubernetes/items/h64xxdshrse2jto2nkdo6nerp4" | kubectl apply -f -
           values = {
             operatorConfig = {
               image = {
@@ -641,10 +643,6 @@
               };
               hostname = "tailscale-operator";
               logging = "debug";
-            };
-            oauth = {
-              clientId = "\"" + builtins.getEnv "TS_CLIENT_ID" + "\"";
-              clientSecret = "\"" + builtins.getEnv "TS_SECRET" + "\"";
             };
             proxyConfig = {
               image = {
