@@ -592,7 +592,7 @@
             namespace = "syncthing";
             nodename = "nix-nvidia";
             hostfolder = "/opt/syncthing";
-            image = "docker.io/syncthing/syncthing:1.27.3";
+            image = "docker.io/syncthing/syncthing:1.27.4";
             replicas = 1;
           });
         in pkgs.stdenv.mkDerivation {
