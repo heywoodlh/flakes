@@ -477,7 +477,7 @@
           yaml = pkgs.substituteAll ({
             src = ./templates/protonmail-bridge.yaml;
             namespace = "default";
-            image = "docker.io/heywoodlh/hydroxide:2024_02";
+            image = "docker.io/heywoodlh/hydroxide:2024_03";
             nodename = "nix-nvidia";
             hostfolder = "/opt/hydroxide";
             replicas = 1;
