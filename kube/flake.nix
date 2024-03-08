@@ -632,7 +632,7 @@
             src = ./templates/uptime.yaml;
             namespace = "monitoring";
             replicas = 1;
-            image = "docker.io/heywoodlh/bash-uptime:0.0.3";
+            image = "docker.io/heywoodlh/bash-uptime:0.0.4";
             ntfy_url = "http://ntfy.default/uptime-notifications";
           });
         in pkgs.stdenv.mkDerivation {

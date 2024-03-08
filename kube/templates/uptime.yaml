@@ -1,5 +1,17 @@
 ---
 apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: uptime-status
+  namespace: @namespace@
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 512Mi
+---
+apiVersion: v1
 kind: ConfigMap
 metadata:
   name: uptime-config
@@ -8,7 +20,7 @@ data:
   uptime.yaml: |
     global:
       track_status: true
-      status_dir: "test"
+      status_dir: "/status"
     ping:
       hosts:
         - nix-backups
@@ -28,6 +40,16 @@ data:
         - "http://miniflux.default"
       options: "-LI --silent"
       silent: "true"
+    netcat:
+      services:
+        - rustdesk.default:22000
+        - protonmail-bridge.default:25
+        - protonmail-bridge.default:143
+        - protonmail-bridge.default:143
+        - syncthing.syncthing:80
+        - syncthing.syncthing:22000
+      options: "-vz"
+      silent: "true"
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -38,6 +60,7 @@ spec:
   schedule: "*/5 * * * *"
   jobTemplate:
     spec:
+      activeDeadlineSeconds: 30
       template:
         spec:
           containers:
@@ -47,11 +70,13 @@ spec:
             - "/bin/bash"
             - "-c"
             args:
-            - "/app/uptime.sh | tee /tmp/uptime.log; grep DOWN /tmp/uptime.log | xargs -I {} curl -d \"{}\" @ntfy_url@"
+            - "/app/uptime.sh | xargs -r -I {} curl -d \"{}\" http://ntfy.default/uptime-notifications"
             volumeMounts:
             - name: uptime-config
               mountPath: /app/uptime.yaml
               subPath: uptime.yaml
+            - name: uptime-status
+              mountPath: /status
           restartPolicy: OnFailure
           volumes:
           - name: uptime-config
@@ -60,3 +85,6 @@ spec:
               items:
               - key: uptime.yaml
                 path: uptime.yaml
+          - name: uptime-status
+            persistentVolumeClaim:
+              claimName: uptime-status
