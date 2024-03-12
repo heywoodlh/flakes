@@ -25,6 +25,7 @@ jobs:
           - "coder"
           - "drawio"
           - "grafana"
+          - "healthchecks"
           - "home-assistant"
           - "miniflux"
           - "motioneye"

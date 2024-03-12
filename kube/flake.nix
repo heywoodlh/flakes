@@ -273,6 +273,19 @@
             };
           };
         });
+        healthchecks = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/healthchecks.yaml;
+            namespace = "monitoring";
+            image = "docker.io/curlimages/curl:8.6.0";
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "healthchecks";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
         home-assistant = let
           yaml = pkgs.substituteAll ({
             src = ./templates/home-assistant.yaml;
