@@ -97,11 +97,11 @@
           chart = (nixhelm.charts { inherit pkgs; })."1password".connect;
           namespace = "kube-system";
           values = {
-            # op connect server create k0s-cluster --vaults Kubernetes && mv 1password-credentials.json /tmp/
+            # op connect server create k3s-cluster --vaults Kubernetes && mv 1password-credentials.json /tmp/
             connect.credentials = builtins.readFile /tmp/1password-credentials.json;
             operator = {
               create = true;
-              # op connect token create --server k0s-cluster --vault Kubernetes k0s-cluster > /tmp/token.txt
+              # op connect token create --server k3s-cluster --vault Kubernetes k3s-cluster > /tmp/token.txt
               token.value = builtins.readFile /tmp/token.txt;
               # Automatically restart the operator if secrets are updated
               autoRestart = true;
