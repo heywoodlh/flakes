@@ -67,22 +67,6 @@ spec:
             {}
 ---
 apiVersion: v1
-kind: Pod
-metadata:
-  name: "second-test-connection"
-  namespace: @namespace@
-  labels:
-    app.kubernetes.io/name: second
-    app.kubernetes.io/instance: second
-spec:
-  containers:
-    - name: curl
-      image: docker.io/curlimages/curl
-      command: ['curl']
-      args: ["second.@namespace@.svc.cluster.local:80"]
-  restartPolicy: OnFailure
----
-apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: cloudtube
@@ -160,19 +144,3 @@ spec:
           env:
             - name: INSTANCE_URI
               value: "http://second"
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: "cloudtube-test-connection"
-  namespace: @namespace@
-  labels:
-    app.kubernetes.io/name: cloudtube
-    app.kubernetes.io/instance: cloudtube
-spec:
-  containers:
-    - name: curl
-      image: docker.io/curlimages/curl
-      command: ['curl']
-      args: ["cloudtube.@namespace@.svc.cluster.local:80"]
-  restartPolicy: OnFailure

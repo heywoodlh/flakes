@@ -225,6 +225,19 @@
             cp ${yaml} $out
           '';
         };
+        dns-autoscaler = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/dns-autoscaler.yaml;
+            image = "registry.k8s.io/cpa/cluster-proportional-autoscaler:1.8.4";
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "dns-autoscaler";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
+
         drawio = let
           yaml = pkgs.substituteAll ({
             src = ./templates/draw-io.yaml;
@@ -384,6 +397,7 @@
             tag = "dev-amd64";
             replicas = 1;
             port = 80;
+            nodename = "nix-nvidia";
           });
         in pkgs.stdenv.mkDerivation {
           name = "motioneye";
