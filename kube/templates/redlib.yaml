@@ -67,17 +67,3 @@ spec:
               path: /
               port: http
           resources: {}
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: "redlib-test-connection"
-  labels:
-    app.kubernetes.io/name: redlib-test
-spec:
-  containers:
-    - name: curl
-      image: busybox
-      command: ['curl']
-      args: ['redlib.@namespace@.svc.cluster.local:80']
-  restartPolicy: OnFailure

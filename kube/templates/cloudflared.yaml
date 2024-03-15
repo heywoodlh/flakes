@@ -18,7 +18,6 @@ metadata:
   labels:
     app.kubernetes.io/name: cloudflared-tunnel
     app.kubernetes.io/instance: cloudflared
-    app.kubernetes.io/version: "@tag@"
 spec:
   replicas: @replicas@
   selector:
