@@ -2,47 +2,15 @@ name: kubernetes cd
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron:  '0 0 * * Mon'
-  push:
-    branches:
-      - main
-    paths:
-      - 'kube/**'
+    inputs:
+      deployment:
+        description: "Which Kubernetes deployment to build"
+        required: true
 
 jobs:
   deploy-services:
     name: Check and apply all deployments
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 8
-      fail-fast: false
-      matrix:
-        deployment:
-          - "actions-runner-flakes"
-          - "cloudflared"
-          - "cloudtube"
-          - "coder"
-          - "drawio"
-          - "grafana"
-          - "healthchecks"
-          - "home-assistant"
-          - "miniflux"
-          - "motioneye"
-          - "ntfy"
-          - "nuclei"
-          - "open-webui"
-          - "prometheus"
-          - "protonmail-bridge"
-          - "redlib"
-          - "regexr"
-          - "retroarcher"
-          - "rsshub"
-          - "rustdesk"
-          - "squid"
-          - "syncthing"
-          - "tailscale-operator"
-          - "uptime"
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -71,12 +39,12 @@ jobs:
       id: check
       run: |
         cd kube
-        nix build -o ./result .#"${{ matrix.deployment }}"
+        nix build -o ./result .#"${{ github.event.inputs.deployment }}"
         kubectl diff -f ./result | grep -vE 'generation|LIVE|MERGED' | grep -E '^-|^\+' && echo changed="true" >> $GITHUB_ENV || true
 
     - name: Apply Kubernetes deployment if changed
       if: ${{ env.changed == 'true' }}
       run: |
         cd kube
-        nix build -o ./result .#"${{ matrix.deployment }}"
+        nix build -o ./result .#"${{ github.event.inputs.deployment }}"
         kubectl apply -f ./result
