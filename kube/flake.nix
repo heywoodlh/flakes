@@ -253,39 +253,20 @@
             cp ${yaml} $out
           '';
         };
-        grafana = (kubelib.buildHelmChart {
+        grafana = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/grafana.yaml;
+            namespace = "monitoring";
+            image = "docker.io/grafana/grafana:10.3.1";
+            storageclass = "local-path";
+          });
+        in pkgs.stdenv.mkDerivation {
           name = "grafana";
-          chart = (nixhelm.charts { inherit pkgs; }).grafana.grafana;
-          namespace = "monitoring";
-          values = {
-            image = {
-              registry = "docker.io";
-              repository = "grafana/grafana";
-              tag = "10.3.1";
-            };
-            persistence = {
-              enabled = true;
-              storageClassName = "local-path";
-            };
-            admin = {
-              existingSecret = "grafana-admin";
-              userKey = "username";
-              passwordKey = "password";
-            };
-            datasources.datasources.yaml = {
-              apiVersion = "1";
-              datasources = [
-                {
-                  name = "prometheus";
-                  type = "prometheus";
-                  url = "http://prometheus-server";
-                  access = "proxy";
-                  isDefault = "true";
-                }
-              ];
-            };
-          };
-        });
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
         healthchecks = let
           yaml = pkgs.substituteAll ({
             src = ./templates/healthchecks.yaml;
@@ -492,11 +473,12 @@
                 scrape_interval: 2m
                 static_configs:
                 - targets:
-                  - nix-precision.barn-banana.ts.net:9100
+                  - nixos-mac-mini.barn-banana.ts.net:9100
                   - nix-nvidia.barn-banana.ts.net:9100
                   - nix-drive.barn-banana.ts.net:9100
                   - nix-backups.barn-banana.ts.net:9100
                   - nixos-matrix.barn-banana.ts.net:9100
+                  - proxmox-mac-mini.barn-banana.ts.net:9100
             '';
           };
         });
