@@ -34,7 +34,8 @@
       ansible.builtin.include_tasks: users.yml
 
     - name: Install node_exporter
-      prometheus.prometheus.node_exporter:
+      ansible.builtin.include_role:
+        name: prometheus.prometheus.node_exporter
 
 - name: NixOS tasks
   when:
