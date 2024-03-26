@@ -16,3 +16,5 @@ collections:
     version: "8.4.0"
   - name: ansible.windows
     version: "2.2.0"
+  - name: prometheus.prometheus
+    version: "0.15.1"
