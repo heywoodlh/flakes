@@ -106,7 +106,7 @@
         allow-bold=true
         palette='#3B3B42425252:#BFBF61616A6A:#A3A3BEBE8C8C:#EBEBCBCB8B8B:#8181A1A1C1C1:#B4B48E8EADAD:#8888C0C0D0D0:#E5E5E9E9F0F0:#4C4C56566A6A:#BFBF61616A6A:#A3A3BEBE8C8C:#EBEBCBCB8B8B:#8181A1A1C1C1:#B4B48E8EADAD:#8F8FBCBCBBBB:#ECECEFEFF4F4:#D8D8DEDEE9E9:#2E2E34344040'
         palette-name='Nord'
-        style='JetBrainsMono Nerd Font 14'
+        style='JetBrains Mono 14'
 
         [org/gnome/desktop/background]
         color-shading='solid'
@@ -233,7 +233,7 @@
         [org/gnome/shell]
         disable-user-extensions=false
         disabled-extensions=@as ['disabled','ubuntu-dock@ubuntu.com','ding@rastersoft.com','nightthemeswitcher@romainvigier.fr']
-        enabled-extensions=@as ['caffeine@patapon.info','gsconnect@andyholmes.github.io','just-perfection-desktop@just-perfection','native-window-placement@gnome-shell-extensions.gcampax.github.com','pop-shell@system76.com','user-theme@gnome-shell-extensions.gcampax.github.com','switcher@landau.fi','gnomebedtime@ionutbortis.gmail.com']
+        enabled-extensions=@as ['caffeine@patapon.info','gsconnect@andyholmes.github.io','just-perfection-desktop@just-perfection','native-window-placement@gnome-shell-extensions.gcampax.github.com','pop-shell@system76.com','user-theme@gnome-shell-extensions.gcampax.github.com','switcher@landau.fi','gnomebedtime@ionutbortis.gmail.com','forge@jmmaranan.com']
         favorite-apps=@as ['firefox.desktop','wezterm.desktop']
         had-bluetooth-devices-setup=true
         remember-mount-password=false
@@ -242,6 +242,15 @@
         [org/gnome/shell/extensions/bedtime-mode]
         bedtime-mode-active=true
         color-tone-factor=80
+
+        [org/gnome/shell/extensions/forge]
+        css-last-update=uint32 37
+
+        [org/gnome/shell/extensions/forge/keybindings]
+        window-snap-two-third-left=['<Control><Alt>e']
+        window-snap-two-third-right=@as []
+        window-swap-last-active=@as []
+        window-toggle-float=['<Super>y']
 
         [org/gnome/shell/extensions/just-perfection]
         accessibility-menu=true
@@ -322,7 +331,7 @@
         cursor-foreground-color='rgb(59,66,82)'
         cursor-shape='ibeam'
         custom-command='${myTmux}/bin/tmux'
-        font='JetBrainsMonoNL Nerd Font 12'
+        font='JetBrains Mono NL 12'
         foreground-color='#D8DEE9'
         highlight-background-color='rgb(136,192,208)'
         highlight-colors-set=true
@@ -347,7 +356,7 @@
                                "gsconnect@andyholmes.github.io"
                                "just-perfection-desktop@just-perfection"
                                "native-window-placement@gnome-shell-extensions.gcampax.github.com"
-                               "pop-shell@system76.com"
+                               "forge@jmmaranan.com"
                                "switcher@landau.fi"
                                "user-theme@gnome-shell-extensions.gcampax.github.com")
 
@@ -380,7 +389,7 @@
           fi
 
           ## Install extensions
-          exec ${gnome-install-extensions}
+          ${gnome-install-extensions}
 
           ## Apply dconf
           if [[ -v DBUS_SESSION_BUS_ADDRESS ]]; then
