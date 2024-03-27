@@ -35,11 +35,6 @@
       url = "./st";
       inputs.tmux-flake.follows = "tmux-flake";
     };
-    wezterm-flake = {
-      url = "./wezterm";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.tmux-flake.follows = "tmux-flake";
-    };
     jetporch-flake = {
       url = "./jetporch";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -77,7 +72,6 @@
     tmux-flake,
     vscode-flake,
     st-flake,
-    wezterm-flake,
     jetporch-flake,
     ansible-flake,
     vimb-flake,
@@ -96,8 +90,6 @@
         vim = vim-flake.defaultPackage.${system};
         vscode = vscode-flake.packages.${system}.default;
         st = st-flake.packages.${system}.st;
-        wezterm = wezterm-flake.packages.${system}.wezterm;
-        wezterm-gl = wezterm-flake.packages.${system}.wezterm-gl;
         workstation = ansible-flake.packages.${system}.workstation;
         server = ansible-flake.packages.${system}.server;
         vimb = vimb-flake.packages.${system}.vimb;
