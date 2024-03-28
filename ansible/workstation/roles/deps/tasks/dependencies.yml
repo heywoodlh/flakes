@@ -9,12 +9,10 @@
   - curl
   - python-pip
   - sudo
-  - syncthing
   - tailscale
   - ufw
-  - vim
-  - zsh
-  when: ansible_os_family == 'Archlinux' 
+  when: ansible_os_family == 'Archlinux'
+
 - name: install debian packages
   ansible.builtin.apt:
     name: "{{ item }}"
@@ -24,11 +22,9 @@
   - curl
   - python3-pip
   - sudo
-  - syncthing
   - ufw
-  - vim
-  - zsh
-  when: ansible_os_family == 'Debian' 
+  when: ansible_os_family == 'Debian'
+
 - name: enable cronie service
   ansible.builtin.systemd:
     name: cronie.service

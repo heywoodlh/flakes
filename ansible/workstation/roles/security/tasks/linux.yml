@@ -4,6 +4,7 @@
     name: ufw.service
     state: started
     enabled: yes
+
 - name: activate ufw
   community.general.ufw:
     state: enabled

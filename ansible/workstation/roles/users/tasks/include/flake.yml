@@ -1,5 +1,5 @@
 ---
-- name: Get user home directory
+- name: "Get user home dir"
   shell: >
     getent passwd heywoodlh | cut -d: -f6
   changed_when: false
@@ -11,9 +11,11 @@
   ignore_errors: true
 
 - name: Install flake if it doesn't exist
-  ansible.builtin.shell: "/nix/var/nix/profiles/default/bin/nix --extra-experimental-features 'nix-command flakes' profile install github:heywoodlh/flakes#{{ item }} --no-write-lock-file"
+  ansible.builtin.shell: "nix --extra-experimental-features 'nix-command flakes' profile install github:heywoodlh/flakes?dir={{ item }} --impure"
   when: flake_check.rc != 0
   args:
     executable: /bin/bash
+  environment:
+    NIXPKGS_ALLOW_UNFREE: 1
   become_user: heywoodlh
   become: true
