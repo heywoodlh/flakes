@@ -10,8 +10,10 @@
   register: flake_check
   ignore_errors: true
 
-- name: Install flake if it doesn't exist
-  ansible.builtin.shell: "nix --extra-experimental-features 'nix-command flakes' profile install github:heywoodlh/flakes?dir={{ item }} --impure"
+- name: Install flake if it does not exist
+  ansible.builtin.shell: |
+    source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+    nix --extra-experimental-features 'nix-command flakes' profile install 'github:heywoodlh/flakes?dir={{ item }}' --impure
   when: flake_check.rc != 0
   args:
     executable: /bin/bash

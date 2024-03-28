@@ -7,3 +7,8 @@
 - name: Install Nix
   ansible.builtin.shell: curl -L https://install.determinate.systems/nix/tag/v0.15.1 | sh -s -- install --no-confirm
   when: not nix_store_check.stat.exists
+
+- name: Add nix to $PATH
+  copy:
+    dest: /etc/profile.d/nix-path.sh
+    content: 'PATH=$PATH:/nix/var/nix/profiles/default/bin'

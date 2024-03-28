@@ -21,9 +21,13 @@
   - git
 
 - name: configure GNOME
-  ansible.builtin.shell: "nix --extra-experimental-features 'nix-command flakes' run 'github:heywoodlh/flakes?dir=gnome'"
+  ansible.builtin.shell: |
+    source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+    nix run 'github:heywoodlh/flakes?dir=gnome'
   args:
     executable: /bin/bash
+  environment:
+    NIXPKGS_ALLOW_UNFREE: 1
   become_user: heywoodlh
   become: true
 
@@ -50,9 +54,11 @@
   register: 1password_check
   ignore_errors: true
 
-- name: install 1password if it doesn't exist
+- name: install 1password if it does not exist
   when: 1password_check.rc != 0
-  ansible.builtin.shell: "nix --extra-experimental-features 'nix-command flakes' profile install nixpkgs#_1password --impure"
+  ansible.builtin.shell: |
+    source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+    nix profile install nixpkgs#_1password --impure
   args:
     executable: /bin/bash
   environment:
@@ -72,6 +78,6 @@
     path: "{{ user_home.stdout }}/.config/fish/custom.fish"
     create: true
     owner: heywoodlh
-    line: "alias ansible-switch \"nix run 'github:heywoodlh/flakes/main?dir=ansible#workstation'\""
+    line: "alias ansible-switch \"nix run 'github:heywoodlh/flakes/$(git ls-remote https://github.com/heywoodlh/flakes | head -1 | awk '{print $1}')?dir=ansible#workstation'\""
   become_user: heywoodlh
   become: true
