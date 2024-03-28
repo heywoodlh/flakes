@@ -123,6 +123,9 @@
         # Prioritize local config
         mkdir -p ~/.config/fish
         test -e ~/.config/fish/config.fish && source ~/.config/fish/config.fish
+
+        # Use custom config if exists
+        test -e ~/.config/fish/custom.fish && source ~/.config/fish/custom.fish
       '';
     in {
       packages = rec {
