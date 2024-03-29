@@ -13,58 +13,58 @@
   - /etc/sudoers
   - /etc/sudoers.d/heywoodlh
 
-- name: install critical flakes
-  include_tasks: ./include/flake.yml
-  loop:
-  - tmux
-  - vim
-  - git
-
-- name: configure GNOME
-  ansible.builtin.shell: |
-    source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-    nix run 'github:heywoodlh/flakes?dir=gnome'
-  args:
-    executable: /bin/bash
-  environment:
-    NIXPKGS_ALLOW_UNFREE: 1
-  become_user: heywoodlh
-  become: true
-
-- name: "Get user home dir"
-  shell: >
-    getent passwd heywoodlh | cut -d: -f6
-  changed_when: false
-  register: user_home
-
-- name: create 1password directory
-  ansible.builtin.file:
-    path: "{{ user_home }}/.config/1Password/settings"
-    owner: heywoodlh
-    state: directory
-    recurse: true
-
-- name: copy 1password settings
-  ansible.builtin.copy:
-    src: 1password-settings.json
-    dest: "{{ user_home }}/.config/1Password/settings/settings.json"
-
-- name: "Check if {{ user_home.stdout }}/.nix-profile/bin/1password exists"
-  ansible.builtin.command: "ls -l {{ user_home.stdout }}/.nix-profile/bin/1password"
-  register: 1password_check
-  ignore_errors: true
-
-- name: install 1password if it does not exist
-  when: 1password_check.rc != 0
-  ansible.builtin.shell: |
-    source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-    nix profile install nixpkgs#_1password --impure
-  args:
-    executable: /bin/bash
-  environment:
-    NIXPKGS_ALLOW_UNFREE: 1
-  become_user: heywoodlh
-  become: true
+#- name: install critical flakes
+#  include_tasks: ./include/flake.yml
+#  loop:
+#  - tmux
+#  - vim
+#  - git
+#
+#- name: configure GNOME
+#  ansible.builtin.shell: |
+#    source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+#    nix run 'github:heywoodlh/flakes?dir=gnome'
+#  args:
+#    executable: /bin/bash
+#  environment:
+#    NIXPKGS_ALLOW_UNFREE: 1
+#  become_user: heywoodlh
+#  become: true
+#
+#- name: "Get user home dir"
+#  shell: >
+#    getent passwd heywoodlh | cut -d: -f6
+#  changed_when: false
+#  register: user_home
+#
+#- name: create 1password directory
+#  ansible.builtin.file:
+#    path: "{{ user_home }}/.config/1Password/settings"
+#    owner: heywoodlh
+#    state: directory
+#    recurse: true
+#
+#- name: copy 1password settings
+#  ansible.builtin.copy:
+#    src: 1password-settings.json
+#    dest: "{{ user_home }}/.config/1Password/settings/settings.json"
+#
+#- name: "Check if {{ user_home.stdout }}/.nix-profile/bin/1password exists"
+#  ansible.builtin.command: "ls -l {{ user_home.stdout }}/.nix-profile/bin/1password"
+#  register: 1password_check
+#  ignore_errors: true
+#
+#- name: install 1password if it does not exist
+#  when: 1password_check.rc != 0
+#  ansible.builtin.shell: |
+#    source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+#    nix profile install nixpkgs#_1password --impure
+#  args:
+#    executable: /bin/bash
+#  environment:
+#    NIXPKGS_ALLOW_UNFREE: 1
+#  become_user: heywoodlh
+#  become: true
 
 - name: create fish directory
   ansible.builtin.file:
