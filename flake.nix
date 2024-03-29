@@ -103,6 +103,7 @@
         vimb = vimb-flake.packages.${system}.vimb;
         vimb-gl = vimb-flake.packages.${system}.vimb-gl;
         op = op-flake.packages.${system}.op;
+        op-desktop-setup = op-flake.packages.${system}.op-desktop-setup;
         nixos-vm = lima-flake.packages.${system}.lima-vm;
         chromium-widevine = chromium-widevine-flake.packages.aarch64-linux.chromium-widevine;
       };
