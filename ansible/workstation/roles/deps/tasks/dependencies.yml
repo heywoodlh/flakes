@@ -25,12 +25,18 @@
   - ufw
   when: ansible_os_family == 'Debian'
 
+- name: install tailscale
+  ansible.builtin.shell: |
+    curl https://tailscale.com/install.sh | bash
+  when: ansible_os_family != 'Archlinux'
+
 - name: enable cronie service
   ansible.builtin.systemd:
     name: cronie.service
     enabled: yes
     state: started
   when: ansible_os_family == 'Archlinux'
+
 - name: import ubuntu.yml
   import_tasks: ubuntu.yml
   when: ansible_distribution == 'Ubuntu'
