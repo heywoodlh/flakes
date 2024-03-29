@@ -5,7 +5,8 @@
   register: nix_store_check
 
 - name: Install Nix
-  ansible.builtin.shell: curl -L https://install.determinate.systems/nix/tag/v0.15.1 | sh -s -- install --no-confirm
+  ansible.builtin.shell: |
+    curl -L https://install.determinate.systems/nix | sh -s -- install --no-confirm
   when: not nix_store_check.stat.exists
 
 - name: Add nix to $PATH
