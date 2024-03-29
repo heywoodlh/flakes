@@ -4,6 +4,3 @@
 
 - name: import dependencies.yml tasks
   import_tasks: dependencies.yml
-
-- name: import nix.yml tasks
-  import_tasks: nix.yml

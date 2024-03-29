@@ -36,8 +36,3 @@
     enabled: yes
     state: started
   when: ansible_os_family == 'Archlinux'
-
-- name: import ubuntu.yml
-  import_tasks: ubuntu.yml
-  when: ansible_distribution == 'Ubuntu'
-
