@@ -366,9 +366,14 @@
           ${stable-pkgs.gnome-extensions-cli}/bin/gext enable "$extension"
         done
       '';
-
+      dconf-nix = pkgs.stdenv.mkDerivation {
+        name = "dconf-nix";
+        builder = pkgs.bash;
+        args = [ "-c" "${pkgs.dconf2nix}/bin/dconf2nix -i ${dconf-ini} -o $out" ];
+      };
     in {
       packages = rec {
+        dconf = dconf-nix;
         gnome-desktop-setup = pkgs.writeShellScriptBin "gnome-desktop-setup" ''
           ## Install JetBrains nerd font
           mkdir -p ~/.local/share/fonts/ttf
