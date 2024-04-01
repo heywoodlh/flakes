@@ -16,9 +16,6 @@
 
         [container]
         disabled = true
-
-        [battery]
-        disabled = true
       '';
       aws_config = pkgs.writeText "aws.fish" ''
         if test -z "$AWS_CONFIG_FILE"
