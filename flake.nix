@@ -64,6 +64,13 @@
       url = "./chromium-widevine";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    gnome-flake = {
+      url = "./gnome";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.fish-flake.follows = "fish-flake";
+      inputs.tmux-flake.follows = "tmux-flake";
+      inputs.vim-flake.follows = "vim-flake";
+    };
   };
 
   outputs = inputs @ {
@@ -84,6 +91,7 @@
     op-flake,
     lima-flake,
     chromium-widevine-flake,
+    gnome-flake,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = nixpkgs.legacyPackages.${system};
@@ -106,6 +114,8 @@
         op-desktop-setup = op-flake.packages.${system}.op-desktop-setup;
         nixos-vm = lima-flake.packages.${system}.lima-vm;
         chromium-widevine = chromium-widevine-flake.packages.aarch64-linux.chromium-widevine;
+        gnome = gnome-flake.packages.${system}.gnome-desktop-setup;
+        gnome-dconf = gnome-flake.packages.${system}.dconf;
       };
       formatter = pkgs.alejandra;
     });
