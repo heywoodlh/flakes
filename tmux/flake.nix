@@ -13,7 +13,6 @@
         # MacOS config
       '' else ''
         # Linux config
-        set -g @override_copy_command '${pkgs.xclip}/bin/xclip'
       '';
       tmuxConf = pkgs.writeText "tmux.conf" ''
         # Set shell
