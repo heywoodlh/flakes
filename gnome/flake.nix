@@ -320,7 +320,7 @@
 
         [org/gnome/terminal/legacy/profiles:]
         default='3797f158-f495-4609-995f-286da69c8d86'
-        list=@as ['3797f158-f495-4609-995f-286da69c8d86']
+        list=@as ['3797f158-f495-4609-995f-286da69c8d86' '3797f158-f495-4609-995f-286da69c8d87']
 
         [org/gnome/terminal/legacy/profiles:/:3797f158-f495-4609-995f-286da69c8d86]
         background-color='#2E3440'
@@ -346,6 +346,31 @@
         use-theme-transparency=false
         use-transparent-background=false
         visible-name='Nord'
+
+        [org/gnome/terminal/legacy/profiles:/:3797f158-f495-4609-995f-286da69c8d87]
+        background-color='#2E3440'
+        bold-color='#D8DEE9'
+        bold-color-same-as-fg=true
+        cursor-background-color='rgb(216,222,233)'
+        cursor-colors-set=true
+        cursor-foreground-color='rgb(59,66,82)'
+        cursor-shape='ibeam'
+        custom-command='bash'
+        font='JetBrains Mono NL 12'
+        foreground-color='#D8DEE9'
+        highlight-background-color='rgb(136,192,208)'
+        highlight-colors-set=true
+        highlight-foreground-color='rgb(46,52,64)'
+        nord-gnome-terminal-version='0.1.0'
+        palette=@as ['#3B4252','#BF616A','#A3BE8C','#EBCB8B','#81A1C1','#B48EAD','#88C0D0','#E5E9F0','#4C566A','#BF616A','#A3BE8C','#EBCB8B','#81A1C1','#B48EAD','#8FBCBB','#ECEFF4']
+        scrollbar-policy='never'
+        use-custom-command=true
+        use-system-font=false
+        use-theme-background=false
+        use-theme-colors=false
+        use-theme-transparency=false
+        use-transparent-background=false
+        visible-name='Vanilla'
 
         [org/gnome/tweaks]
         show-extensions-notice=false
