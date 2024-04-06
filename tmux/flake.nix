@@ -9,6 +9,12 @@
     let
       pkgs = nixpkgs.legacyPackages.${system};
       myFish = fish-flake.packages.${system}.fish;
+      osConf = if pkgs.stdenv.isDarwin then ''
+        # MacOS config
+      '' else ''
+        # Linux config
+        set -g @override_copy_command '${pkgs.xclip}/bin/xclip'
+      '';
       tmuxConf = pkgs.writeText "tmux.conf" ''
         # Set shell
         set -g default-shell ${myFish}/bin/fish
@@ -74,6 +80,8 @@
 
         # Tmux yank
         run-shell ${pkgs.tmuxPlugins.yank}/share/tmux-plugins/yank/yank.tmux
+
+        ${osConf}
       '';
     in {
       packages = rec {
