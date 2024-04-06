@@ -320,7 +320,7 @@
 
         [org/gnome/terminal/legacy/profiles:]
         default='3797f158-f495-4609-995f-286da69c8d86'
-        list=@as ['3797f158-f495-4609-995f-286da69c8d86' '3797f158-f495-4609-995f-286da69c8d87']
+        list=@as ['3797f158-f495-4609-995f-286da69c8d86','3797f158-f495-4609-995f-286da69c8d87']
 
         [org/gnome/terminal/legacy/profiles:/:3797f158-f495-4609-995f-286da69c8d86]
         background-color='#2E3440'
