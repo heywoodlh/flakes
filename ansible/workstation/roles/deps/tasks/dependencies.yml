@@ -36,3 +36,14 @@
     enabled: yes
     state: started
   when: ansible_os_family == 'Archlinux'
+
+- name: uninstall firefox snap
+  when: ansible_distribution == "Ubuntu"
+  block:
+  - name: disable firefox snap service
+    ansible.builtin.shell: systemctl disable --now var-snap-firefox-common-host\\x2dhunspell.mount
+
+  - name: remove firefox snap
+    community.general.snap:
+      name: firefox
+      state: absent
