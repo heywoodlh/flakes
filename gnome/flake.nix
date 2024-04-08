@@ -54,6 +54,12 @@
         sha256 = "sha256:1gvv5w0vfzndzp8k7g15j5i3yvnpr5z3imrwjs5flq19xp37cqvg";
       };
 
+      battpop = pkgs.writeShellScript "battpop" ''
+        ${pkgs.libnotify}/bin/notify-send $(${pkgs.acpi}/bin/acpi -b | ${pkgs.gnugrep}/bin/grep -Eo [0-9]+%)
+      '';
+      datepop = pkgs.writeShellScript "datepop" ''
+        ${pkgs.libnotify}/bin/notify-send "$(${pkgs.coreutils}/bin/date "+%T")"
+      '';
       dconf-ini = pkgs.writeText "dconf.ini" ''
         [apps/guake/general]
         abbreviate-tab-names=false
@@ -217,7 +223,7 @@
 
         [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6]
         binding='<Shift><Control>b'
-        command='${pkgs.libnotify}/bin/notify-send $(${pkgs.acpi}/bin/acpi -b | grep -Eo [0-9]+%)'
+        command='${battpop}'
         name='battpop'
 
         [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7]
@@ -227,7 +233,7 @@
 
         [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8]
         binding='<Shift><Control>d'
-        command='${pkgs.libnotify}/bin/notify-send "$(${pkgs.coreutils}/bin/date "+%T")"'
+        command='${datepop}'
         name='datepop'
 
         [org/gnome/shell]
@@ -316,7 +322,7 @@
 
         [org/gnome/terminal/legacy]
         default-show-menubar=false
-        headerbar='@mb false'
+        headerbar=false
 
         [org/gnome/terminal/legacy/profiles:]
         default='3797f158-f495-4609-995f-286da69c8d86'
@@ -331,7 +337,7 @@
         cursor-foreground-color='rgb(59,66,82)'
         cursor-shape='ibeam'
         custom-command='${myTmux}/bin/tmux'
-        font='JetBrains Mono NL 12'
+        font='JetBrains Mono NL 14'
         foreground-color='#D8DEE9'
         highlight-background-color='rgb(136,192,208)'
         highlight-colors-set=true
@@ -356,7 +362,7 @@
         cursor-foreground-color='rgb(59,66,82)'
         cursor-shape='ibeam'
         custom-command='bash'
-        font='JetBrains Mono NL 12'
+        font='JetBrains Mono NL 14'
         foreground-color='#D8DEE9'
         highlight-background-color='rgb(136,192,208)'
         highlight-colors-set=true
