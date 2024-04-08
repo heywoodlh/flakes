@@ -307,8 +307,8 @@
         tile-enter=@as ['disabled']
 
         [org/gnome/shell/extensions/switcher]
-        font-size=@u 20
-        max-width-percentage=@u 40
+        font-size=uint32 24
+        max-width-percentage=uint32 48
         show-switcher=@as ['<Super>space']
 
         [org/gnome/shell/extensions/user-theme]
