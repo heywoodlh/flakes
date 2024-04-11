@@ -93,6 +93,7 @@
         arcticicestudio.nord-visual-studio-code
         coder.coder-remote
         eamodio.gitlens
+        github.codespaces
         github.copilot
         jnoortheen.nix-ide
         mkhl.direnv
