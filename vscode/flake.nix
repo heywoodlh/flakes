@@ -141,7 +141,6 @@
       };
     in {
       packages = {
-        vscode-extensions-json = exportJson extensionList "extensions.json";
         vscode-settings-json = vscodeSettingsJson;
         export-vscode = exportVscode;
         setup-vscode = pkgs.writeShellScriptBin "setup-vscode" ''
