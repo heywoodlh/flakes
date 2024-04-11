@@ -65,11 +65,11 @@
         # Appearance settings
         "editor.minimap.enabled" = false;
         "update.mode" = "none";
-        "workbench.activityBar.location" = "hidden";
+        "workbench.activityBar.location" = "bottom";
         "workbench.colorTheme" = "Nord";
         "workbench.remoteIndicator.showExtensionRecommendations" = false;
         "workbench.startupEditor" = false;
-        "workbench.statusBar.visible" = false;
+        #"workbench.statusBar.visible" = false;
         "workbench.tips.enabled" = false;
         "workbench.tree.indent" = 4;
         # Terminal settings
