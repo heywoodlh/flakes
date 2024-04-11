@@ -104,7 +104,8 @@
         extensions = extensionList;
       };
       extensionCount = builtins.toString(builtins.length extensionList);
-      vscodeSettingsJson = pkgs.writeText "settings.json" (builtins.toJSON vscode-settings);
+      exportJson = object: output: pkgs.writeText "${output}" (builtins.toJSON object);
+      vscodeSettingsJson = exportJson vscode-settings "settings.json";
       printSettings = pkgs.writeShellScript "print-settings" ''
         # Remove references to nix and fish
         cat ${vscodeSettingsJson} | ${pkgs.jq}/bin/jq '.' | ${pkgs.gnused}/bin/sed 's|/nix/store.*/bin/\(.*\)|\1|' | ${pkgs.gnused}/bin/sed 's/fish/bash/g'
@@ -140,6 +141,8 @@
       };
     in {
       packages = {
+        vscode-extensions-json = exportJson extensionList "extensions.json";
+        vscode-settings-json = vscodeSettingsJson;
         export-vscode = exportVscode;
         setup-vscode = pkgs.writeShellScriptBin "setup-vscode" ''
           # Remove references to Nix and fish
