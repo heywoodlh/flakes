@@ -79,13 +79,14 @@
         "terminal.integrated.profiles.osx" = fishProfile;
         "terminal.integrated.defaultProfile.linux" = "fish";
         "terminal.integrated.defaultProfile.osx" = "fish";
+        # Vim settings
+        "vim.shell" = "${pkgs.bash}/bin/bash";
+        "vim.useSystemClipboard" = true;
         # Misc settings
         "git.openRepositoryInParentFolders" = "always";
         "security.workspace.trust.enabled" = false;
         "task.allowAutomaticTasks" = "off";
-        # Vim settings
-        "vim.shell" = "${pkgs.bash}/bin/bash";
-        "vim.useSystemClipboard" = true;
+        "direnv.path.executable" = "${pkgs.direnv}/bin/direnv";
       };
 
       extensionList = with allExtensions.vscode-marketplace; [
