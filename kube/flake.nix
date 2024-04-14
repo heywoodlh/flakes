@@ -193,7 +193,7 @@
           yaml = pkgs.substituteAll ({
             src = ./templates/cloudtube.yaml;
             namespace = "default";
-            image = "docker.io/heywoodlh/cloudtube:2024_02";
+            image = "docker.io/heywoodlh/cloudtube:2024_04";
             second_image = "docker.io/heywoodlh/second:2023_12";
             replicas = 1;
           });
