@@ -48,7 +48,7 @@ terraform.rc
 
 [merge]
   conflictstyle = "diff3"
-  tool = "${pkgs.vim}/bin/vimdiff"
+  tool = "vimdiff"
 
 [mergetool]
   prompt = "true"
