@@ -69,6 +69,8 @@
         "workbench.colorTheme" = "Nord";
         "workbench.remoteIndicator.showExtensionRecommendations" = false;
         "workbench.startupEditor" = false;
+        "editor.fontSize" = 16;
+        "terminal.integrated.fontSize" = 16;
         #"workbench.statusBar.visible" = false;
         "workbench.tips.enabled" = false;
         "workbench.tree.indent" = 4;
