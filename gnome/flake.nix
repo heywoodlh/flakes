@@ -198,12 +198,12 @@
 
         [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0]
         binding='<Super>Return'
-        command='${pkgs.gnome.gnome-terminal}/bin/gnome-terminal'
+        command='gnome-terminal'
         name='terminal super'
 
         [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1]
         binding='<Ctrl><Alt>t'
-        command='${pkgs.gnome.gnome-terminal}/bin/gnome-terminal'
+        command='gnome-terminal'
         name='terminal ctrl_alt'
 
         [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2]
@@ -218,7 +218,7 @@
 
         [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5]
         binding='<Shift><Control>e'
-        command='${vimIme} --cmd "${pkgs.gnome.gnome-terminal}/bin/gnome-terminal --geometry=60x8 -- ${myVim}/bin/vim" --outfile "/home/heywoodlh/tmp/vim-ime.txt"'
+        command='${vimIme} --cmd "gnome-terminal --geometry=60x8 -- ${myVim}/bin/vim" --outfile "/home/heywoodlh/tmp/vim-ime.txt"'
         name='vim-ime'
 
         [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6]
