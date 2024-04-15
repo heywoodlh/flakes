@@ -191,9 +191,7 @@
         [org/gnome/settings-daemon/plugins/media-keys]
         custom-keybindings=@as ['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/']
         logout=@as ['<Shift><Super>e']
-        next=@as ['<Shift><Control>n']
         play=@as ['<Shift><Control>space']
-        previous=@as ['<Shift><Control>p']
         terminal='disabled'
 
         [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0]
