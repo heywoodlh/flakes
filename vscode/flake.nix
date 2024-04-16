@@ -162,7 +162,7 @@
       };
 
       heywoodlh-vscode = pkgs.writeShellScriptBin "code" ''
-        dataDir="$HOME/Documents/Code"
+        dataDir="$HOME/Documents/heywoodlh-code"
         mkdir -p "$dataDir/User"
         rm "$dataDir/User/settings.json" &>/dev/null || true
         rm "$dataDir/User/keybindings.json" &>/dev/null || true
