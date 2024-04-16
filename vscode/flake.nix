@@ -3,11 +3,6 @@
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
-  inputs.vscode-config = {
-    url = "gitlab:kylesferrazza/vscode-config/a85e9023";
-    inputs.nixpkgs.follows = "nixpkgs";
-  };
   inputs.fish-flake = {
     url = "github:heywoodlh/flakes?dir=fish";
     inputs.nixpkgs.follows = "nixpkgs";
@@ -17,22 +12,89 @@
     self,
     nixpkgs,
     flake-utils,
-    nix-vscode-extensions,
-    vscode-config,
     fish-flake,
   }:
   flake-utils.lib.eachDefaultSystem (system: let
-      pkgs = nixpkgs.legacyPackages.${system};
-      mkVSCode = vscode-config.mkVSCode.${system};
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+      myVSCode = (pkgs.vscode-with-extensions.override {
+        vscodeExtensions = with pkgs.vscode-extensions; [
+          arcticicestudio.nord-visual-studio-code
+          coder.coder-remote
+          eamodio.gitlens
+          github.codespaces
+          github.copilot
+          jnoortheen.nix-ide
+          mkhl.direnv
+          ms-azuretools.vscode-docker
+          ms-kubernetes-tools.vscode-kubernetes-tools
+          ms-python.python
+          ms-vscode-remote.remote-containers
+          ms-vscode-remote.remote-ssh
+          tailscale.vscode-tailscale
+          timonwong.shellcheck
+          vscodevim.vim
+        ];
+      });
 
-      allExtensions = nix-vscode-extensions.extensions.${system};
-      myfish = fish-flake.packages.${system}.fish;
+      myFish = fish-flake.packages.${system}.fish;
       fishProfile = {
         "fish" = {
-          "path" = "${myfish}/bin/fish";
+          "path" = "${myFish}/bin/fish";
         };
       };
-      vscode-settings = {
+      vscode-keybindings = pkgs.writeText "keybindings.json" (builtins.toJSON [
+        {
+          key = "ctrl+t";
+          command = "workbench.action.terminal.toggleTerminal";
+        }
+        {
+          key = "ctrl+w h";
+          command = "workbench.action.focusLeftGroup";
+        }
+        {
+          key = "ctrl+w l";
+          command = "workbench.action.focusRightGroup";
+        }
+        {
+          key = "ctrl+w j";
+          command = "workbench.action.focusBelowGroup";
+        }
+        {
+          key = "ctrl+w k";
+          command = "workbench.action.focusAboveGroup";
+        }
+        {
+          key = "ctrl+w s";
+          command = "workbench.action.splitEditorDown";
+        }
+        {
+          key = "ctrl+w v";
+          command = "workbench.action.splitEditorRight";
+        }
+        {
+          key = "g a";
+          command = "git.stage";
+          when = "vim.mode == 'Normal' && !terminalFocus";
+        }
+        {
+          key = "ctrl+w w";
+          command = "workbench.action.focusNextPart";
+        }
+        {
+          key = "ctrl+n";
+          command = "workbench.action.toggleSidebarVisibility";
+        }
+        {
+          key = "ctrl+a shift+\\";
+          command = "workbench.action.terminal.split";
+          when = "terminalFocus";
+        }
+      ]);
+
+      vscode-settings = pkgs.writeText "settings.json" (builtins.toJSON {
         # Privacy/telemetry settings
         "Lua.telemetry.enable" = false;
         "clangd.checkUpdates" = false;
@@ -84,87 +146,34 @@
         # Vim settings
         "vim.shell" = "${pkgs.bash}/bin/bash";
         "vim.useSystemClipboard" = true;
+        # Nix settings
+        "nix.enableLanguageServer" = true;
+        "nix.serverPath" = "${pkgs.nixd}/bin/nixd";
         # Misc settings
         "git.openRepositoryInParentFolders" = "always";
-        "security.workspace.trust.enabled" = false;
-        "task.allowAutomaticTasks" = "off";
+        "security.workspace.trust.enabled" = true; # Required for direnv
         "direnv.path.executable" = "${pkgs.direnv}/bin/direnv";
-      };
+      });
 
-      extensionList = with allExtensions.vscode-marketplace; [
-        arcticicestudio.nord-visual-studio-code
-        coder.coder-remote
-        eamodio.gitlens
-        github.codespaces
-        github.copilot
-        jnoortheen.nix-ide
-        mkhl.direnv
-        ms-azuretools.vscode-docker
-        ms-kubernetes-tools.vscode-kubernetes-tools
-        ms-python.python
-        ms-vscode-remote.remote-containers
-        ms-vscode-remote.remote-ssh
-        tailscale.vscode-tailscale
-        timonwong.shellcheck
-        vscodevim.vim
-      ];
-
-      heywoodlh-vscode = mkVSCode {
-        settings = vscode-settings;
-        extensions = extensionList;
-      };
-      extensionCount = builtins.toString(builtins.length extensionList);
-      exportJson = object: output: pkgs.writeText "${output}" (builtins.toJSON object);
-      vscodeSettingsJson = exportJson vscode-settings "settings.json";
-      printSettings = pkgs.writeShellScript "print-settings" ''
-        # Remove references to nix and fish
-        cat ${vscodeSettingsJson} | ${pkgs.jq}/bin/jq '.' | ${pkgs.gnused}/bin/sed 's|/nix/store.*/bin/\(.*\)|\1|' | ${pkgs.gnused}/bin/sed 's/fish/bash/g'
-      '';
-      printExtensions = pkgs.writeShellScript "print-extensions" ''
-        PATH=${pkgs.bash}/bin:${pkgs.coreutils}/bin:${pkgs.jq}/bin:${pkgs.gnused}/bin:$PATH
-        ${heywoodlh-vscode}/bin/code --list-extensions | tail -${extensionCount}
-      '';
-      vscodeDir = if pkgs.stdenv.isDarwin then "Library/Application Support/Code/User" else ".config/Code/User";
-      nixlessSetup = pkgs.writeText "setup-script" ''
-        #!/usr/bin/env bash
-        rootdir="$(dirname $0)"
-        cp -v "$rootdir"/settings.json "$HOME/${vscodeDir}/settings.json"
-        if which code &> /dev/null
-        then
-          cat "$rootdir"/extensions.txt | xargs -L 1 code --install-extension
-        else
-          echo "code command not found, skipping extension installation"
-        fi
-      '';
-      vscodeExporter = pkgs.writeShellScript "exporter" ''
-        outDir=$1
-        PATH=${pkgs.coreutils}/bin:${pkgs.jq}/bin:${pkgs.gnused}/bin:$PATH
-        mkdir -p "$outDir"
-        ${printSettings} > "$outDir"/settings.json
-        ${printExtensions} > "$outDir"/extensions.txt
-        cp ${nixlessSetup} "$outDir"/setup.sh && chmod +x "$outDir"/setup.sh
-      '';
-      exportVscode = pkgs.stdenv.mkDerivation {
-        name = "export-vscode";
+      userDir = pkgs.stdenv.mkDerivation {
+        name = "userDir";
         builder = pkgs.bash;
-        args = [ "-c" "${vscodeExporter} $out" ];
+        args = [ "-c" "${pkgs.coreutils}/bin/mkdir -p $out; ${pkgs.coreutils}/bin/cp ${vscode-settings} $out/settings.json; ${pkgs.coreutils}/bin/cp ${vscode-keybindings} $out/keybindings.json" ];
       };
+
+      heywoodlh-vscode = pkgs.writeShellScriptBin "code" ''
+        dataDir="$HOME/Documents/Code"
+        mkdir -p "$dataDir/User"
+        rm "$dataDir/User/settings.json" &>/dev/null || true
+        rm "$dataDir/User/keybindings.json" &>/dev/null || true
+        ln -s ${userDir}/settings.json "$dataDir/User/settings.json"
+        ln -s ${userDir}/keybindings.json "$dataDir/User/keybindings.json"
+        ${myVSCode}/bin/code --user-data-dir "$dataDir" $@
+      '';
     in {
       packages = {
-        vscode-settings-json = vscodeSettingsJson;
-        export-vscode = exportVscode;
-        setup-vscode = pkgs.writeShellScriptBin "setup-vscode" ''
-          # Remove references to Nix and fish
-          ${printSettings} > "$HOME/${vscodeDir}/settings.json"
-          if which code &> /dev/null
-          then
-            ${printExtensions} | xargs -L 1 code --install-extension
-          else
-            echo "code command not found, skipping extension installation"
-          fi
-        '';
+        codeBin = myVSCode;
         default = heywoodlh-vscode;
       };
     });
 }
-
