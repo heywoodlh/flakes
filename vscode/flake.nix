@@ -3,6 +3,7 @@
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   inputs.flake-utils.url = "github:numtide/flake-utils";
+  inputs.nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
   inputs.fish-flake = {
     url = "github:heywoodlh/flakes?dir=fish";
     inputs.nixpkgs.follows = "nixpkgs";
@@ -13,14 +14,16 @@
     nixpkgs,
     flake-utils,
     fish-flake,
+    nix-vscode-extensions,
   }:
   flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
       };
+      allExtensions = nix-vscode-extensions.extensions.${system};
       myVSCode = (pkgs.vscode-with-extensions.override {
-        vscodeExtensions = with pkgs.vscode-extensions; [
+        vscodeExtensions = with allExtensions.vscode-marketplace; [
           arcticicestudio.nord-visual-studio-code
           coder.coder-remote
           eamodio.gitlens
