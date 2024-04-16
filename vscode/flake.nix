@@ -104,6 +104,7 @@
         ms-python.python
         ms-vscode-remote.remote-containers
         ms-vscode-remote.remote-ssh
+        tailscale.vscode-tailscale
         timonwong.shellcheck
         vscodevim.vim
       ];
