@@ -34,8 +34,8 @@
           ms-azuretools.vscode-docker
           ms-kubernetes-tools.vscode-kubernetes-tools
           ms-python.python
-          ms-vscode-remote.remote-containers
-          ms-vscode-remote.remote-ssh
+          pkgs.vscode-extensions.ms-vscode-remote.remote-containers
+          pkgs.vscode-extensions.ms-vscode-remote.remote-ssh
           shardulm94.trailing-spaces
           tailscale.vscode-tailscale
           timonwong.shellcheck
