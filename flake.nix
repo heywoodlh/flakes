@@ -104,6 +104,8 @@
         tmux = tmux-flake.packages.${system}.tmux;
         vim = vim-flake.defaultPackage.${system};
         vscode = vscode-flake.packages.${system}.default;
+        vscode-userdir = vscode-flake.packages.${system}.user-dir;
+        vscode-bin = vscode-flake.packages.${system}.code-bin;
         st = st-flake.packages.${system}.st;
         wezterm = wezterm-flake.packages.${system}.wezterm;
         wezterm-gl = wezterm-flake.packages.${system}.wezterm-gl;
