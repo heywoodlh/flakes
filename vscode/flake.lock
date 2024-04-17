@@ -9,11 +9,11 @@
       },
       "locked": {
         "dir": "fish",
-        "lastModified": 1713309042,
-        "narHash": "sha256-nlQSukme8tYFXfCGhUUkSnc9CUnWC5ZXWC3h7NYjmcI=",
+        "lastModified": 1713311057,
+        "narHash": "sha256-1HPq6Trkap6PIaLTnQZ4VRje2D2bap5Uqss3FUPGFec=",
         "owner": "heywoodlh",
         "repo": "flakes",
-        "rev": "e7e90b3248007dbdb6de5a2d01cdaf808e56885d",
+        "rev": "64d1c4a460ea53e8939c85803ef02183409684f4",
         "type": "github"
       },
       "original": {
@@ -100,11 +100,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1713230232,
-        "narHash": "sha256-K5uGOc3CLqWOsd0YIYnCxbFU6y29e4n/kbDh0BiEwRE=",
+        "lastModified": 1713316726,
+        "narHash": "sha256-VIQkEgU1xUD4nEh7w3uL0xRsTYZdC7p5+v35G9wv8U0=",
         "owner": "nix-community",
         "repo": "nix-vscode-extensions",
-        "rev": "5426ecc8a714c6986383511fbe6c79eca1981d02",
+        "rev": "c1b75aedd50054ff43bb26ddb2702a2ac3475ea2",
         "type": "github"
       },
       "original": {
