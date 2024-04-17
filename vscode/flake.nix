@@ -36,6 +36,7 @@
           ms-python.python
           ms-vscode-remote.remote-containers
           ms-vscode-remote.remote-ssh
+          shardulm94.trailing-spaces
           tailscale.vscode-tailscale
           timonwong.shellcheck
           vscodevim.vim
@@ -156,6 +157,10 @@
         "git.openRepositoryInParentFolders" = "always";
         "security.workspace.trust.enabled" = true; # Required for direnv
         "direnv.path.executable" = "${pkgs.direnv}/bin/direnv";
+        "trailing-spaces.includeEmptyLines" = true;
+        "trailing-spaces.highlightCurrentLine" = false;
+        "trailing-spaces.deleteModifiedLinesOnly" = true;
+        "trailing-spaces.trimOnSave" = true;
       });
 
       userDir = pkgs.stdenv.mkDerivation {
