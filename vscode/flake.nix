@@ -163,7 +163,6 @@
         builder = pkgs.bash;
         args = [ "-c" "${pkgs.coreutils}/bin/mkdir -p $out; ${pkgs.coreutils}/bin/cp ${vscode-settings} $out/settings.json; ${pkgs.coreutils}/bin/cp ${vscode-keybindings} $out/keybindings.json" ];
       };
-
       heywoodlh-vscode = pkgs.writeShellScriptBin "code" ''
         dataDir="$HOME/Documents/heywoodlh-code"
         mkdir -p "$dataDir/User"
@@ -175,7 +174,8 @@
       '';
     in {
       packages = {
-        codeBin = myVSCode;
+        user-dir = userDir;
+        code-bin = myVSCode;
         default = heywoodlh-vscode;
       };
     });
