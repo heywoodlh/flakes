@@ -28,6 +28,7 @@ data:
         - mac-mini
         - nixos-mac-mini
         - nixos-matrix
+        - cloud
       options: "-c 1 -W 1"
       silent: "true"
     curl:
@@ -38,6 +39,7 @@ data:
         - "http://second.default"
         - "http://home-assistant.default"
         - "http://miniflux.default"
+        - "https://social.heywoodlh.io"
       options: "-LI --silent -k"
       silent: "true"
     netcat:
