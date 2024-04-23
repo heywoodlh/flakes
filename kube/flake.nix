@@ -279,6 +279,20 @@
             cp ${yaml} $out
           '';
         };
+        heralding = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/heralding.yaml;
+            namespace = "default";
+            image = "docker.io/heywoodlh/heralding:1.0.7";
+            replicas = 1;
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "heralding";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
         home-assistant = let
           yaml = pkgs.substituteAll ({
             src = ./templates/home-assistant.yaml;
