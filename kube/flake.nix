@@ -237,7 +237,6 @@
             cp ${yaml} $out
           '';
         };
-
         drawio = let
           yaml = pkgs.substituteAll ({
             src = ./templates/draw-io.yaml;
@@ -293,6 +292,20 @@
           });
         in pkgs.stdenv.mkDerivation {
           name = "home-assistant";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
+        iperf = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/iperf3.yaml;
+            namespace = "default";
+            image = "docker.io/heywoodlh/iperf3:3.16-r0";
+            replicas = 1;
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "iperf";
           phases = [ "installPhase" ];
           installPhase = ''
             cp ${yaml} $out
