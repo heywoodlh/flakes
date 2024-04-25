@@ -339,6 +339,18 @@
             cp ${yaml} $out
           '';
         };
+        kubevirt = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/kubevirt.yaml;
+            version = "v1.2.0";
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "kubevirt";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
         longhorn = let
           yaml = pkgs.substituteAll ({
             src = ./templates/longhorn.yaml;
@@ -500,12 +512,14 @@
                 scrape_interval: 2m
                 static_configs:
                 - targets:
-                  - nixos-mac-mini.barn-banana.ts.net:9100
-                  - nix-nvidia.barn-banana.ts.net:9100
-                  - nix-drive.barn-banana.ts.net:9100
-                  - nix-backups.barn-banana.ts.net:9100
-                  - nixos-matrix.barn-banana.ts.net:9100
-                  - proxmox-mac-mini.barn-banana.ts.net:9100
+                  - nixos-mac-mini:9100
+                  - nix-nvidia:9100
+                  - nix-drive:9100
+                  - nix-backups:9100
+                  - nixos-matrix:9100
+                  - proxmox-mac-mini:9100
+                  - cloud:9100
+                  - kasmweb:9100
             '';
           };
         });
