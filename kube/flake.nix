@@ -175,6 +175,22 @@
             ];
           };
         });
+        attic = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/attic.yaml;
+            namespace = "default";
+            replicas = 1;
+            image = "docker.io/heywoodlh/attic:4dbdbee45728d8ce5788db6461aaaa89d98081f0";
+            nodename = "nix-nvidia";
+            hostfolder = "/opt/attic";
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "attic";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
         cloudflared = let
           yaml = pkgs.substituteAll ({
             src = ./templates/cloudflared.yaml;
