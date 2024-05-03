@@ -22,6 +22,7 @@ let
     ./shell.nix
     ./os-specific.nix
     ./vim-pets.nix
+    ./localvimrc.nix
     # Base vim config
     ./vimrc.nix
   ];
