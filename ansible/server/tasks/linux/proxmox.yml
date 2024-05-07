@@ -33,14 +33,18 @@
       replace: "false"
       backup: yes
 
-- name: Restart proxmox web interface
-  ansible.builtin.systemd_service:
-    name: pveproxy.service
-    state: restarted
-
 - name: Allow proxmox ports in ufw
   ansible.builtin.command: "ufw allow {{ item }}"
   with_items:
     - "8006"
     - "6789"
     - "6800:7568/tcp"
+
+- name: Enable snippets on local storage
+  ansible.builtin.command: "pvesm set local --content images,rootdir,vztmpl,iso,snippets"
+
+- name: Restart proxmox web interface
+  ansible.builtin.systemd_service:
+    name: pveproxy.service
+    state: restarted
+
