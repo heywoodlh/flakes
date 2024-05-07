@@ -38,5 +38,9 @@
     name: pveproxy.service
     state: restarted
 
-- name: Allow port 8006 in ufw
-  ansible.builtin.command: ufw allow 8006
+- name: Allow proxmox ports in ufw
+  ansible.builtin.command: "ufw allow {{ item }}"
+  with_items:
+    - "8006"
+    - "6789"
+    - "6800:7568/tcp"
