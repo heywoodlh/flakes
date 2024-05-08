@@ -1,0 +1,13 @@
+---
+- name: Create nfs directory
+  ansible.builtin.file:
+    path: /nfs
+    state: directory
+
+- name: Mount nfs drive
+  ansible.posix.mount:
+    path: /nfs
+    src: UUID=47c24298-dfe5-43a7-8538-7259dd1996f8
+    fstype: ext4
+    opts: noatime
+    state: present
