@@ -244,7 +244,7 @@
         dns-autoscaler = let
           yaml = pkgs.substituteAll ({
             src = ./templates/dns-autoscaler.yaml;
-            image = "registry.k8s.io/cpa/cluster-proportional-autoscaler:1.8.4";
+            image = "registry.k8s.io/cpa/cluster-proportional-autoscaler:v1.8.9";
           });
         in pkgs.stdenv.mkDerivation {
           name = "dns-autoscaler";
