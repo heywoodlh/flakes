@@ -680,7 +680,7 @@
                 repo = "docker.io/tailscale/k8s-operator";
                 tag = "unstable-v1.55.68";
               };
-              hostname = "tailscale-operator";
+              hostname = "tailscale-operator-talos";
               logging = "debug";
             };
             proxyConfig = {
