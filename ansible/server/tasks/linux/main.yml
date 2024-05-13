@@ -44,3 +44,5 @@
     - name: Include NixOS tasks
       ansible.builtin.include_tasks: nixos.yml
 
+- name: Include host-specific tasks
+  ansible.builtin.include_tasks: hosts.yml
