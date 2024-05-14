@@ -31,6 +31,7 @@
       url = "github:open-webui/open-webui";
       flake = false;
     };
+    op-scripts.url = "github:heywoodlh/flakes?dir=1password";
   };
 
   outputs = inputs @ {
@@ -46,6 +47,7 @@
     truecharts-helm,
     github-actions-runner-helm,
     open-webui,
+    op-scripts
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs {
@@ -60,12 +62,17 @@
         echo export TS_CLIENT_ID="$TS_CLIENT_ID"
         echo export TS_SECRET="$TS_SECRET"
       '';
-      cf-env = pkgs.writeShellScriptBin "cfenv" ''
-        TS_CLIENT_ID="$(op-wrapper.sh read 'op://Personal/odnjqovwnyxpltktqd3a5yzqpy/password')"
-        TS_SECRET="$(op-wrapper.sh read 'op://Personal/qv3mc3sgnpgw6yfuxtgf6xseou/password')"
+      op-wrapper = op-scripts.packages.${system}.op;
+      talos-wrapper = pkgs.writeShellScriptBin "talosctl" ''
+        mkdir -p ~/tmp/talos
+        item="op://kubernetes/h6d3bdi7yx2kvrk64u2lolva74"
 
-        echo export TS_CLIENT_ID="$TS_CLIENT_ID"
-        echo export TS_SECRET="$TS_SECRET"
+        [[ -e ~/tmp/talos/controlplane.yaml ]] || ${op-wrapper}/bin/op read "$item/controlplane.yaml" > ~/tmp/talos/controlplane.yaml
+        [[ -e ~/tmp/talos/talosconfig ]] || ${op-wrapper}/bin/op read "$item/talosconfig" > ~/tmp/talos/talosconfig
+        [[ -e ~/tmp/talos/worker.yaml ]] || ${op-wrapper}/bin/op read "$item/worker.yaml" > ~/tmp/talos/worker.yaml
+        [[ -e ~/tmp/talos/storage.yaml ]] || ${op-wrapper}/bin/op read "$item/storage.yaml" > ~/tmp/talos/storage.yaml
+
+        ${pkgs.talosctl}/bin/talosctl --talosconfig ~/tmp/talos/talosconfig $@
       '';
       onepassworditem = pkgs.writers.writePython3Bin "onepassitem.py" { libraries = [ pkgs.python3Packages.PyGithub ]; } ''
       import argparse
@@ -600,6 +607,17 @@
             cp ${yaml} $out
           '';
         };
+        rook-ceph = (kubelib.buildHelmChart {
+          name = "rook-ceph";
+          chart = (nixhelm.charts { inherit pkgs; }).rook-release.rook-ceph;
+          namespace = "kube-system";
+          values = {
+            image = {
+              repository = "docker.io/rook/ceph";
+              tag = "v1.14.3";
+            };
+          };
+        });
         rsshub = let
           yaml = pkgs.substituteAll ({
             src = ./templates/rsshub.yaml;
@@ -668,17 +686,19 @@
             cp ${yaml} $out
           '';
         };
+        # allow tailscale namespace privileged access in talos: kubectl label namespace tailscale pod-security.kubernetes.io/enforce=privileged
         tailscale-operator = (kubelib.buildHelmChart {
           name = "tailscale-operator";
           chart = "${tailscale}/cmd/k8s-operator/deploy/chart";
           namespace = "tailscale";
           # oauth configured with this command
-          # nix run .#1password-item -- --name operator-oauth --namespace tailscale --itemPath "vaults/Kubernetes/items/h64xxdshrse2jto2nkdo6nerp4" | kubectl apply -f -
+          # k3s-nvidia cluster: nix run .#1password-item -- --name operator-oauth --namespace tailscale --itemPath "vaults/Kubernetes/items/h64xxdshrse2jto2nkdo6nerp4" | kubectl apply -f -
+          # talos cluster: nix run .#1password-item -- --name operator-oauth --namespace tailscale --itemPath "vaults/Kubernetes/items/bwmt642lsbd5drsjcrxxnljkku" | kubectl apply -f -
           values = {
             operatorConfig = {
               image = {
                 repo = "docker.io/tailscale/k8s-operator";
-                tag = "unstable-v1.55.68";
+                tag = "unstable-v1.67";
               };
               hostname = "tailscale-operator-talos";
               logging = "debug";
@@ -686,7 +706,7 @@
             proxyConfig = {
               image = {
                 repo = "docker.io/tailscale/tailscale";
-                tag = "unstable-v1.55.68";
+                tag = "unstable-v1.67";
               };
               defaultTags = "tag:k8s";
             };
@@ -712,11 +732,10 @@
       devShell = pkgs.mkShell {
         name = "kubernetes-shell";
         buildInputs = with pkgs; [
-          k0sctl
           k9s
           kubectl
           kubernetes-helm
-          cf-env
+          talos-wrapper
           ts-env
         ];
       };
