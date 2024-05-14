@@ -23,10 +23,6 @@
       url = "github:truecharts/charts";
       flake = false;
     };
-    github-actions-runner-helm = {
-      url = "github:actions/actions-runner-controller";
-      flake = false;
-    };
     open-webui = {
       url = "github:open-webui/open-webui";
       flake = false;
@@ -49,7 +45,6 @@
     cloudflared-helm,
     minecraft-helm,
     truecharts-helm,
-    github-actions-runner-helm,
     open-webui,
     op-scripts,
     coredns
@@ -58,6 +53,15 @@
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
+      };
+      mkKubeDrv = pkgName: args: let
+        yaml = pkgs.substituteAll args;
+      in pkgs.stdenv.mkDerivation {
+        name = pkgName;
+        phases = [ "installPhase" ];
+        installPhase = ''
+          cp ${yaml} $out
+        '';
       };
       kubelib = nix-kube-generators.lib { inherit pkgs; };
       ts-env = pkgs.writeShellScriptBin "tsenv" ''
@@ -121,137 +125,39 @@
           };
         });
         "1password-item" = onepassworditem;
-        # apply with: kubectl apply -f ./result --server-side
-        actions-runner-controller = (kubelib.buildHelmChart {
-          name = "actions-runner-controller";
-          chart = "${github-actions-runner-helm}/charts/gha-runner-scale-set-controller";
-          namespace = "actions-runner";
-          values = {
-            image = {
-              repository = "ghcr.io/actions/gha-runner-scale-set-controller";
-              tag = "0.8.3";
-            };
-            #kubectl create ns actions-runner
-            #nix run .#1password-item -- --name github-token --namespace actions-runner --itemPath "vaults/Kubernetes/items/d54zu5ohvjkd2fou7rh2rrhnee" | kubectl apply -f -
-            githubConfigSecret = "github-token";
-          };
-        });
-        actions-runner-flakes = (kubelib.buildHelmChart {
-          name = "actions-runner-flakes";
-          chart = "${github-actions-runner-helm}/charts/gha-runner-scale-set";
-          namespace = "actions";
-          values = {
-            githubConfigUrl = "https://github.com/heywoodlh/flakes";
-            #kubectl create ns actions
-            #nix run .#1password-item -- --name github-token --namespace actions --itemPath "vaults/Kubernetes/items/d54zu5ohvjkd2fou7rh2rrhnee" | kubectl apply -f -
-            githubConfigSecret = "github-token";
-            controllerServiceAccount = {
-              name = "actions-runner-controller-gha-rs-controller";
-              namespace = "actions-runner";
-            };
-            containerMode = {
-              type = "kubernetes";
-              kubernetesModeWorkVolumeClaim = {
-                accessModes = ["ReadWriteOnce"];
-                storageClassName = "local-path";
-                resources.requests.storage = "50Gi";
-              };
-            };
-            template.spec.containers = [
-              {
-                name = "runner";
-                image = "ghcr.io/actions/actions-runner:2.314.1";
-                imagePullPolicy = "Always";
-                command = ["/home/runner/run.sh"];
-                env = [
-                {
-                  name = "ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER";
-                  value = "false";
-                }
-                {
-                  name = "ACTIONS_RUNNER_CONTAINER_HOOK_TEMPLATE";
-                  value = "/home/runner/pod-template.yaml";
-                }
-                ];
-                resources = {
-                  requests = {
-                    memory = "200Mi";
-                    cpu = "250m";
-                  };
-                  limits = {
-                    memory = "400Mi";
-                    cpu = "500m";
-                  };
-                };
-              }
-            ];
-          };
-        });
-        attic = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/attic.yaml;
-            namespace = "default";
-            replicas = 1;
-            image = "docker.io/heywoodlh/attic:4dbdbee45728d8ce5788db6461aaaa89d98081f0";
-            nodename = "nix-nvidia";
-            hostfolder = "/opt/attic";
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "attic";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        attic = mkKubeDrv "attic" {
+          src = ./templates/attic.yaml;
+          namespace = "default";
+          replicas = 1;
+          image = "docker.io/heywoodlh/attic:4dbdbee45728d8ce5788db6461aaaa89d98081f0";
+          nodename = "nix-nvidia";
+          hostfolder = "/opt/attic";
         };
-        cloudflared = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/cloudflared.yaml;
-            namespace = "cloudflared";
-            image = "docker.io/cloudflare/cloudflared:2024.2.1";
-            replicas = 2;
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "cloudflared";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        cloudflared = mkKubeDrv "cloudflared" {
+          src = ./templates/cloudflared.yaml;
+          namespace = "cloudflared";
+          image = "docker.io/cloudflare/cloudflared:2024.2.1";
+          replicas = 2;
         };
-        cloudtube = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/cloudtube.yaml;
-            namespace = "default";
-            image = "docker.io/heywoodlh/cloudtube:2024_04";
-            second_image = "docker.io/heywoodlh/second:2023_12";
-            replicas = 1;
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "cloudtube";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        cloudtube = mkKubeDrv "cloudtube" {
+          src = ./templates/cloudtube.yaml;
+          namespace = "default";
+          image = "docker.io/heywoodlh/cloudtube:2024_04";
+          second_image = "docker.io/heywoodlh/second:2023_12";
+          replicas = 1;
         };
-        coder = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/coder.yaml;
-            namespace = "coder";
-            version = "2.8.3";
-            image = "ghcr.io/coder/coder:v2.8.4";
-            access_url = "https://coder.heywoodlh.io";
-            replicas = "1";
-            port = "80";
-            postgres_version = "16.1.0";
-            postgres_image = "docker.io/bitnami/postgresql:16.2.0";
-            postgres_replicas = "1";
-            postgres_storage_class = "local-path";
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "coder";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        coder = mkKubeDrv "coder" {
+          src = ./templates/coder.yaml;
+          namespace = "coder";
+          version = "2.8.3";
+          image = "ghcr.io/coder/coder:v2.8.4";
+          access_url = "https://coder.heywoodlh.io";
+          replicas = "1";
+          port = "80";
+          postgres_version = "16.1.0";
+          postgres_image = "docker.io/bitnami/postgresql:16.2.0";
+          postgres_replicas = "1";
+          postgres_storage_class = "local-path";
         };
         "coredns" = (kubelib.buildHelmChart {
           name = "coredns";
@@ -269,206 +175,89 @@
             isClusterService = false;
           };
         });
-        dns-autoscaler = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/dns-autoscaler.yaml;
-            image = "registry.k8s.io/cpa/cluster-proportional-autoscaler:1.8.4";
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "dns-autoscaler";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        drawio = mkKubeDrv "drawio" {
+          src = ./templates/draw-io.yaml;
+          namespace = "drawio";
+          tag = "23.0.0";
+          port = "80";
+          replicas = "1";
         };
-        drawio = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/draw-io.yaml;
-            namespace = "drawio";
-            tag = "23.0.0";
-            port = "80";
-            replicas = "1";
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "drawio";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        grafana = mkKubeDrv "grafana" {
+          src = ./templates/grafana.yaml;
+          namespace = "monitoring";
+          image = "docker.io/grafana/grafana:10.3.1";
+          storageclass = "longhorn";
         };
-        grafana = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/grafana.yaml;
-            namespace = "monitoring";
-            image = "docker.io/grafana/grafana:10.3.1";
-            storageclass = "longhorn";
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "grafana";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        healthchecks = mkKubeDrv "healthchecks" {
+          src = ./templates/healthchecks.yaml;
+          namespace = "monitoring";
+          image = "docker.io/curlimages/curl:8.6.0";
         };
-        healthchecks = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/healthchecks.yaml;
-            namespace = "monitoring";
-            image = "docker.io/curlimages/curl:8.6.0";
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "healthchecks";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        heralding = mkKubeDrv "heralding" {
+          src = ./templates/heralding.yaml;
+          namespace = "default";
+          image = "docker.io/heywoodlh/heralding:1.0.7";
+          replicas = 1;
         };
-        heralding = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/heralding.yaml;
-            namespace = "default";
-            image = "docker.io/heywoodlh/heralding:1.0.7";
-            replicas = 1;
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "heralding";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        home-assistant = mkKubeDrv "home-assistant" {
+          src = ./templates/home-assistant.yaml;
+          namespace = "default";
+          timezone = "America/Denver";
+          image = "ghcr.io/home-assistant/home-assistant:2024.3.1";
+          port = 80;
+          replicas = 1;
+          nodename = "nix-nvidia";
         };
-        home-assistant = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/home-assistant.yaml;
-            namespace = "default";
-            timezone = "America/Denver";
-            image = "ghcr.io/home-assistant/home-assistant:2024.3.1";
-            port = 80;
-            storageClass = "nfs-kube";
-            replicas = 1;
-            nodename = "nix-nvidia";
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "home-assistant";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        iperf = mkKubeDrv "iperf" {
+          src = ./templates/iperf3.yaml;
+          namespace = "default";
+          image = "docker.io/heywoodlh/iperf3:3.16-r0";
+          replicas = 1;
         };
-        iperf = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/iperf3.yaml;
-            namespace = "default";
-            image = "docker.io/heywoodlh/iperf3:3.16-r0";
-            replicas = 1;
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "iperf";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        jellyfin = mkKubeDrv "jellyfin" {
+          src = ./templates/jellyfin.yaml;
+          namespace = "default";
+          tag = "20231213.1-unstable";
+          replicas = 1;
         };
-        jellyfin = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/jellyfin.yaml;
-            namespace = "default";
-            tag = "20231213.1-unstable";
-            replicas = 1;
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "jellyfin";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        kubevirt = mkKubeDrv "kubevirt" {
+          src = ./templates/kubevirt.yaml;
+          version = "v1.2.0";
         };
-        kubevirt = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/kubevirt.yaml;
-            version = "v1.2.0";
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "kubevirt";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        longhorn = mkKubeDrv "longhorn" {
+          src = ./templates/longhorn.yaml;
+          namespace = "longhorn-system";
+          version = "1.5.5";
         };
-        longhorn = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/longhorn.yaml;
-            namespace = "longhorn-system";
-            version = "1.5.5";
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "longhorn";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        metrics-server = mkKubeDrv "metrics-server" {
+          src = ./templates/metrics-server.yaml;
+          image = "registry.k8s.io/metrics-server/metrics-server:v0.7.1";
         };
-        media-server = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/media-server.yaml;
-            namespace = "default";
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "media-server";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        minecraft-bedrock = mkKubeDrv "minecraft-bedrock" {
+          src = ./templates/minecraft-bedrock.yaml;
+          namespace = "default";
+          image = "docker.io/itzg/minecraft-bedrock-server:latest";
+          nodename = "nix-nvidia";
+          hostfolder = "/opt/minecraft-bedrock";
         };
-        minecraft-bedrock = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/minecraft-bedrock.yaml;
-            namespace = "default";
-            image = "docker.io/itzg/minecraft-bedrock-server:latest";
-            nodename = "nix-nvidia";
-            hostfolder = "/opt/minecraft-bedrock";
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "minecraft-bedrock";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        miniflux = mkKubeDrv "miniflux" {
+          src = ./templates/miniflux.yaml;
+          namespace = "default";
+          image = "docker.io/miniflux/miniflux:2.1.0";
+          postgres_image = "docker.io/postgres:15.6";
+          postgres_replicas = 1;
+          nodename = "nix-nvidia";
+          hostfolder = "/opt/miniflux";
+          replicas = 1;
         };
-        miniflux = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/miniflux.yaml;
-            namespace = "default";
-            image = "docker.io/miniflux/miniflux:2.1.0";
-            postgres_image = "docker.io/postgres:15.6";
-            postgres_replicas = 1;
-            nodename = "nix-nvidia";
-            hostfolder = "/opt/miniflux";
-            replicas = 1;
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "miniflux";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
-        };
-        motioneye = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/motioneye.yaml;
-            namespace = "default";
-            storageclass = "local-path";
-            tag = "dev-amd64";
-            replicas = 1;
-            port = 80;
-            nodename = "nix-nvidia";
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "motioneye";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        motioneye = mkKubeDrv "motioneye" {
+          src = ./templates/motioneye.yaml;
+          namespace = "default";
+          storageclass = "local-path";
+          tag = "dev-amd64";
+          replicas = 1;
+          port = 80;
+          nodename = "nix-nvidia";
         };
         nfs-kube = (kubelib.buildHelmChart {
           name = "nfs-kube";
@@ -494,52 +283,28 @@
             };
           };
         });
-        ntfy = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/ntfy.yaml;
-            namespace = "default";
-            image = "docker.io/binwiederhier/ntfy:v2.9.0";
-            nodename = "nix-nvidia";
-            hostfolder = "/opt/ntfy";
-            replicas = 1;
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "ntfy";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        ntfy = mkKubeDrv "ntfy" {
+          src = ./templates/ntfy.yaml;
+          namespace = "default";
+          image = "docker.io/binwiederhier/ntfy:v2.9.0";
+          nodename = "nix-nvidia";
+          hostfolder = "/opt/ntfy";
+          replicas = 1;
         };
-        nuclei = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/nuclei.yaml;
-            namespace = "nuclei";
-            image = "docker.io/heywoodlh/nuclei:v3.2.0-dev";
-            interactsh_image = "docker.io/projectdiscovery/interactsh-server:v1.1.9";
-            httpd_image = "docker.io/httpd:2.4.58";
-            replicas = 1;
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "nuclei";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        nuclei = mkKubeDrv "nuclei" {
+          src = ./templates/nuclei.yaml;
+          namespace = "nuclei";
+          image = "docker.io/heywoodlh/nuclei:v3.2.0-dev";
+          interactsh_image = "docker.io/projectdiscovery/interactsh-server:v1.1.9";
+          httpd_image = "docker.io/httpd:2.4.58";
+          replicas = 1;
         };
-        open-webui = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/open-webui.yaml;
-            namespace = "open-webui";
-            ollama_image = "docker.io/ollama/ollama:0.1.28";
-            webui_image = "ghcr.io/open-webui/open-webui:git-1b91e7f";
-            hostfolder = "/opt/open-webui";
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "open-webui";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        open-webui = mkKubeDrv "open-webui" {
+          src = ./templates/open-webui.yaml;
+          namespace = "open-webui";
+          ollama_image = "docker.io/ollama/ollama:0.1.28";
+          webui_image = "ghcr.io/open-webui/open-webui:git-1b91e7f";
+          hostfolder = "/opt/open-webui";
         };
         prometheus = (kubelib.buildHelmChart {
           name = "prometheus";
@@ -552,189 +317,108 @@
             };
             prometheus-node-exporter.enabled = false;
             extraScrapeConfigs = ''
+              - job_name: "metrics-server"
+                scrape_interval: 2m
+                static_configs:
+                - targets:
+                  - metrics-server.kube-system.svc:443
+                tls_config:
+                  insecure_skip_verify: true
+
               - job_name: "node"
                 scrape_interval: 2m
                 static_configs:
                 - targets:
-                  - nixos-mac-mini:9100
-                  - nix-nvidia:9100
-                  - nix-drive:9100
-                  - nix-backups:9100
-                  - nixos-matrix:9100
-                  - proxmox-mac-mini:9100
-                  - cloud:9100
-                  - kasmweb:9100
+                  - nixos-mac-mini.barn-banana.ts.net:9100
+                  - nix-nvidia.barn-banana.ts.net:9100
+                  - nix-drive.barn-banana.ts.net:9100
+                  - nix-backups.barn-banana.ts.net:9100
+                  - nixos-matrix.barn-banana.ts.net:9100
+                  - proxmox-mac-mini.barn-banana.ts.net:9100
+                  - proxmox-oryx-pro.barn-banana.ts.net:9100
+                  - proxmox-nvidia.barn-banana.ts.net:9100
+                  - cloud.barn-banana.ts.net:9100
+                  - kasmweb.barn-banana.ts.net:9100
             '';
           };
         });
-        protonmail-bridge = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/protonmail-bridge.yaml;
-            namespace = "default";
-            image = "docker.io/heywoodlh/hydroxide:2024_03";
-            nodename = "nix-nvidia";
-            hostfolder = "/opt/hydroxide";
-            replicas = 1;
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "protonmail-bridge";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        protonmail-bridge = mkKubeDrv "protonmail-bridge" {
+          src = ./templates/protonmail-bridge.yaml;
+          namespace = "default";
+          image = "docker.io/heywoodlh/hydroxide:2024_03";
+          nodename = "nix-nvidia";
+          hostfolder = "/opt/hydroxide";
+          replicas = 1;
         };
-        redlib = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/redlib.yaml;
-            namespace = "default";
-            port = 80;
-            replicas = 1;
-            image = "quay.io/redlib/redlib:latest";
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "teddit";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        redlib = mkKubeDrv "redlib" {
+          src = ./templates/redlib.yaml;
+          namespace = "default";
+          port = 80;
+          replicas = 1;
+          image = "quay.io/redlib/redlib:latest";
         };
-        regexr = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/regexr.yaml;
-            namespace = "regexr";
-            image = "docker.io/heywoodlh/regexr:1e38271";
-            replicas = 1;
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "regexr";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        regexr = mkKubeDrv "regexr" {
+          src = ./templates/regexr.yaml;
+          namespace = "regexr";
+          image = "docker.io/heywoodlh/regexr:1e38271";
+          replicas = 1;
         };
-        retroarcher = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/retroarcher.yaml;
-            namespace = "default";
-            image = "docker.io/lizardbyte/retroarcher:v2024.210.22900";
-            nodename = "nix-nvidia";
-            hostfolder = "/opt/retroarcher";
-            replicas = 1;
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "rustdesk";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        retroarcher = mkKubeDrv "retroarcher" {
+          src = ./templates/retroarcher.yaml;
+          namespace = "default";
+          image = "docker.io/lizardbyte/retroarcher:v2024.210.22900";
+          nodename = "nix-nvidia";
+          hostfolder = "/opt/retroarcher";
+          replicas = 1;
         };
-        rook-ceph = (kubelib.buildHelmChart {
-          name = "rook-ceph";
-          chart = (nixhelm.charts { inherit pkgs; }).rook-release.rook-ceph;
-          namespace = "kube-system";
-          values = {
-            image = {
-              repository = "docker.io/rook/ceph";
-              tag = "v1.14.3";
-            };
-          };
-        });
-        rsshub = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/rsshub.yaml;
-            namespace = "default";
-            replicas = 1;
-            image = "docker.io/diygod/rsshub:2024-02-19";
-            browserless_image = "docker.io/browserless/chrome:1.61-puppeteer-13.1.3";
-            browserless_replicas = 1;
-            redis_image = "docker.io/redis:7.2.4";
-            redis_replicas = 1;
-            nodename = "nix-nvidia";
-            hostfolder = "/opt/rsshub";
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "rsshub";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        rsshub = mkKubeDrv "rsshub" {
+          src = ./templates/rsshub.yaml;
+          namespace = "default";
+          replicas = 1;
+          image = "docker.io/diygod/rsshub:2024-02-19";
+          browserless_image = "docker.io/browserless/chrome:1.61-puppeteer-13.1.3";
+          browserless_replicas = 1;
+          redis_image = "docker.io/redis:7.2.4";
+          redis_replicas = 1;
+          nodename = "nix-nvidia";
+          hostfolder = "/opt/rsshub";
         };
-        rustdesk = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/rustdesk.yaml;
-            namespace = "default";
-            image = "docker.io/rustdesk/rustdesk-server:1.1.10-3";
-            nodename = "nix-nvidia";
-            hostfolder = "/opt/rustdesk";
-            replicas = 1;
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "rustdesk";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        rustdesk = mkKubeDrv "rustdesk" {
+          src = ./templates/rustdesk.yaml;
+          namespace = "default";
+          image = "docker.io/rustdesk/rustdesk-server:1.1.10-3";
+          nodename = "nix-nvidia";
+          hostfolder = "/opt/rustdesk";
+          replicas = 1;
         };
-        squid = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/squid.yaml;
-            namespace = "default";
-            image = "docker.io/heywoodlh/squid:5.7";
-            nodename = "nix-nvidia";
-            hostfolder = "/opt/squid";
-            replicas = 1;
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "squid";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        squid = mkKubeDrv "squid" {
+          src = ./templates/squid.yaml;
+          namespace = "default";
+          image = "docker.io/heywoodlh/squid:5.7";
+          nodename = "nix-nvidia";
+          hostfolder = "/opt/squid";
+          replicas = 1;
         };
-        syncthing = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/syncthing.yaml;
-            namespace = "syncthing";
-            nodename = "nix-nvidia";
-            hostfolder = "/opt/syncthing";
-            image = "docker.io/syncthing/syncthing:1.27.4";
-            replicas = 1;
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "syncthing";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        syncthing = mkKubeDrv "syncthing" {
+          src = ./templates/syncthing.yaml;
+          namespace = "syncthing";
+          nodename = "nix-nvidia";
+          hostfolder = "/opt/syncthing";
+          image = "docker.io/syncthing/syncthing:1.27.4";
+          replicas = 1;
         };
-        tailscale-operator = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/tailscale-operator.yaml;
-            operator_image = "docker.io/tailscale/k8s-operator:v1.64.2";
-            proxy_image = "docker.io/tailscale/tailscale:v1.64.2";
-            replicas = 1;
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "tailscale";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        tailscale-operator = mkKubeDrv "tailscale-operator" {
+          src = ./templates/tailscale-operator.yaml;
+          operator_image = "docker.io/tailscale/k8s-operator:v1.64.2";
+          proxy_image = "docker.io/tailscale/tailscale:v1.64.2";
+          replicas = 1;
         };
-        uptime = let
-          yaml = pkgs.substituteAll ({
-            src = ./templates/uptime.yaml;
-            namespace = "monitoring";
-            replicas = 1;
-            image = "docker.io/heywoodlh/bash-uptime:0.0.4";
-            ntfy_url = "http://ntfy.default/uptime-notifications";
-          });
-        in pkgs.stdenv.mkDerivation {
-          name = "uptime";
-          phases = [ "installPhase" ];
-          installPhase = ''
-            cp ${yaml} $out
-          '';
+        uptime = mkKubeDrv "uptime" {
+          src = ./templates/uptime.yaml;
+          namespace = "monitoring";
+          replicas = 1;
+          image = "docker.io/heywoodlh/bash-uptime:0.0.4";
+          ntfy_url = "http://ntfy.default/uptime-notifications";
         };
       };
       devShell = pkgs.mkShell {

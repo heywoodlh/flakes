@@ -137,22 +137,6 @@
         "type": "github"
       }
     },
-    "github-actions-runner-helm": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1707745629,
-        "narHash": "sha256-F3jbhe9qLod1uZvj80aJX3eVHIO0/uqIcx+S2lEq14Y=",
-        "owner": "actions",
-        "repo": "actions-runner-controller",
-        "rev": "9fba37540a5dab4bb20ce2d931fa298ad5f132d4",
-        "type": "github"
-      },
-      "original": {
-        "owner": "actions",
-        "repo": "actions-runner-controller",
-        "type": "github"
-      }
-    },
     "minecraft-helm": {
       "flake": false,
       "locked": {
@@ -386,7 +370,6 @@
         "cloudflared-helm": "cloudflared-helm",
         "coredns": "coredns",
         "flake-utils": "flake-utils",
-        "github-actions-runner-helm": "github-actions-runner-helm",
         "minecraft-helm": "minecraft-helm",
         "nfs-helm": "nfs-helm",
         "nix-kube-generators": "nix-kube-generators",
