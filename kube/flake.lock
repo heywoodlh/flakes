@@ -16,6 +16,22 @@
         "type": "github"
       }
     },
+    "coredns": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1714377582,
+        "narHash": "sha256-AmEksd3K1ar6rlX/pvY+uM4h99/dCLGHae6q2fqMdVY=",
+        "owner": "coredns",
+        "repo": "helm",
+        "rev": "3d3dc535ae8fb9dbb8056ccb3b3f1890daad268d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "coredns",
+        "repo": "helm",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -368,6 +384,7 @@
     "root": {
       "inputs": {
         "cloudflared-helm": "cloudflared-helm",
+        "coredns": "coredns",
         "flake-utils": "flake-utils",
         "github-actions-runner-helm": "github-actions-runner-helm",
         "minecraft-helm": "minecraft-helm",

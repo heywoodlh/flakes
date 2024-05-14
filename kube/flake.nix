@@ -32,6 +32,10 @@
       flake = false;
     };
     op-scripts.url = "github:heywoodlh/flakes?dir=1password";
+    coredns = {
+      url = "github:coredns/helm";
+      flake = false;
+    };
   };
 
   outputs = inputs @ {
@@ -47,7 +51,8 @@
     truecharts-helm,
     github-actions-runner-helm,
     open-webui,
-    op-scripts
+    op-scripts,
+    coredns
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs {
@@ -248,6 +253,22 @@
             cp ${yaml} $out
           '';
         };
+        "coredns" = (kubelib.buildHelmChart {
+          name = "coredns";
+          chart = "${coredns}/charts/coredns";
+          namespace = "default";
+          values = {
+            image = {
+              repository = "docker.io/coredns/coredns";
+              tag = "1.11.1";
+            };
+            service = {
+              name = "coredns-external";
+              clusterIP = "10.96.0.15";
+            };
+            isClusterService = false;
+          };
+        });
         dns-autoscaler = let
           yaml = pkgs.substituteAll ({
             src = ./templates/dns-autoscaler.yaml;
