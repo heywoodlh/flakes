@@ -301,7 +301,7 @@
             src = ./templates/grafana.yaml;
             namespace = "monitoring";
             image = "docker.io/grafana/grafana:10.3.1";
-            storageclass = "local-path";
+            storageclass = "longhorn";
           });
         in pkgs.stdenv.mkDerivation {
           name = "grafana";

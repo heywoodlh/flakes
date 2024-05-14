@@ -1,4 +1,15 @@
 ---
+apiVersion: onepassword.com/v1
+kind: OnePasswordItem
+metadata:
+  annotations:
+  finalizers:
+  - onepassword.com/finalizer.secret
+  name: grafana-admin
+  namespace: monitoring
+spec:
+  itemPath: vaults/Kubernetes/items/67u6atuq2sypmkjlzbxmcetuxy
+---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
