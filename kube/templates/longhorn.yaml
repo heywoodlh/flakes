@@ -4,6 +4,13 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: longhorn-system
+  labels:
+    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/enforce-version: latest
+    pod-security.kubernetes.io/audit: privileged
+    pod-security.kubernetes.io/audit-version: latest
+    pod-security.kubernetes.io/warn: privileged
+    pod-security.kubernetes.io/warn-version: latest
 ---
 # Source: longhorn/templates/serviceaccount.yaml
 apiVersion: v1
@@ -4149,6 +4156,10 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
+      tolerations:
+        - key: "cattle.io/os"
+          operator: "Exists"
+          effect: "NoSchedule"
       volumes:
       - name: dev
         hostPath:
@@ -4291,6 +4302,10 @@ spec:
             value: "http://longhorn-backend:9500"
           - name: LONGHORN_UI_PORT
             value: "8000"
+      tolerations:
+        - key: "cattle.io/os"
+          operator: "Exists"
+          effect: "NoSchedule"
       volumes:
       - emptyDir: {}
         name: nginx-cache

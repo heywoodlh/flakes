@@ -399,7 +399,7 @@
           yaml = pkgs.substituteAll ({
             src = ./templates/longhorn.yaml;
             namespace = "longhorn-system";
-            version = "1.5.3";
+            version = "1.5.5";
           });
         in pkgs.stdenv.mkDerivation {
           name = "longhorn";
@@ -707,33 +707,20 @@
             cp ${yaml} $out
           '';
         };
-        # allow tailscale namespace privileged access in talos: kubectl label namespace tailscale pod-security.kubernetes.io/enforce=privileged
-        tailscale-operator = (kubelib.buildHelmChart {
-          name = "tailscale-operator";
-          chart = "${tailscale}/cmd/k8s-operator/deploy/chart";
-          namespace = "tailscale";
-          # oauth configured with this command
-          # k3s-nvidia cluster: nix run .#1password-item -- --name operator-oauth --namespace tailscale --itemPath "vaults/Kubernetes/items/h64xxdshrse2jto2nkdo6nerp4" | kubectl apply -f -
-          # talos cluster: nix run .#1password-item -- --name operator-oauth --namespace tailscale --itemPath "vaults/Kubernetes/items/bwmt642lsbd5drsjcrxxnljkku" | kubectl apply -f -
-          values = {
-            operatorConfig = {
-              image = {
-                repo = "docker.io/tailscale/k8s-operator";
-                tag = "unstable-v1.67";
-              };
-              hostname = "tailscale-operator-talos";
-              logging = "debug";
-            };
-            proxyConfig = {
-              image = {
-                repo = "docker.io/tailscale/tailscale";
-                tag = "unstable-v1.67";
-              };
-              defaultTags = "tag:k8s";
-            };
-            apiServerProxyConfig.mode = "true";
-          };
-        });
+        tailscale-operator = let
+          yaml = pkgs.substituteAll ({
+            src = ./templates/tailscale-operator.yaml;
+            operator_image = "docker.io/tailscale/k8s-operator:v1.64.2";
+            proxy_image = "docker.io/tailscale/tailscale:v1.64.2";
+            replicas = 1;
+          });
+        in pkgs.stdenv.mkDerivation {
+          name = "tailscale";
+          phases = [ "installPhase" ];
+          installPhase = ''
+            cp ${yaml} $out
+          '';
+        };
         uptime = let
           yaml = pkgs.substituteAll ({
             src = ./templates/uptime.yaml;
