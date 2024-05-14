@@ -1,3 +1,26 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ntfy-cache
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: @storageclass@
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ntfy-etc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: @storageclass@
+  resources:
+    requests:
+      storage: 2Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -16,8 +39,6 @@ spec:
       labels:
         app: ntfy
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: @nodename@
       containers:
       - image: @image@
         name: ntfy
@@ -33,20 +54,18 @@ spec:
           mountPath: /etc/ntfy
         env:
           - name: NTFY_BASE_URL
-            value: "http://ntfy.barn-banana.ts.net"
+            value: "@base_url@"
           - name: NTFY_UPSTREAM_BASE_URL
             value: "https://ntfy.sh"
           - name: TZ
-            value: "America/Denver"
+            value: "@timezone@"
       volumes:
       - name: ntfy-cache
-        hostPath:
-          path: @hostfolder@/cache
-          type: Directory
+        persistentVolumeClaim:
+          claimName: ntfy-cache
       - name: ntfy-etc
-        hostPath:
-          path: @hostfolder@/etc
-          type: Directory
+        persistentVolumeClaim:
+          claimName: ntfy-etc
 ---
 apiVersion: v1
 kind: Service
