@@ -34,5 +34,5 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: healthchecks-io
-                    key: kubernetes-cluster-url
+                    key: talos-cluster-url
           restartPolicy: OnFailure
