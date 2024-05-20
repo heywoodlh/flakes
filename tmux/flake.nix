@@ -9,7 +9,11 @@
     let
       pkgs = nixpkgs.legacyPackages.${system};
       myFish = fish-flake.packages.${system}.fish;
-      linuxClip = pkgs.writeShellScript "linux-clip" ''
+      myClip = if pkgs.stdenv.isDarwin then pkgs.writeShellScript "myClip" ''
+        stdin=$(cat)
+
+        /usr/bin/printf "%s" "$stdin" | /usr/bin/pbcopy
+      '' else pkgs.writeShellScript "myClip" ''
         stdin=$(cat)
         env | grep -qE '^WAYLAND' && clipboard_command="${pkgs.wl-clipboard}/bin/wl-copy"
         if env | grep -qE '^DISPLAY'
@@ -20,14 +24,9 @@
         fi
         printf "%s" "$stdin" | $clipboard_command
       '';
-      osConf = if pkgs.stdenv.isDarwin then ''
-        # MacOS config
-        ## Tmux yank
-        run-shell ${pkgs.tmuxPlugins.yank}/share/tmux-plugins/yank/yank.tmux
-      '' else ''
-        # Linux config
+      clipConf = ''
         ## Clipboard
-        bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "${linuxClip}"
+        bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "${myClip}"
       '';
       tmuxConf = pkgs.writeText "tmux.conf" ''
         # Set shell
@@ -92,7 +91,7 @@
         # Status bar
         set -g status off
 
-        ${osConf}
+        ${clipConf}
       '';
     in {
       packages = rec {
