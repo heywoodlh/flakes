@@ -90,7 +90,7 @@
         use-scrollbar=false
         use-trayicon=false
         window-halignment=0
-        window-height=50
+        window-height=80
         window-losefocus=false
         window-refocus=false
         window-tabbar=false
@@ -103,7 +103,7 @@
         split-tab-vertical='<Primary>bar'
 
         [apps/guake/style]
-        cursor-shape=1
+        cursor-shape=0
 
         [apps/guake/style/background]
         transparency=100
@@ -237,7 +237,7 @@
         [org/gnome/shell]
         disable-user-extensions=false
         disabled-extensions=@as ['disabled','ubuntu-dock@ubuntu.com','ding@rastersoft.com','nightthemeswitcher@romainvigier.fr']
-        enabled-extensions=@as ['caffeine@patapon.info','gsconnect@andyholmes.github.io','just-perfection-desktop@just-perfection','native-window-placement@gnome-shell-extensions.gcampax.github.com','pop-shell@system76.com','user-theme@gnome-shell-extensions.gcampax.github.com','switcher@landau.fi','gnomebedtime@ionutbortis.gmail.com','forge@jmmaranan.com']
+        enabled-extensions=@as ['caffeine@patapon.info','gsconnect@andyholmes.github.io','just-perfection-desktop@just-perfection','native-window-placement@gnome-shell-extensions.gcampax.github.com','pop-shell@system76.com','user-theme@gnome-shell-extensions.gcampax.github.com','switcher@landau.fi','gnomebedtime@ionutbortis.gmail.com','forge@jmmaranan.com','hide-cursor@elcste.com']
         favorite-apps=@as ['firefox.desktop','wezterm.desktop']
         had-bluetooth-devices-setup=true
         remember-mount-password=false
@@ -387,6 +387,7 @@
                                "native-window-placement@gnome-shell-extensions.gcampax.github.com"
                                "forge@jmmaranan.com"
                                "switcher@landau.fi"
+                               "hide-cursor@elcste.com"
                                "user-theme@gnome-shell-extensions.gcampax.github.com")
 
         for extension in "''${extensions[@]}"
