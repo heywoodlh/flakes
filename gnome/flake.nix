@@ -236,8 +236,8 @@
 
         [org/gnome/shell]
         disable-user-extensions=false
-        disabled-extensions=@as ['disabled','ubuntu-dock@ubuntu.com','ding@rastersoft.com','nightthemeswitcher@romainvigier.fr']
-        enabled-extensions=@as ['caffeine@patapon.info','gsconnect@andyholmes.github.io','just-perfection-desktop@just-perfection','native-window-placement@gnome-shell-extensions.gcampax.github.com','pop-shell@system76.com','user-theme@gnome-shell-extensions.gcampax.github.com','switcher@landau.fi','gnomebedtime@ionutbortis.gmail.com','forge@jmmaranan.com','hide-cursor@elcste.com']
+        disabled-extensions=@as ['disabled','ubuntu-dock@ubuntu.com','ding@rastersoft.com','nightthemeswitcher@romainvigier.fr','switcher@landau.fi']
+        enabled-extensions=@as ['caffeine@patapon.info','gsconnect@andyholmes.github.io','just-perfection-desktop@just-perfection','native-window-placement@gnome-shell-extensions.gcampax.github.com','pop-shell@system76.com','user-theme@gnome-shell-extensions.gcampax.github.com','gnomebedtime@ionutbortis.gmail.com','forge@jmmaranan.com','hide-cursor@elcste.com']
         favorite-apps=@as ['firefox.desktop','wezterm.desktop']
         had-bluetooth-devices-setup=true
         remember-mount-password=false
@@ -304,10 +304,10 @@
         tile-by-default=true
         tile-enter=@as ['disabled']
 
-        [org/gnome/shell/extensions/switcher]
-        font-size=uint32 24
-        max-width-percentage=uint32 48
-        show-switcher=@as ['<Super>space']
+        #[org/gnome/shell/extensions/switcher]
+        #font-size=uint32 24
+        #max-width-percentage=uint32 48
+        #show-switcher=@as ['<Super>space']
 
         [org/gnome/shell/extensions/user-theme]
         name='Nordic-darker'
@@ -317,6 +317,7 @@
         switch-to-application-2='disabled'
         switch-to-application-3='disabled'
         switch-to-application-4='disabled'
+        toggle-overview=['<Super>space']
 
         [org/gnome/terminal/legacy]
         default-show-menubar=false
@@ -386,7 +387,6 @@
                                "just-perfection-desktop@just-perfection"
                                "native-window-placement@gnome-shell-extensions.gcampax.github.com"
                                "forge@jmmaranan.com"
-                               "switcher@landau.fi"
                                "hide-cursor@elcste.com"
                                "user-theme@gnome-shell-extensions.gcampax.github.com")
 
