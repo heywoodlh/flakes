@@ -304,10 +304,10 @@
         tile-by-default=true
         tile-enter=@as ['disabled']
 
-        #[org/gnome/shell/extensions/switcher]
-        #font-size=uint32 24
-        #max-width-percentage=uint32 48
-        #show-switcher=@as ['<Super>space']
+        [org/gnome/shell/extensions/switcher]
+        font-size=uint32 24
+        max-width-percentage=uint32 48
+        show-switcher=@as ['<Super>space']
 
         [org/gnome/shell/extensions/user-theme]
         name='Nordic-darker'
