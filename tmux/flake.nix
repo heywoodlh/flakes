@@ -4,7 +4,7 @@
   inputs.flake-utils.url = "github:numtide/flake-utils";
   inputs.fish-flake.url = "github:heywoodlh/flakes?dir=fish";
 
-  outputs = { self, nixpkgs, flake-utils, fish-flake }:
+  outputs = { self, nixpkgs, flake-utils, fish-flake, }:
     flake-utils.lib.eachDefaultSystem (system:
     let
       pkgs = nixpkgs.legacyPackages.${system};
@@ -27,10 +27,30 @@
       clipConf = ''
         ## Clipboard
         bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "${myClip}"
+        bind -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "${myClip}"
+      '';
+      nordTmux = pkgs.writeShellScript "nord.tmux" ''
+        ${pkgs.tmux}/bin/tmux set-option -g mode-style 'bg=brightblack, fg=cyan'
+        ${pkgs.tmux}/bin/tmux set-option -g message-style 'bg=brightblack, fg=cyan'
+
+        ${pkgs.tmux}/bin/tmux set-option -g status-justify centre
+        ${pkgs.tmux}/bin/tmux set-option -g status-style "bg=brightblack"
+        ${pkgs.tmux}/bin/tmux set-option -g status-left ' #S #[fg=cyan, bg=brightblack] '
+        ${pkgs.tmux}/bin/tmux set-option -g status-left-style "bg=cyan,fg=black"
+
+        ${pkgs.tmux}/bin/tmux set-option -g status-right "#[fg=cyan, bg=brightblack] #[fg=brightblack, bg=cyan] %d/%m %R "
+        ${pkgs.tmux}/bin/tmux set-option -g status-right-style "bg=brightblack,fg=cyan"
+
+        ${pkgs.tmux}/bin/tmux set-window-option -g window-status-format ' #I:#W '
+        ${pkgs.tmux}/bin/tmux set-window-option -g window-status-style "bg=black"
+        ${pkgs.tmux}/bin/tmux set-window-option -g window-status-current-format '#[bold] #I:#W '
+        ${pkgs.tmux}/bin/tmux set-window-option -g window-status-current-style "bg=cyan,fg=black"
+        ${pkgs.tmux}/bin/tmux set-window-option -g window-status-separator ''''''
       '';
       tmuxConf = pkgs.writeText "tmux.conf" ''
         # Set shell
         set -g default-shell ${myFish}/bin/fish
+        run-shell ${nordTmux}
         # Change default prefix key to C-a, similar to screen
         unbind-key C-b
         set-option -g prefix C-a
@@ -87,9 +107,6 @@
         bind a send-prefix
         # vim-selection
         bind-key -T copy-mode-vi 'v' send-keys -X begin-selection
-
-        # Status bar
-        set -g status off
 
         ${clipConf}
       '';
