@@ -99,6 +99,8 @@
         [apps/guake/keybindings/local]
         focus-terminal-left='<Primary>braceleft'
         focus-terminal-right='<Primary>braceright'
+        next-tab='<Primary><Shift>braceright'
+        previous-tab='<Primary><Shift>braceleft'
         split-tab-horizontal='<Primary>underscore'
         split-tab-vertical='<Primary>bar'
 
