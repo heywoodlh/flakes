@@ -13,10 +13,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.fish-flake.follows = "fish-flake";
     };
-    helix-flake = {
-      url = "./helix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     git-flake = {
       url = "./git";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -85,7 +81,6 @@
     fish-flake,
     git-flake,
     nushell-flake,
-    helix-flake,
     vim-flake,
     tmux-flake,
     vscode-flake,
@@ -124,7 +119,6 @@
         chromium-widevine = chromium-widevine-flake.packages.aarch64-linux.chromium-widevine;
         gnome = gnome-flake.packages.${system}.gnome-desktop-setup;
         gnome-dconf = gnome-flake.packages.${system}.dconf;
-        helix = helix-flake.packages.${system}.helix;
       };
       formatter = pkgs.alejandra;
     });
