@@ -19,14 +19,14 @@
         fi
         if [[ ! -e "$FIREFOX_DIR/setup.txt"  ]]
         then
-          rm -rf "$FIREFOX_DIR"
-          mkdir -p "$(dirname $FIREFOX_DIR)"
+          ${pkgs.coreutils}/bin/rm -rf "$FIREFOX_DIR"
+          ${pkgs.coreutils}/bin/mkdir -p "$(${pkgs.coreutils}/bin/dirname $FIREFOX_DIR)"
           if [[ ! -d "$FIREFOX_DIR" ]]
           then
-            cp -rL ${heywoodlh-profile} "$FIREFOX_DIR"
+            ${pkgs.coreutils}/bin/cp -rL ${heywoodlh-profile} "$FIREFOX_DIR"
           fi
           ${pkgs.coreutils}/bin/chmod -R a-x,a=rX,u+w "$FIREFOX_DIR"
-          touch "$FIREFOX_DIR/setup.txt"
+          ${pkgs.coreutils}/bin/touch "$FIREFOX_DIR/setup.txt"
         fi
       '';
     in {
@@ -34,13 +34,13 @@
         firefox-setup = firefox-setup-script;
         firefox-wrapper = pkgs.writeShellScriptBin "firefox" ''
             ${firefox-setup-script}/bin/firefox-setup "$HOME/.local/share/firefox/heywoodlh"
-            if ! which firefox > /dev/null
+            if ! ${pkgs.which}/bin/which firefox > /dev/null
             then
               FIREFOX_BIN="${pkgs.firefox}/bin/firefox"
             else
-              FIREFOX_BIN=$(which firefox)
+              FIREFOX_BIN=$(${pkgs.which}/bin/which firefox)
             fi
-            "$FIREFOX_BIN" --new-instance --profile "$PROFILE_DIR" $@
+            "$FIREFOX_BIN" --new-instance --profile "$FIREFOX_DIR" $@
           '';
         default = firefox-wrapper;
         };
