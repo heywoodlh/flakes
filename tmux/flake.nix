@@ -113,6 +113,8 @@
     in {
       packages = rec {
         tmux = pkgs.writeShellScriptBin "tmux" ''
+            # Include BASH (for appimage to work properly)
+            PATH=${pkgs.bash}/bin:$PATH
             ${pkgs.tmux}/bin/tmux -f ${tmuxConf} $@
           '';
         default = tmux;
