@@ -269,7 +269,7 @@
         hot-corner=false
         notification-banner-position=2
         osd=false
-        panel=false
+        panel=true
         panel-arrow=true
         panel-corner-size=1
         panel-in-overview=true
