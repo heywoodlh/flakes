@@ -6,7 +6,6 @@ let
     ./ale.nix
     ./base16-vim.nix
     ./colorizer.nix
-    ./copilot.nix
     ./fish.nix
     ./fugitive.nix
     ./git.nix
@@ -15,6 +14,7 @@ let
     ./indentline.nix
     ./json.nix
     ./lastplace.nix
+    ./llm.nix
     ./nerdtree.nix
     ./nord.nix
     ./sensible.nix
