@@ -388,7 +388,8 @@
                                "native-window-placement@gnome-shell-extensions.gcampax.github.com"
                                "forge@jmmaranan.com"
                                "hide-cursor@elcste.com"
-                               "user-theme@gnome-shell-extensions.gcampax.github.com")
+                               "user-theme@gnome-shell-extensions.gcampax.github.com"
+                               "openbar@neuromorph")
 
         for extension in "''${extensions[@]}"
         do
