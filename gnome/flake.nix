@@ -309,6 +309,25 @@
         max-width-percentage=uint32 48
         show-switcher=@as ['<Super>space']
 
+        [org/gnome/shell/extensions/openbar]
+        apply-all-shell=false
+        autohg-bar=false
+        bcolor=['0.1568627506494522', '0.16470588743686676', '0.21176470816135406']
+        bgcolor=['0.1568627506494522', '0.16470588743686676', '0.21176470816135406']
+        candybar=true
+        dark-bcolor=['0.1568627506494522', '0.16470588743686676', '0.21176470816135406']
+        dark-bgcolor=['0.1568627506494522', '0.16470588743686676', '0.21176470816135406']
+        dark-hcolor=['0.1568627506494522', '0.16470588743686676', '0.21176470816135406']
+        dborder=false
+        default-font='Sans 12'
+        dshadow=false
+        hcolor=['0.1568627506494522', '0.16470588743686676', '0.21176470816135406']
+        heffect=false
+        height=30.0
+        neon=false
+        reloadstyle=true
+        trigger-reload=true
+
         [org/gnome/shell/extensions/user-theme]
         name='Nordic-darker'
 
