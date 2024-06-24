@@ -51,6 +51,9 @@
         end
       '';
       fish_config = pkgs.writeText "profile.fish" ''
+        # Source default nix profile if exists
+        test -e /nix/var/nix/profiles/default/etc/profile.d/nix.fish && source /nix/var/nix/profiles/default/etc/profile.d/nix.fish || true
+
         fish_config theme choose Nord
         set fish_greeting ""
 
@@ -116,13 +119,18 @@
         source ${./nix.fish}
         source ${aws_config}
 
+        mkdir -p ~/.config/fish
+
+        # Use host-specific configs if they exist
+        test -e ~/.config/fish/machine.fish && source ~/.config/fish/machine.fish || true
+
         # Always re-source ~/.config/fish/config.fish last
         # Prioritize local config
-        mkdir -p ~/.config/fish
         test -e ~/.config/fish/config.fish && source ~/.config/fish/config.fish
 
         # Use custom config if exists
         test -e ~/.config/fish/custom.fish && source ~/.config/fish/custom.fish || true
+
       '';
     in {
       packages = rec {
