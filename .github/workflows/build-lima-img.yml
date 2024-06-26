@@ -1,0 +1,50 @@
+name: build-nixos-lima-img
+
+on:
+  schedule:
+        - cron: "45 5 * * Sun"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Install qemu-user-static
+        run: |
+          DEBIAN_FRONTEND=noninteractive
+          sudo apt-get update -q -y && sudo apt-get install -q -y qemu-user-static
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v27
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+          extra_nix_config: |
+            system-features = kvm x86_64-linux aarch64-linux
+            extra-platforms = aarch64-linux
+
+      - name: Build images
+        run: |
+          cd ./nixos-lima
+          # Ensure build uses latest nixpkgs
+          nix flake update
+          nix build -o ./x86_64-img .#img
+          cp ./x86_64-img/nixos.img nixos-unstable-x86_64.img
+          nix build --system aarch64-linux -o ./arm64-img .#packages.aarch64-linux.img
+          cp ./arm64-img/nixos.img nixos-unstable-aarch64.img
+
+      - name: Push images to my share
+        env:
+          WEBDAV_USER: ${{ secrets.WEBDAV_USER }}
+          WEBDAV_PASSWORD: ${{ secrets.WEBDAV_PASSWORD }}
+          WEBDAV_ENDPOINT: ${{ secrets.WEBDAV_ENDPOINT }}
+        run: |
+          for file in *.img
+          do
+            curl --user "$WEBDAV_USER:$WEBDAV_PASSWORD" -T "$file" "$WEBDAV_ENDPOINT/os/$file"
+          done
