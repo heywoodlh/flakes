@@ -303,7 +303,7 @@
         open-webui = mkKubeDrv "open-webui" {
           src = ./templates/open-webui.yaml;
           namespace = "open-webui";
-          ollama_image = "docker.io/ollama/ollama:0.1.28";
+          ollama_image = "docker.io/ollama/ollama:0.1.48";
           webui_image = "ghcr.io/open-webui/open-webui:git-1b91e7f";
           hostfolder = "/opt/open-webui";
         };
