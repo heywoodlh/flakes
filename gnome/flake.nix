@@ -244,7 +244,7 @@
         welcome-dialog-last-shown-version='42.4'
 
         [org/gnome/shell/extensions/bedtime-mode]
-        bedtime-mode-active=true
+        bedtime-mode-active=false
         color-tone-factor=80
 
         [org/gnome/shell/extensions/forge]
@@ -314,7 +314,7 @@
         autohg-bar=false
         bcolor=['0.1568627506494522', '0.16470588743686676', '0.21176470816135406']
         bgcolor=['0.1568627506494522', '0.16470588743686676', '0.21176470816135406']
-        candybar=true
+        candybar=false
         dark-bcolor=['0.1568627506494522', '0.16470588743686676', '0.21176470816135406']
         dark-bgcolor=['0.1568627506494522', '0.16470588743686676', '0.21176470816135406']
         dark-hcolor=['0.1568627506494522', '0.16470588743686676', '0.21176470816135406']
@@ -327,6 +327,63 @@
         neon=false
         reloadstyle=true
         trigger-reload=true
+        bartype='Islands'
+        bcolor=['0.1568627506494522', '0.16470588743686676', '0.21176470816135406']
+        dark-bcolor=['0.1568627506494522', '0.16470588743686676', '0.21176470816135406']
+        dark-bgcolor=['0.1568627506494522', '0.16470588743686676', '0.21176470816135406']
+        dark-hcolor=['0.46666666865348816', '0.4627451002597809', '0.48235294222831726']
+        dark-iscolor=['0.2980392277240753', '0.33725494146347046', '0.4156862795352936']
+        dark-palette1=['44', '44', '52']
+        dark-palette10=['140', '140', '148']
+        dark-palette11=['92', '100', '100']
+        dark-palette12=['140', '148', '148']
+        dark-palette2=['237', '238', '237']
+        dark-palette3=['116', '117', '121']
+        dark-palette4=['66', '67', '76']
+        dark-palette5=['79', '81', '88']
+        dark-palette6=['60', '60', '68']
+        dark-palette7=['91', '92', '100']
+        dark-palette8=['148', '148', '149']
+        dark-palette9=['68', '76', '84']
+        dborder=false
+        default-font='Sans 12'
+        dshadow=false
+        gradient=false
+        gradient-direction='vertical'
+        hcolor=['0.46666666865348816', '0.4627451002597809', '0.48235294222831726']
+        heffect=false
+        height=35.0
+        iscolor=['0.2980392277240753', '0.33725494146347046', '0.4156862795352936']
+        light-palette1=['44', '44', '52']
+        light-palette10=['140', '140', '148']
+        light-palette11=['92', '100', '100']
+        light-palette12=['140', '148', '148']
+        light-palette2=['237', '238', '237']
+        light-palette3=['116', '117', '121']
+        light-palette4=['66', '67', '76']
+        light-palette5=['79', '81', '88']
+        light-palette6=['60', '60', '68']
+        light-palette7=['91', '92', '100']
+        light-palette8=['148', '148', '149']
+        light-palette9=['68', '76', '84']
+        margin=3.0
+        neon=false
+        palette1=['44', '44', '52']
+        palette10=['140', '140', '148']
+        palette11=['92', '100', '100']
+        palette12=['140', '148', '148']
+        palette2=['237', '238', '237']
+        palette3=['116', '117', '121']
+        palette4=['66', '67', '76']
+        palette5=['79', '81', '88']
+        palette6=['60', '60', '68']
+        palette7=['91', '92', '100']
+        palette8=['148', '148', '149']
+        palette9=['68', '76', '84']
+        reloadstyle=false
+        set-fullscreen=false
+        set-overview=false
+        trigger-reload=false
 
         [org/gnome/shell/extensions/user-theme]
         name='Nordic-darker'
