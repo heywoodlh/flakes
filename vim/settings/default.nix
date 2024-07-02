@@ -16,7 +16,7 @@ let
     ./lastplace.nix
     ./llm.nix
     ./nerdtree.nix
-    ./nord.nix
+    ./theme.nix
     ./sensible.nix
     ./betterwhitespace.nix
     ./shell.nix
