@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: [self-hosted, linux, x64]
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,19 +20,18 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
         with:
-          init: none
           extra-conf: |
             substituters = https://cache.nixos.org/
             system-features = kvm x86_64-linux aarch64-linux
             extra-platforms = aarch64-linux
 
+      - name: Setup Nix Magic Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+
       - name: Build images
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          chmod o+rx /home/docker
-          sudo chown -R docker: /nix
-          sudo groupadd --gid 131 nix || true
           cd ./nixos-lima
           export NIX_CONFIG="access-tokens = github.com=$GITHUB_TOKEN"
           # Ensure build uses latest nixpkgs
