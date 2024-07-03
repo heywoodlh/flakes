@@ -26,14 +26,10 @@
           ];
           format = "raw-efi";
         };
-        imageLocation = if pkgs.stdenv.isLinux then
-          "${nixosImage}/nixos.img"
-          else
-          "https://files.heywoodlh.io/os/nixos-unstable-${arch}.img";
         nixosYaml = pkgs.writeText "nixos.yaml" ''
           arch: "${arch}"
           images:
-            - location: "${imageLocation}"
+            - location: "~/.local/lima/nixos.img"
               arch: "${arch}"
           cpus: 2
           mounts:
@@ -51,14 +47,45 @@
             system: false
             user: false
         '';
+        unbuiltYaml = pkgs.writeText "nixos.yaml" ''
+          arch: "${arch}"
+          images:
+            - location: "https://files.heywoodlh.io/os/nixos-unstable-${arch}.img"
+              arch: "${arch}"
+          cpus: 2
+          mounts:
+          - location: "~"
+            writable: true
+            9p:
+              # Try choosing "mmap" or "none" if you see a stability issue with the default "fscache".
+              cache: "mmap"
+          - location: "/tmp/lima"
+            writable: true
+            9p:
+              cache: "mmap"
+          mountType: "9p"
+          containerd:
+            system: false
+            user: false
+        '';
+        postRun = ''
+          ${pkgs.lima}/bin/limactl shell nixos
+        '';
       in
       {
         packages = rec {
           img = nixosImage;
           runVm = pkgs.writeShellScriptBin "nixos.sh" ''
-            ${pkgs.lima}/bin/limactl start --name=default ${nixosYaml}
+            mkdir -p ~/.local/lima/
+            [[ -e ~/.local/lima/nixos.img ]] || cp ${nixosImage}/nixos.img ~/.local/lima/nixos.img
+            ${pkgs.lima}/bin/limactl start --name=nixos ${nixosYaml}
+            ${postRun}
           '';
-          default = img;
+          runPrebuiltVm = pkgs.writeShellScriptBin "nixos.sh" ''
+            ${pkgs.lima}/bin/limactl start --name=nixos ${unbuiltYaml}
+            ${postRun}
+          '';
+          default = runVm;
         };
       }) // {
         nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
