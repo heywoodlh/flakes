@@ -1,4 +1,4 @@
-{ pkgs, myFish, ...}:
+{ callPackage, ...}:
 
 let
   modFiles = [
@@ -6,7 +6,6 @@ let
     ./ale.nix
     ./base16-vim.nix
     ./colorizer.nix
-    ./fish.nix
     ./fugitive.nix
     ./git.nix
     ./gitgutter.nix
@@ -20,7 +19,6 @@ let
     ./sensible.nix
     ./betterwhitespace.nix
     ./shell.nix
-    ./term.nix
     ./os-specific.nix
     ./vim-pets.nix
     ./localvimrc.nix
@@ -28,5 +26,5 @@ let
     ./vimrc.nix
   ];
 
-  importModFile = f: pkgs.callPackage f { inherit myFish; };
+  importModFile = f: callPackage f {};
 in map importModFile modFiles
