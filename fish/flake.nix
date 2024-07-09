@@ -51,6 +51,18 @@
         end
       '';
       fish_config = pkgs.writeText "profile.fish" ''
+        # Function to add a directory to $PATH
+        # Only if exists
+        function add-to-path
+            if not contains $argv[1] $PATH
+                set -gx PATH $argv[1] $PATH
+            end
+        end
+
+        # Special stuff for appimage to work
+        add-to-path ${pkgs.coreutils}/bin
+        add-to-path ${pkgs.ncurses5}/bin
+
         # Source default nix profile if exists
         test -e /nix/var/nix/profiles/default/etc/profile.d/nix.fish && source /nix/var/nix/profiles/default/etc/profile.d/nix.fish || true
 
@@ -77,14 +89,6 @@
         # Add ~/bin to $PATH (ALWAYS)
         if not contains $HOME/bin $PATH
             set -gx PATH $HOME/bin $PATH
-        end
-
-        # Function to add a directory to $PATH
-        # Only if exists
-        function add-to-path
-            if not contains $argv[1] $PATH
-                set -gx PATH $argv[1] $PATH
-            end
         end
 
         # Ensure nix-darwin system is added to path
