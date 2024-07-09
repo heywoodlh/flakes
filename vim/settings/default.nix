@@ -20,6 +20,7 @@ let
     ./sensible.nix
     ./betterwhitespace.nix
     ./shell.nix
+    ./term.nix
     ./os-specific.nix
     ./vim-pets.nix
     ./localvimrc.nix
