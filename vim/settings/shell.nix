@@ -1,4 +1,4 @@
-{ vimPlugins, fish, starship, direnv, writeText, writeShellScriptBin, ... }:
+{ vimPlugins, writeText, writeShellScriptBin, fish, starship, direnv, coreutils, ncurses5, ... }:
 
 let
   starship_config = writeText "starship.toml" ''
@@ -24,12 +24,19 @@ let
     add-to-path /run/current-system/sw/bin
     add-to-path /opt/homebrew/bin
 
+    # Special stuff for appimage to work
+    add-to-path ${coreutils}/bin
+    add-to-path ${ncurses5}/bin
+
     # Starship
     set -gx STARSHIP_CONFIG "${starship_config}"
     ${starship}/bin/starship init fish | source
 
     # Direnv
     eval (${direnv}/bin/direnv hook fish)
+
+    fish_config theme choose Nord
+    set fish_greeting ""
   '';
   fish_bin = writeShellScriptBin "fish" ''
     ${fish}/bin/fish --init-command="source ${fish_config}" $@
