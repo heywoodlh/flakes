@@ -11,7 +11,6 @@
     vim-flake = {
       url = "./vim";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.fish-flake.follows = "fish-flake";
     };
     git-flake = {
       url = "./git";
