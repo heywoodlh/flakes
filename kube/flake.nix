@@ -346,9 +346,9 @@
         protonmail-bridge = mkKubeDrv "protonmail-bridge" {
           src = ./templates/protonmail-bridge.yaml;
           namespace = "default";
-          image = "docker.io/heywoodlh/hydroxide:2024_03";
+          image = "docker.io/shenxn/protonmail-bridge:3.12.0-1";
           nodename = "nix-nvidia";
-          hostfolder = "/opt/hydroxide";
+          hostfolder = "/opt/protonmail-bridge";
           replicas = 1;
         };
         redlib = mkKubeDrv "redlib" {

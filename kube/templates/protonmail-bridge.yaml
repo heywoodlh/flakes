@@ -21,16 +21,6 @@ spec:
       containers:
       - image: @image@
         name: protonmail-bridge
-        command: ["hydroxide"]
-        args: [
-          "-imap-host", "0.0.0.0",
-          "-imap-port", "143",
-          "-smtp-host", "0.0.0.0",
-          "-smtp-port", "25",
-          "-carddav-host", "0.0.0.0",
-          "-carddav-port", "8080",
-          "serve"
-        ]
         ports:
         - name: smtp
           containerPort: 25
@@ -40,7 +30,7 @@ spec:
           containerPort: 8080
         volumeMounts:
         - name: protonmail-bridge-data
-          mountPath: /root/.config/hydroxide
+          mountPath: /root/
       volumes:
       - name: protonmail-bridge-data
         hostPath:
