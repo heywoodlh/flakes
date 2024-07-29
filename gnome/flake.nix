@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-23.11"; # pinned for gnome-extensions-cli instability
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05"; # pinned for gnome-extensions-cli instability
     flake-utils.url = "github:numtide/flake-utils";
     fish-flake = {
       url = "github:heywoodlh/flakes?dir=fish";
@@ -226,7 +226,7 @@
 
         [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7]
         binding='<Control>grave'
-        command='${pkgs.guake}/bin/guake'
+        command='${stable-pkgs.guake}/bin/guake'
         name='guake'
 
         [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8]

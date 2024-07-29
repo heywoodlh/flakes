@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
     flake-utils.url = "github:numtide/flake-utils";
     fish-flake = {
       url = "./fish";
@@ -67,6 +68,7 @@
     gnome-flake = {
       url = "./gnome";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs-stable.follows = "nixpkgs-stable";
       inputs.fish-flake.follows = "fish-flake";
       inputs.tmux-flake.follows = "tmux-flake";
       inputs.vim-flake.follows = "vim-flake";
@@ -76,6 +78,7 @@
   outputs = inputs @ {
     self,
     nixpkgs,
+    nixpkgs-stable,
     flake-utils,
     fish-flake,
     git-flake,
