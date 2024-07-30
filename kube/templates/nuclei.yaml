@@ -119,9 +119,12 @@ spec:
           serviceAccountName: nuclei
           containers:
           - name: nuclei-target-updater
-            image: "docker.io/heywoodlh/k8s-service-scanner:latest"
+            image: "docker.io/heywoodlh/k8s-service-scanner:0.1.1"
             imagePullPolicy: IfNotPresent
             command: ["/bin/bash", "-c"]
+            env:
+            - name: EXTRA_TARGETS
+              value: "100.64.0.0/10,192.168.50.0/24,10.0.50.0/24"
             args: [
               "/entrypoint | sort -u | tee /out/target-list.txt && kubectl create configmap -n @namespace@ nuclei-target-list --from-file=/out/target-list.txt --dry-run=client -o yaml | kubectl apply -f -"
             ]
