@@ -287,7 +287,6 @@
           src = ./templates/ntfy.yaml;
           namespace = "default";
           image = "docker.io/binwiederhier/ntfy:v2.9.0";
-          storageclass = "longhorn";
           base_url = "http://ntfy.barn-banana.ts.net";
           timezone = "America/Denver";
           replicas = 1;

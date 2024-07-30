@@ -5,7 +5,6 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: @storageclass@
   resources:
     requests:
       storage: 2Gi
@@ -17,7 +16,6 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: @storageclass@
   resources:
     requests:
       storage: 2Gi
