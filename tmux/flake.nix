@@ -109,6 +109,9 @@
         bind-key -T copy-mode-vi 'v' send-keys -X begin-selection
 
         ${clipConf}
+
+        # if SSH, disable status bar
+        if-shell "[ -n \"$SSH_TTY\" ]" "set -g status off"
       '';
     in {
       packages = rec {
