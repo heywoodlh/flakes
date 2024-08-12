@@ -413,6 +413,12 @@
           proxy_image = "docker.io/tailscale/tailscale:v1.64.2";
           replicas = 1;
         };
+        tor-socks-proxy = mkKubeDrv "tor-socks-proxy" {
+          src = ./templates/tor-socks-proxy.yaml;
+          namespace = "default";
+          image = "docker.io/heywoodlh/tor-socks-proxy:0.4.8.12";
+          replicas = 1;
+        };
         uptime = mkKubeDrv "uptime" {
           src = ./templates/uptime.yaml;
           namespace = "monitoring";
