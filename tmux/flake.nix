@@ -113,6 +113,8 @@
         # if SSH, disable status bar
         if-shell "[ -n \"$SSH_TTY\" ]" "set -g status off"
         if-shell "[ -n \"$SSH_CONNECTION\" ]" "set -g status off"
+        # Allow forcing Tmux status bar
+        if-shell "[ -n \"$FORCE_TMUX_STATUS\" ]" "set -g status on"
       '';
     in {
       packages = rec {
