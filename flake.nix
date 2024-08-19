@@ -73,6 +73,10 @@
       inputs.tmux-flake.follows = "tmux-flake";
       inputs.vim-flake.follows = "vim-flake";
     };
+    qutebrowser-flake = {
+      url = "./qutebrowser";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
@@ -95,6 +99,7 @@
     lima-flake,
     chromium-widevine-flake,
     gnome-flake,
+    qutebrowser-flake,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = nixpkgs.legacyPackages.${system};
@@ -122,6 +127,8 @@
         chromium-widevine = chromium-widevine-flake.packages.aarch64-linux.chromium-widevine;
         gnome = gnome-flake.packages.${system}.gnome-desktop-setup;
         gnome-dconf = gnome-flake.packages.${system}.dconf;
+        qutebrowser = qutebrowser-flake.packages.${system}.qutebrowser;
+        qutebrowser-config = qutebrowser-flake.packages.${system}.qutebrowser-config;
       };
       formatter = pkgs.alejandra;
     });
