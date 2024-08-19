@@ -26,17 +26,20 @@
         c.url.searchengines['w'] = "https://en.wikipedia.org/wiki/Special:Search?search={}&go=Go&ns0=1"
         # Nord theme
         config.source('${nord-qutebrowser}/nord-qutebrowser.py')
+      '';
+      standalone-config = pkgs.writeText "config.py" ''
         # Source additional config if exists
         import os.path
         homedir = os.path.expanduser("~")
         baseConf = homedir + "/.qutebrowser/config.py"
         if os.path.isfile(baseConf):
           config.source(baseConf)
+        config.source("${config}")
       '';
     in {
       packages = rec {
         qutebrowser = pkgs.writeShellScriptBin "qutebrowser" ''
-          ${pkgs.qutebrowser-qt5}/bin/qutebrowser -C ${config} $@
+          ${pkgs.qutebrowser-qt5}/bin/qutebrowser -C ${standalone-config} $@
         '';
         qutebrowser-config = pkgs.stdenv.mkDerivation {
           name = "config.py";
