@@ -13,6 +13,12 @@
       url = "./vim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    helix-src.url = "github:helix-editor/helix";
+    helix-flake = {
+      url = "./helix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.helix-src.follows = "helix-src";
+    };
     git-flake = {
       url = "./git";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -88,6 +94,8 @@
     git-flake,
     nushell-flake,
     vim-flake,
+    helix-flake,
+    helix-src,
     tmux-flake,
     vscode-flake,
     st-flake,
@@ -110,6 +118,8 @@
         git = git-flake.packages.${system}.git;
         tmux = tmux-flake.packages.${system}.tmux;
         vim = vim-flake.defaultPackage.${system};
+        helix = helix-flake.packages.${system}.helix;
+        helix-config = helix-flake.packages.${system}.helix-config;
         vscode = vscode-flake.packages.${system}.default;
         vscode-userdir = vscode-flake.packages.${system}.user-dir;
         vscode-bin = vscode-flake.packages.${system}.code-bin;
