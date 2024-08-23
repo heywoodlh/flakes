@@ -10,6 +10,7 @@ let
     ./git.nix
     ./gitgutter.nix
     ./glow.nix
+    ./go.nix
     ./indentline.nix
     ./json.nix
     ./lastplace.nix
