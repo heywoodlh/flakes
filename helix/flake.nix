@@ -62,6 +62,11 @@
           PATH="${pkgs.nix}/bin:${pkgs.nil}/bin:$PATH"
           ${helixDrv}/bin/hx -c ${helixDrv}/config/config.toml $@
         '';
+        helix-config = pkgs.stdenv.mkDerivation {
+          name = "config.toml";
+          builder = pkgs.bash;
+          args = [ "-c" "${pkgs.coreutils}/bin/cp ${myConfig} $out" ];
+        };
         helixBin = helixPackage;
         default = helix;
       };
