@@ -73,6 +73,23 @@
 #        state: started
 #        enabled: true
 
+- name: Configure sshd
+  lineinfile:
+    path: "/etc/ssh/sshd_config"
+    regex: "^(#)?{{item.key}}"
+    line: "{{item.key}} {{item.value}}"
+    state: present
+  loop:
+    - { key: "PermitRootLogin", value: "prohibit-password" }
+    - { key: "PasswordAuthentication", value: "no" }
+  register: sshd_configure_root
+
+- name: Restart sshd.service if config changed
+  ansible.builtin.systemd:
+    name: "{{ ssh_service_name }}.service"
+    state: restarted
+  when: sshd_configure_root.changed
+
 - name: Enable UFW with default rules
   block:
     - ansible.builtin.shell: "{{ item }}"
