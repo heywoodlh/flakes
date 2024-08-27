@@ -4,25 +4,17 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs";
     flake-utils.url = "github:numtide/flake-utils";
-    helix-src.url = "github:helix-editor/helix";
-    helix-vim = {
-      url = "github:LGUG2Z/helix-vim";
-      flake = false;
-    };
   };
 
   outputs = inputs @ {
     self,
     nixpkgs,
     flake-utils,
-    helix-src,
-    helix-vim,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs {
         inherit system;
       };
-      vim-config = builtins.readFile "${helix-vim}/config.toml";
       myConfig = pkgs.writeText "config.toml" ''
         theme = "base16_transparent"
 
@@ -42,10 +34,8 @@
 
         [editor.lsp]
         display-inlay-hints = true
-
-        ${vim-config}
       '';
-      helixPackage = helix-src.packages.${system}.helix;
+      helixPackage = pkgs.helix;
       helixDrv = pkgs.stdenv.mkDerivation {
         name = "helix";
         src = helixPackage;
