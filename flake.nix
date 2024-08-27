@@ -13,11 +13,9 @@
       url = "./vim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    helix-src.url = "github:helix-editor/helix";
     helix-flake = {
       url = "./helix";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.helix-src.follows = "helix-src";
     };
     git-flake = {
       url = "./git";
@@ -95,7 +93,6 @@
     nushell-flake,
     vim-flake,
     helix-flake,
-    helix-src,
     tmux-flake,
     vscode-flake,
     st-flake,
