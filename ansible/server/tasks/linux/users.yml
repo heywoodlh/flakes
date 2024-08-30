@@ -94,6 +94,15 @@
       become_user: heywoodlh
       become: true
 
+    - name: "Add {{ user_home.stdout }}/.config/fish"
+      ansible.builtin.file:
+        state: directory
+        path: "{{ user_home.stdout }}/.config/fish"
+        owner: heywoodlh
+      when: tmux_check is succeeded
+      become_user: heywoodlh
+      become: true
+
     - name: "Add machine.fish"
       ansible.builtin.copy:
         src: users/heywoodlh/machine.fish
