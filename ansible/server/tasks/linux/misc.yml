@@ -1,0 +1,6 @@
+---
+- name: Create cron job to regularly ansible-pull
+  ansible.builtin.cron:
+    name: "ansible-pull"
+    special_time: hourly
+    job: "nix run 'github:heywoodlh/flakes?dir=ansible#server'"

@@ -11,4 +11,4 @@ VOLUME /root/ssh
 
 EXPOSE 22
 
-ENTRYPOINT ["/run.sh"]
+ENTRYPOINT ["ash", "/run.sh"]

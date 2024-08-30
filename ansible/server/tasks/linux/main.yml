@@ -37,6 +37,9 @@
       ansible.builtin.include_role:
         name: prometheus.prometheus.node_exporter
 
+    - name: Miscellaneous tasks
+      ansible.builtin.include_tasks: misc.yml
+
 - name: NixOS tasks
   when:
     - ansible_os_family == "NixOS"

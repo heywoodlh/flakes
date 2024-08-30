@@ -3,3 +3,7 @@ services:
     build: .
     ports:
       - "22:22"
+    volumes:
+      - ssh-chat:/data/ssh
+volumes:
+  ssh-chat:
