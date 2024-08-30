@@ -94,12 +94,11 @@
       become_user: heywoodlh
       become: true
 
-    - name: "Add ansible-switch alias from {{ user_home.stdout }}/.config/fish/custom.fish"
-      ansible.builtin.lineinfile:
-        path: "{{ user_home.stdout }}/.config/fish/custom.fish"
-        create: true
+    - name: "Add machine.fish"
+      ansible.builtin.copy:
+        src: users/heywoodlh/machine.fish
+        dest: "{{ user_home.stdout }}/.config/fish/machine.fish"
         owner: heywoodlh
-        line: "alias ansible-switch \"nix run \"github:heywoodlh/flakes/$(git ls-remote https://github.com/heywoodlh/flakes | head -1 | awk '{print $1}')?dir=ansible#server\"\""
       when: tmux_check is succeeded
       become_user: heywoodlh
       become: true

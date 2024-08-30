@@ -95,6 +95,7 @@
     - ansible.builtin.shell: "{{ item }}"
       loop:
         - ufw allow 22
+        - ufw allow 60000:61000/udp
         - ufw allow in on tailscale0 to any
         - ufw allow out on tailscale0 to any
         - yes | ufw enable

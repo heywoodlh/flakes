@@ -33,6 +33,7 @@
         name = "ansible";
         buildInputs = with pkgs; [
           ansible
+          ansible-language-server
         ];
       };
       formatter = pkgs.alejandra;

@@ -52,24 +52,25 @@
       ansible.builtin.apt:
         name: "{{ item }}"
       with_items:
-      - git
       - autoconf
+      - bc
+      - build-essential
+      - dc
+      - gawk
       - gcc
+      - gettext
+      - git
       - libc6
       - libmcrypt-dev
-      - make
-      - libssl-dev
-      - wget
-      - bc
-      - gawk
-      - dc
-      - build-essential
-      - snmp
       - libnet-snmp-perl
-      - gettext
+      - libssl-dev
       - lsb-release
+      - make
+      - mosh
+      - snmp
       - sudo
       - ufw
+      - wget
 
 - name: Generic tasks
   block:
