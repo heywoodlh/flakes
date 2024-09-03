@@ -35,3 +35,15 @@
     name: NetworkManager.service
     enabled: yes
   when: ansible_os_family == 'Archlinux'
+
+- name: Disable error reporting in Ubuntu
+  ansible.builtin.replace:
+    path: /etc/default/apport
+    regexp: 'enabled=1'
+    replace: 'enabled=0'
+  when: ansible_distribution == 'Ubuntu'
+  register: disable_apport
+
+- name: Kill apport
+  ansible.builtin.shell: "killall system-crash-notification"
+  ignore_errors: true
