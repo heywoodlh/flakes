@@ -4,12 +4,14 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs";
     flake-utils.url = "github:numtide/flake-utils";
+    helix-src.url = "github:helix-editor/helix";
   };
 
   outputs = inputs @ {
     self,
     nixpkgs,
     flake-utils,
+    helix-src,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs {
@@ -32,9 +34,21 @@
         space = '·'
         tab = '┆'
 
+        [editor.indent-guides]
+        render = true
+        character = "┆"
+        skip-levels = 1
+
         [editor.lsp]
         display-inlay-hints = true
+
+        [editor.soft-wrap]
+        enable = true
+
+        [editor]
+        auto-pairs = false
       '';
+      #helixPackage = helix-src.packages.${system}.helix;
       helixPackage = pkgs.helix;
       helixDrv = pkgs.stdenv.mkDerivation {
         name = "helix";
