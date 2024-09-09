@@ -14,10 +14,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.fish-flake.follows = "fish-flake";
     };
-    vim-flake = {
-      url = "github:heywoodlh/flakes?dir=vim";
+    helix-flake = {
+      url = "github:heywoodlh/flakes?dir=helix";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.fish-flake.follows = "fish-flake";
     };
     vim-ime = {
       flake = false;
@@ -35,7 +34,7 @@
     flake-utils,
     fish-flake,
     tmux-flake,
-    vim-flake,
+    helix-flake,
     vim-ime,
     nordic,
   }:
@@ -46,7 +45,7 @@
       };
       stable-pkgs = nixpkgs-stable.legacyPackages.${system};
       myTmux = tmux-flake.packages.${system}.tmux;
-      myVim = vim-flake.defaultPackage.${system};
+      myHelix = helix-flake.packages.${system}.helix;
       vimIme = "${vim-ime}/vim-ime.py";
       wallpaper = ./wallpapers/nix-nord.png;
       jetbrains-font = builtins.fetchurl {
@@ -216,7 +215,7 @@
 
         [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5]
         binding='<Shift><Control>e'
-        command='${vimIme} --cmd "gnome-terminal --geometry=60x8 -- ${myVim}/bin/vim" --outfile "/home/heywoodlh/tmp/vim-ime.txt"'
+        command='${vimIme} --cmd "gnome-terminal --geometry=60x8 -- ${myHelix}/bin/hx" --outfile "/home/heywoodlh/tmp/vim-ime.txt"'
         name='vim-ime'
 
         [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6]
@@ -236,8 +235,8 @@
 
         [org/gnome/shell]
         disable-user-extensions=false
-        disabled-extensions=@as ['disabled','ubuntu-dock@ubuntu.com','ding@rastersoft.com','nightthemeswitcher@romainvigier.fr']
-        enabled-extensions=@as ['caffeine@patapon.info','gsconnect@andyholmes.github.io','just-perfection-desktop@just-perfection','native-window-placement@gnome-shell-extensions.gcampax.github.com','pop-shell@system76.com','user-theme@gnome-shell-extensions.gcampax.github.com','gnomebedtime@ionutbortis.gmail.com','forge@jmmaranan.com','hide-cursor@elcste.com','openbar@neuromorph','switcher@landau.fi']
+        disabled-extensions=@as ['disabled','ubuntu-dock@ubuntu.com','ding@rastersoft.com','nightthemeswitcher@romainvigier.fr','switcher@landau.fi']
+        enabled-extensions=@as ['caffeine@patapon.info','gsconnect@andyholmes.github.io','just-perfection-desktop@just-perfection','native-window-placement@gnome-shell-extensions.gcampax.github.com','pop-shell@system76.com','user-theme@gnome-shell-extensions.gcampax.github.com','gnomebedtime@ionutbortis.gmail.com','forge@jmmaranan.com','hide-cursor@elcste.com','openbar@neuromorph','search-light@icedman.github.com']
         favorite-apps=@as ['firefox.desktop','wezterm.desktop']
         had-bluetooth-devices-setup=true
         remember-mount-password=false
@@ -308,6 +307,15 @@
         font-size=uint32 24
         max-width-percentage=uint32 48
         show-switcher=@as ['<Super>space']
+
+        [org/gnome/shell/extensions/search-light]
+        blur-brightness=0.59999999999999998
+        blur-sigma=30.0
+        entry-font-size=1
+        preferred-monitor=0
+        scale-height=0.10000000000000001
+        scale-width=0.10000000000000001
+        shortcut-search=['<Super>space']
 
         [org/gnome/shell/extensions/openbar]
         accent-color=['0', '0.75', '0.75']
@@ -657,7 +665,7 @@
                                "hide-cursor@elcste.com"
                                "user-theme@gnome-shell-extensions.gcampax.github.com"
                                "openbar@neuromorph"
-                               "switcher@landau.fi")
+                               "search-light@icedman.github.com")
 
         for extension in "''${extensions[@]}"
         do
