@@ -80,6 +80,10 @@
       url = "./qutebrowser";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    zen-browser-flake = {
+      url = "./zen-browser";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
@@ -104,6 +108,7 @@
     chromium-widevine-flake,
     gnome-flake,
     qutebrowser-flake,
+    zen-browser-flake,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = nixpkgs.legacyPackages.${system};
@@ -135,6 +140,7 @@
         gnome-dconf = gnome-flake.packages.${system}.dconf;
         qutebrowser = qutebrowser-flake.packages.${system}.qutebrowser;
         qutebrowser-config = qutebrowser-flake.packages.${system}.qutebrowser-config;
+        zen-browser = zen-browser-flake.packages.${system}.default;
       };
       formatter = pkgs.alejandra;
     });
