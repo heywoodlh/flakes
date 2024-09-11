@@ -13,10 +13,10 @@
 }:
 
 let
-  myZenVersion = "1.0.0-a.37";
-  x86_64-darwin-hash = "0icqfgr9s3zfc8x58ws3877hz8i2389wv0cn2pp3k5lq85v91s2d";
-  aarch64-darwin-hash = "17ajbq43hblnasdn6n7p1gc3vzfbrmyv7483l8yca98jyq389w8c";
-  x86_64-linux-hash = "1249l74sma6zzkbk2l99h7y4pk0f5bvggm0h8b76rccrcai9j7bb";
+  myZenVersion = "1.0.0-a.39";
+  x86_64-darwin-hash = "1d5362lymvsq78q5l32ya3ab0fw90pik91fpy447hlr6d4j7ppqr";
+  aarch64-darwin-hash = "1c3w0s85vp08vwwfl6z2iqnmcp3jl6ifjzqs96rzlbvjxy9p2qwy";
+  x86_64-linux-hash = "07vjpsmd4n2yqz3i1f780glnnr1jvmjnm7vgil2ip89lr6kvrpcx";
   sources = {
     x86_64-darwin = fetchurl {
       url = "https://github.com/zen-browser/desktop/releases/download/${myZenVersion}/zen.macos-x64.dmg";
