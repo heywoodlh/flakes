@@ -210,7 +210,7 @@
 
         [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4]
         binding='<Super><Shift>s'
-        command='${pkgs.gnome-screenshot}/bin/gnome-screenshot -a -f /tmp/screenshot.png && ${pkgs.xclip}/bin/xclip -in -selection clipboard -target image/png /tmp/screenshot.png"'
+        command='${pkgs.gnome-screenshot}/bin/gnome-screenshot -a -f /tmp/screenshot.png && ${pkgs.xclip}/bin/xclip -in -selection clipboard -target image/png /tmp/screenshot.png'
         name='screenshot'
 
         [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5]
