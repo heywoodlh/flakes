@@ -6,12 +6,12 @@ on:
     - cron: "0 0 * * 2"
 
 jobs:
-  build-appimages:
-    name: Build appimages
+  build-multiarch-appimages:
+    name: Build multiarch appimages
     strategy:
       matrix:
         os: [x64, arm64]
-        flake: [vim, fish, tmux, git, helix]
+        flake: [vim, fish, tmux, git, helix, browsh]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout repository
@@ -24,7 +24,7 @@ jobs:
 
       - name: Setup Nix Magic Cache
         uses: DeterminateSystems/magic-nix-cache-action@main
-
+          
       - name: Build ${{ matrix.flake }} flake
         run: |
           release="${{ matrix.flake }}-$(arch).appimage"
@@ -36,10 +36,39 @@ jobs:
           name: ${{ matrix.os }}-${{ matrix.flake }}
           path: ./${{ matrix.os }}-${{ matrix.flake }}
 
+  #build-x86-appimages:
+  #  name: Build x88_64 exclusive appimages
+  #  strategy:
+  #    matrix:
+  #      flake: [browsh]
+  #  runs-on: ubuntu-latest
+  #  steps:
+  #    - name: Checkout repository
+  #      uses: actions/checkout@v4
+
+  #    - name: Install Nix
+  #      uses: cachix/install-nix-action@v27
+  #      with:
+  #        nix_path: nixpkgs=channel:nixpkgs-unstable
+
+  #    - name: Setup Nix Magic Cache
+  #      uses: DeterminateSystems/magic-nix-cache-action@main
+  #    
+  #    - name: Build ${{ matrix.flake }} flake
+  #      run: |
+  #        release="${{ matrix.flake }}-$(arch).appimage"
+  #        mkdir -p ./out
+  #        nix bundle -o "./${{ matrix.os }}-${{ matrix.flake }}/$release" --bundler github:ralismark/nix-appimage "./${{ matrix.flake }}"
+
+  #    - uses: actions/upload-artifact@v4
+  #      with:
+  #        name: ${{ matrix.os }}-${{ matrix.flake }}
+  #        path: ./${{ matrix.os }}-${{ matrix.flake }}
+
   push-releases:
     name: Push releases
     runs-on: ubuntu-latest
-    needs: build-appimages
+    needs: [build-multiarch-appimages]
     steps:
       - name: Download appimages
         uses: actions/download-artifact@v4
