@@ -235,8 +235,8 @@
 
         [org/gnome/shell]
         disable-user-extensions=false
-        disabled-extensions=@as ['disabled','ubuntu-dock@ubuntu.com','ding@rastersoft.com','nightthemeswitcher@romainvigier.fr','switcher@landau.fi']
-        enabled-extensions=@as ['caffeine@patapon.info','gsconnect@andyholmes.github.io','just-perfection-desktop@just-perfection','native-window-placement@gnome-shell-extensions.gcampax.github.com','pop-shell@system76.com','user-theme@gnome-shell-extensions.gcampax.github.com','gnomebedtime@ionutbortis.gmail.com','forge@jmmaranan.com','hide-cursor@elcste.com','openbar@neuromorph','search-light@icedman.github.com']
+        disabled-extensions=@as ['disabled','ubuntu-dock@ubuntu.com','ding@rastersoft.com','nightthemeswitcher@romainvigier.fr','switcher@landau.fi', 'search-light@icedman.github.com']
+        enabled-extensions=@as ['caffeine@patapon.info','gsconnect@andyholmes.github.io','just-perfection-desktop@just-perfection','native-window-placement@gnome-shell-extensions.gcampax.github.com','pop-shell@system76.com','user-theme@gnome-shell-extensions.gcampax.github.com','gnomebedtime@ionutbortis.gmail.com','forge@jmmaranan.com','hide-cursor@elcste.com','openbar@neuromorph']
         favorite-apps=@as ['firefox.desktop','wezterm.desktop']
         had-bluetooth-devices-setup=true
         remember-mount-password=false
@@ -592,7 +592,7 @@
         switch-to-application-2='disabled'
         switch-to-application-3='disabled'
         switch-to-application-4='disabled'
-        toggle-overview='disabled'
+        toggle-overview=['<Super>space']
 
         [org/gnome/terminal/legacy]
         default-show-menubar=false
@@ -664,8 +664,7 @@
                                "forge@jmmaranan.com"
                                "hide-cursor@elcste.com"
                                "user-theme@gnome-shell-extensions.gcampax.github.com"
-                               "openbar@neuromorph"
-                               "search-light@icedman.github.com")
+                               "openbar@neuromorph")
 
         for extension in "''${extensions[@]}"
         do
