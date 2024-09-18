@@ -298,7 +298,8 @@
         toggle-maximize-width=@as ['<Super>Up']
 
         [org/gnome/shell/extensions/pop-shell]
-        activate-launcher=@as ['<Super>space']
+        #activate-launcher=@as ['<Super>space']
+        activate-launcher=@as ['disabled']
         focus-right=@as ['disabled']
         tile-by-default=true
         tile-enter=@as ['disabled']
@@ -306,7 +307,8 @@
         [org/gnome/shell/extensions/switcher]
         font-size=uint32 24
         max-width-percentage=uint32 48
-        show-switcher=@as ['<Super>space']
+        show-switcher=@as ['disabled']
+        #show-switcher=@as ['<Super>space']
 
         [org/gnome/shell/extensions/search-light]
         blur-brightness=0.59999999999999998
@@ -315,7 +317,8 @@
         preferred-monitor=0
         scale-height=0.10000000000000001
         scale-width=0.10000000000000001
-        shortcut-search=['<Super>space']
+        #shortcut-search=['<Super>space']
+        show-switcher=@as ['disabled']
 
         [org/gnome/shell/extensions/openbar]
         accent-color=['0', '0.75', '0.75']
