@@ -25,6 +25,7 @@ jobs:
         run: |
           cd ./zen-browser
           ./get-hashes.sh
+          nix flake update
           nix build .#zen-browser
 
       - name: Commit changes
