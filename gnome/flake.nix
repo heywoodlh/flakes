@@ -235,8 +235,8 @@
 
         [org/gnome/shell]
         disable-user-extensions=false
-        disabled-extensions=@as ['disabled','ubuntu-dock@ubuntu.com','ding@rastersoft.com','nightthemeswitcher@romainvigier.fr','switcher@landau.fi', 'search-light@icedman.github.com']
-        enabled-extensions=@as ['caffeine@patapon.info','gsconnect@andyholmes.github.io','just-perfection-desktop@just-perfection','native-window-placement@gnome-shell-extensions.gcampax.github.com','pop-shell@system76.com','user-theme@gnome-shell-extensions.gcampax.github.com','gnomebedtime@ionutbortis.gmail.com','forge@jmmaranan.com','hide-cursor@elcste.com','openbar@neuromorph']
+        disabled-extensions=@as ['disabled','ubuntu-dock@ubuntu.com','ding@rastersoft.com','nightthemeswitcher@romainvigier.fr','switcher@landau.fi', 'search-light@icedman.github.com', 'openbar@neuromorph']
+        enabled-extensions=@as ['caffeine@patapon.info','gsconnect@andyholmes.github.io','just-perfection-desktop@just-perfection','native-window-placement@gnome-shell-extensions.gcampax.github.com','pop-shell@system76.com','user-theme@gnome-shell-extensions.gcampax.github.com','gnomebedtime@ionutbortis.gmail.com','forge@jmmaranan.com','hide-cursor@elcste.com']
         favorite-apps=@as ['firefox.desktop','wezterm.desktop']
         had-bluetooth-devices-setup=true
         remember-mount-password=false
@@ -268,7 +268,7 @@
         hot-corner=false
         notification-banner-position=2
         osd=false
-        panel=true
+        panel=false
         panel-arrow=true
         panel-corner-size=1
         panel-in-overview=true
@@ -663,8 +663,7 @@
                                "native-window-placement@gnome-shell-extensions.gcampax.github.com"
                                "forge@jmmaranan.com"
                                "hide-cursor@elcste.com"
-                               "user-theme@gnome-shell-extensions.gcampax.github.com"
-                               "openbar@neuromorph")
+                               "user-theme@gnome-shell-extensions.gcampax.github.com")
 
         for extension in "''${extensions[@]}"
         do
