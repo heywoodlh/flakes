@@ -5,11 +5,11 @@
         "systems": "systems"
       },
       "locked": {
-        "lastModified": 1710146030,
-        "narHash": "sha256-SZ5L6eA7HJ/nmkzGG7/ISclqe6oZdOZTNoesiInkXPQ=",
+        "lastModified": 1726560853,
+        "narHash": "sha256-X6rJYSESBVr3hBoH0WbKE5KvhPU5bloyZ2L4K60/fPQ=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "b1d9ab70662946ef0850d488da1c9019f3a9752a",
+        "rev": "c1dfcf08411b08f6b8615f7d8971a2bfa81d5e8a",
         "type": "github"
       },
       "original": {
@@ -18,14 +18,28 @@
         "type": "github"
       }
     },
+    "helix-vim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1721292076,
+        "narHash": "sha256-mWWnyo6Q1Q+M9ESYjv2BnD2K/c7xsMQdE0j1YroIwWw=",
+        "owner": "chtenb",
+        "repo": "helix.vim",
+        "rev": "3d032eb3de6533a685663ec9b9e8c0896debfc2d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "chtenb",
+        "repo": "helix.vim",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1720498663,
-        "narHash": "sha256-juqJkkdAt44mOfA43q1qUHn7iWoK++81lR8Mh7N/EF8=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "106e145e1d4583d1e2bb20e54947d15ad55e75e1",
-        "type": "github"
+        "lastModified": 0,
+        "narHash": "sha256-zACxiQx8knB3F8+Ze+1BpiYrI+CbhxyWpcSID9kVhkQ=",
+        "path": "/nix/store/6p3p9axsr8grjq74wm9rp6y5vh0kscqy-source",
+        "type": "path"
       },
       "original": {
         "id": "nixpkgs",
@@ -35,6 +49,7 @@
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
+        "helix-vim": "helix-vim",
         "nixpkgs": "nixpkgs"
       }
     },
