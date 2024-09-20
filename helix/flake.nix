@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs";
     flake-utils.url = "github:numtide/flake-utils";
-    helix-src.url = "github:helix-editor/helix";
+    helix-src.url = "github:alevinval/helix/issue-2719";
   };
 
   outputs = inputs @ {
@@ -17,27 +17,23 @@
       pkgs = import nixpkgs {
         inherit system;
       };
+
       myConfig = pkgs.writeText "config.toml" ''
-        theme = "base16_transparent"
+        theme = "heywoodlh"
 
         [editor.cursor-shape]
         insert = "bar"
         normal = "block"
 
         [editor.whitespace.render]
-        space = "all"
-        tab = "all"
-        nbsp = "all"
-        nnbsp = "all"
+        space = "trailing"
+        tab = "trailing"
+        nbsp = "trailing"
+        nnbsp = "trailing"
 
         [editor.whitespace.characters]
         space = '·'
         tab = '┆'
-
-        [editor.indent-guides]
-        render = true
-        character = "┆"
-        skip-levels = 1
 
         [editor.lsp]
         display-inlay-hints = true
@@ -48,30 +44,22 @@
         [editor]
         auto-pairs = false
       '';
-      #helixPackage = helix-src.packages.${system}.helix;
-      helixPackage = pkgs.helix;
-      helixDrv = pkgs.stdenv.mkDerivation {
-        name = "helix";
-        src = helixPackage;
-        installPhase = ''
-          mkdir -p $out
-          cp -r * $out
-          mkdir -p $out/config
-          cp ${myConfig} $out/config/config.toml
-        '';
+
+      helixConf = pkgs.stdenv.mkDerivation {
+        name = "config.toml";
+        builder = pkgs.bash;
+        args = [ "-c" "${pkgs.coreutils}/bin/cp ${myConfig} $out" ];
       };
     in {
       packages = rec {
+        helix-config = helixConf;
         helix = pkgs.writeShellScriptBin "hx" ''
           PATH="${pkgs.nix}/bin:${pkgs.nil}/bin:$PATH"
-          ${helixDrv}/bin/hx -c ${helixDrv}/config/config.toml $@
+          mkdir -p ~/.config/helix/themes
+          cp -f ${self}/themes/heywoodlh.toml ~/.config/helix/themes
+          ${helix-src.packages.${system}.helix}/bin/hx -c ${helixConf} $@
         '';
-        helix-config = pkgs.stdenv.mkDerivation {
-          name = "config.toml";
-          builder = pkgs.bash;
-          args = [ "-c" "${pkgs.coreutils}/bin/cp ${myConfig} $out" ];
-        };
-        helixBin = helixPackage;
+        helixBin = helix-src.packages.${system}.helix;
         default = helix;
       };
 
