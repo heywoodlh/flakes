@@ -1,0 +1,35 @@
+name: update-tabby
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 4 * * *"
+
+jobs:
+  update-tabby:
+    name: Update Tabby
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v27
+        with:
+          nix_path: nixpkgs=channel:nixpkgs-unstable
+
+      - name: Setup Nix Magic Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Update hashes and test build
+        run: |
+          cd ./tabby
+          ./get-hashes.sh
+          nix flake update
+          nix build .#tabby
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "GitHub Action automated Tabby update"
+          file_pattern: 'tabby-browser/*'
