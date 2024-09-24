@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         os: [x64, arm64]
-        flake: [vim, fish, tmux, git, helix, browsh]
+        flake: [vim, fish, tmux, git, helix, browsh, tabby]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout repository
@@ -24,7 +24,7 @@ jobs:
 
       - name: Setup Nix Magic Cache
         uses: DeterminateSystems/magic-nix-cache-action@main
-          
+
       - name: Build ${{ matrix.flake }} flake
         run: |
           release="${{ matrix.flake }}-$(arch).appimage"
