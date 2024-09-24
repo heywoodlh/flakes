@@ -84,6 +84,10 @@
       url = "./zen-browser";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    tabby-flake = {
+      url = "./tabby";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
@@ -109,6 +113,7 @@
     gnome-flake,
     qutebrowser-flake,
     zen-browser-flake,
+    tabby-flake,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = nixpkgs.legacyPackages.${system};
@@ -141,6 +146,7 @@
         qutebrowser = qutebrowser-flake.packages.${system}.qutebrowser;
         qutebrowser-config = qutebrowser-flake.packages.${system}.qutebrowser-config;
         zen-browser = zen-browser-flake.packages.${system}.default;
+        tabby = tabby-flake.packages.${system}.tabby-wrapper;
       };
       formatter = pkgs.alejandra;
     });
