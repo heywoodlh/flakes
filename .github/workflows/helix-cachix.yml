@@ -1,0 +1,32 @@
+name: build-helix-and-push
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 4 * * *"
+
+jobs:
+  push-helix:
+    name: Build Helix and push to Cachix
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v27
+        with:
+          nix_path: nixpkgs=channel:nixpkgs-unstable
+
+      - name: Setup Nix Magic Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - uses: cachix/cachix-action@v14
+        with:
+          name: heywoodlh-helix
+          authToken: '${{ secrets.CACHIX_HEYWOODLH_HELIX }}'
+
+      - name: Build Helix
+        run: |
+          nix build .#helix --no-write-lock-file --json | jq -r '.[].outputs | to_entries[].value' | cachix push heywoodlh-helix
+          nix build helix#helix --json | jq -r '.[].outputs | to_entries[].value' | cachix push heywoodlh-helix
