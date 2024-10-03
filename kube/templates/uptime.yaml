@@ -23,31 +23,25 @@ data:
       status_dir: "/status"
     ping:
       hosts:
-        - nix-backups
         - nix-drive
         - mac-mini
         - nixos-mac-mini
-        - cloud
       options: "-c 1 -W 1"
       silent: "true"
     curl:
       urls:
         - "http://syncthing.syncthing"
-        - "http://redlib.default"
-        - "http://cloudtube.default"
-        - "http://second.default"
-        - "http://home-assistant.default"
       options: "-LI --silent -k"
       silent: "true"
     netcat:
       services:
-        - rustdesk.default:22000
+        - rustdesk.default:21115
         - protonmail-bridge.default:25
         - protonmail-bridge.default:143
         - protonmail-bridge.default:143
         - syncthing.syncthing:80
         - syncthing.syncthing:22000
-      options: "-vz"
+      options: "-vz -w 1"
       silent: "true"
 ---
 apiVersion: batch/v1
