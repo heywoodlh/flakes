@@ -378,7 +378,7 @@
           image = "docker.io/diygod/rsshub:2024-02-19";
           browserless_image = "docker.io/browserless/chrome:1.61-puppeteer-13.1.3";
           browserless_replicas = 1;
-          redis_image = "docker.io/redis:7.2.4";
+          redis_image = "docker.io/redis:7.4.1";
           redis_replicas = 1;
           nodename = "nix-nvidia";
           hostfolder = "/opt/rsshub";
