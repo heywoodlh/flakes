@@ -401,7 +401,8 @@
         "op-scripts": "op-scripts",
         "open-webui": "open-webui",
         "tailscale": "tailscale",
-        "truecharts-helm": "truecharts-helm"
+        "truecharts-helm": "truecharts-helm",
+        "wazuh": "wazuh"
       }
     },
     "systems": {
@@ -548,6 +549,23 @@
       "original": {
         "owner": "truecharts",
         "repo": "charts",
+        "type": "github"
+      }
+    },
+    "wazuh": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1725005903,
+        "narHash": "sha256-gBOvfZ0hBnXm1qsmxh+8pXCgtMHs6B9884+mGPCjh1E=",
+        "owner": "wazuh",
+        "repo": "wazuh-kubernetes",
+        "rev": "cb1c04e30709307633364e05fa023da26460908f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "wazuh",
+        "ref": "v4.9.0",
+        "repo": "wazuh-kubernetes",
         "type": "github"
       }
     }

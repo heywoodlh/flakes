@@ -32,6 +32,10 @@
       url = "github:coredns/helm";
       flake = false;
     };
+    wazuh = {
+      url = "github:wazuh/wazuh-kubernetes/v4.9.0";
+      flake = false;
+    };
   };
 
   outputs = inputs @ {
@@ -47,7 +51,8 @@
     truecharts-helm,
     open-webui,
     op-scripts,
-    coredns
+    coredns,
+    wazuh,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs {
@@ -425,6 +430,33 @@
           replicas = 1;
           image = "docker.io/heywoodlh/bash-uptime:0.0.4";
           ntfy_url = "http://ntfy.default/uptime-notifications";
+        };
+        # Copy certs first: `scp -r nix-nvidia:/opt/wazuh/certs /tmp/certs`
+        # Then build with: `nix build .#wazuh --impure`
+        wazuh = let
+          certs = /tmp/certs;
+          finalWazuh = pkgs.stdenv.mkDerivation {
+            name = "wazuh-with-certs";
+            dontUnpack = true;
+            buildPhase = ''
+              mkdir -p ./kustomize/wazuh/wazuh-src/wazuh/certs
+              cp -rn ${certs}/* ./kustomize/wazuh/wazuh-src/wazuh/certs/
+              mkdir -p ./kustomize/wazuh
+              cp -rn ${self}/kustomize/wazuh/* ./kustomize/wazuh
+              cp -rn ${wazuh}/* ./kustomize/wazuh/wazuh-src
+              mkdir -p $out
+              cp -r * $out
+            '';
+          };
+        in pkgs.stdenv.mkDerivation {
+          name = "wazuh";
+          dontUnpack = true;
+          buildInputs = with pkgs; [
+            git
+          ];
+          buildPhase = ''
+            ${pkgs.kubectl}/bin/kubectl kustomize ${finalWazuh}/kustomize/wazuh > $out
+          '';
         };
       };
       devShell = pkgs.mkShell {
