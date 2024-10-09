@@ -25,7 +25,7 @@ data:
       hosts:
         - nix-drive
         - nixos-mac-mini
-      options: "-c 1 -W 1"
+      options: "-c 1 -W 5"
       silent: "true"
     curl:
       urls:

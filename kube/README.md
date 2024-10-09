@@ -89,3 +89,15 @@ Additionally, allow UDP port 5353 and TCP port 21063 on your node running HA:
 sudo ufw allow from any to any port 5353 proto udp
 sudo ufw allow from any to any port 21063 proto tcp
 ```
+
+<details>
+
+# Random notes
+
+Uptime testing
+
+```
+kubectl run -it --rm --image=docker.io/heywoodlh/bash-uptime:latest --command uptime-testing -- ash
+```
+
+</details>
