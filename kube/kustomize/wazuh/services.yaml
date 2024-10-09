@@ -28,16 +28,9 @@ metadata:
     tailscale.com/tags: "tag:wazuh"
   name: wazuh
   namespace: wazuh
----
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
-    tailscale.com/expose: "true"
-    tailscale.com/hostname: "wazuh-manager"
-    tailscale.com/tags: "tag:wazuh"
-  name: wazuh
-  namespace: wazuh
+spec:
+  selector:
+    node-type: wazuh
 ---
 apiVersion: v1
 kind: Service
@@ -58,3 +51,6 @@ metadata:
     tailscale.com/tags: "tag:wazuh"
   name: wazuh-workers
   namespace: wazuh
+spec:
+  selector:
+    node-type: wazuh

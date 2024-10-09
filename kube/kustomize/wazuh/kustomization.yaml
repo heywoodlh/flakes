@@ -5,3 +5,4 @@ resources:
 patches:
 - path: services.yaml
 - path: storage-class.yaml
+- path: statefulsets.yaml
