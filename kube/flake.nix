@@ -141,7 +141,7 @@
         cloudflared = mkKubeDrv "cloudflared" {
           src = ./templates/cloudflared.yaml;
           namespace = "cloudflared";
-          image = "docker.io/cloudflare/cloudflared:2024.2.1";
+          image = "docker.io/cloudflare/cloudflared:2024.10.0";
           replicas = 2;
         };
         cloudtube = mkKubeDrv "cloudtube" {
