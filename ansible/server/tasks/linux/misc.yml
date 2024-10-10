@@ -4,3 +4,9 @@
     name: "ansible-pull"
     special_time: hourly
     job: "nix run 'github:heywoodlh/flakes?dir=ansible#server'"
+
+- name: Cron job to regularly run nix-collect-garbage
+  ansible.builtin.cron:
+    name: "ansible-pull"
+    special_time: weekly
+    job: "nix-collect-garbage --delete-old --delete-older-than 7d"
