@@ -67,6 +67,7 @@
       - lsb-release
       - make
       - mosh
+      - netcat-openbsd
       - snmp
       - sudo
       - ufw

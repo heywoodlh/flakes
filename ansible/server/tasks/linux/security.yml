@@ -100,7 +100,34 @@
         - ufw allow out on tailscale0 to any
         - yes | ufw enable
 
-    - ansible.builtin.systemd:
+    - ansible.builtin.systemd_service:
         name: ufw.service
         state: started
         enabled: true
+
+- name: Check if connected to tailscale
+  ansible.builtin.stat:
+    path: /etc/file.txt
+  register: tailscale_check
+  ignore_errors: true
+
+- name: Install Wazuh agent
+  when:
+    - tailscale_check is succeeded
+    - ansible_os_family == 'Debian'
+    - ansible_hostname != 'wazuh'
+  block:
+    - ansible.builtin.apt:
+        deb: "https://packages.wazuh.com/4.x/apt/pool/main/w/wazuh-agent/wazuh-agent_{{ wazuh_version }}_{{ wazuh_arch }}.deb"
+      environment:
+        WAZUH_MANAGER: "wazuh.barn-banana.ts.net"
+      vars:
+        wazuh_arch: "{{ 'amd64' if ansible_architecture == 'x86_64' else 'arm64' }}"
+        wazuh_version: "4.9.0-1"
+
+    - name: Enable wazuh service
+      ansible.builtin.systemd_service:
+        state: started
+        daemon_reload: true
+        enabled: true
+        name: wazuh-agent
