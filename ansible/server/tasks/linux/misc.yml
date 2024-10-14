@@ -1,12 +1,35 @@
 ---
+- name: Create /opt/scripts
+  ansible.builtin.file:
+    path: /opt/scripts
+    mode: 0700
+
+- name: Add install-ansible.sh script
+  ansible.builtin.copy:
+    src: scripts/install-ansible.sh
+    dest: /opt/scripts/install-ansible.sh
+    mode: 0700
+
+- name: Add ansible-pull.sh script
+  ansible.builtin.copy:
+    src: scripts/ansible-pull.sh
+    dest: /opt/scripts/ansible-pull.sh
+    mode: 0700
+
+- name: Add nix-collect-garbage.sh script
+  ansible.builtin.copy:
+    src: scripts/nix-collect-garbage.sh
+    dest: /opt/scripts/nix-collect-garbage.sh
+    mode: 0700
+
 - name: Create cron job to regularly ansible-pull
   ansible.builtin.cron:
     name: "ansible-pull"
     special_time: hourly
-    job: "nix run 'github:heywoodlh/flakes?dir=ansible#server'"
+    job: "/opt/scripts/ansible-pull.sh"
 
 - name: Cron job to regularly run nix-collect-garbage
   ansible.builtin.cron:
     name: "nix-collect-garbage"
     special_time: weekly
-    job: "nix-collect-garbage --delete-old --delete-older-than 7d"
+    job: "/opt/scripts/nix-collect-garbage.sh"

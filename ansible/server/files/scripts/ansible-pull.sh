@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
+# Source nix
+[ -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ] && . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+
 if command -v nix &>/dev/null
 then
-  nix run "github:heywoodlh/flakes/$(git ls-remote https://github.com/heywoodlh/flakes | head -1 | awk '{print $1}')?dir=ansible#${system}"
+  nix run "github:heywoodlh/flakes/$(git ls-remote https://github.com/heywoodlh/flakes | head -1 | awk '{print $1}')?dir=ansible#server"
 else
   /opt/scripts/install-ansible.sh # install ansible in case it's been removed for some reason
   mkdir -p /opt/ansible/
