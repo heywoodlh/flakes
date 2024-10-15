@@ -70,6 +70,7 @@
       - tmux
       - vim
       - git
+      - helix
 
     - name: Check if tmux flake installed
       ansible.builtin.command: "ls -l {{ user_home.stdout }}/.nix-profile/bin/tmux"

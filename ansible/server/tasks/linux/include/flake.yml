@@ -7,13 +7,21 @@
 
 - name: "Check if {{ user_home.stdout }}/.nix-profile/bin/{{ item }} exists"
   ansible.builtin.command: "ls -l {{ user_home.stdout }}/.nix-profile/bin/{{ item }}"
-  register: flake_check
+  register: home_flake_check
+  ignore_errors: true
+
+- name: "Check if /nix/var/nix/profiles/default/bin/{{ item }} exists"
+  ansible.builtin.command: "ls -l /nix/var/nix/profiles/default/bin/tmux/{{ item }}"
+  register: system_flake_check
   ignore_errors: true
 
 - name: Install flake if it doesn't exist
   ansible.builtin.shell: "/nix/var/nix/profiles/default/bin/nix --extra-experimental-features 'nix-command flakes' profile install github:heywoodlh/flakes#{{ item }} --no-write-lock-file"
-  when: flake_check.rc != 0
+  when:
+    - home_flake_check.rc != 0
+    - system_flake_check.rc != 0
   args:
     executable: /bin/bash
   become_user: heywoodlh
   become: true
+  ignore_errors: true
