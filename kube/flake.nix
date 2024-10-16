@@ -191,7 +191,7 @@
           src = ./templates/grafana.yaml;
           namespace = "monitoring";
           image = "docker.io/grafana/grafana:10.3.1";
-          storageclass = "longhorn";
+          storageclass = "local-path";
         };
         healthchecks = mkKubeDrv "healthchecks" {
           src = ./templates/healthchecks.yaml;
@@ -337,13 +337,12 @@
                   - nixos-mac-mini.barn-banana.ts.net:9100
                   - nix-nvidia.barn-banana.ts.net:9100
                   - nix-drive.barn-banana.ts.net:9100
-                  - nix-backups.barn-banana.ts.net:9100
-                  - nixos-matrix.barn-banana.ts.net:9100
+                  - nixos-gaming.barn-banana.ts.net:9100
                   - proxmox-mac-mini.barn-banana.ts.net:9100
                   - proxmox-oryx-pro.barn-banana.ts.net:9100
                   - proxmox-nvidia.barn-banana.ts.net:9100
-                  - cloud.barn-banana.ts.net:9100
                   - kasmweb.barn-banana.ts.net:9100
+                  - wazuh.barn-banana.ts.net:9100
             '';
           };
         });
