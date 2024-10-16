@@ -26,10 +26,10 @@
   ansible.builtin.cron:
     name: "ansible-pull"
     special_time: hourly
-    job: "/opt/scripts/ansible-pull.sh"
+    job: "/opt/scripts/ansible-pull.sh &>/dev/null"
 
 - name: Cron job to regularly run nix-collect-garbage
   ansible.builtin.cron:
     name: "nix-collect-garbage"
     special_time: weekly
-    job: "/opt/scripts/nix-collect-garbage.sh"
+    job: "/opt/scripts/nix-collect-garbage.sh &>/dev/null"
