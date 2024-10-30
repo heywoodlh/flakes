@@ -1,16 +1,22 @@
 ---
+- name: install alpine packages
+  community.general.apk:
+    name: cronie,git,curl,py3-pip,sudo,ufw
+    update_cache: true
+  when: ansible_os_family == 'Alpine'
+
 - name: install arch packages
   community.general.pacman:
     name: "{{ item }}"
     update_cache: yes
   with_items:
-  - cronie
-  - git
-  - curl
-  - python-pip
-  - sudo
-  - tailscale
-  - ufw
+    - cronie
+    - git
+    - curl
+    - python-pip
+    - sudo
+    - tailscale
+    - ufw
   when: ansible_os_family == 'Archlinux'
 
 - name: install debian packages
@@ -18,24 +24,34 @@
     name: "{{ item }}"
     update_cache: yes
   with_items:
-  - git
-  - curl
-  - python3-pip
-  - sudo
-  - ufw
+    - git
+    - curl
+    - python3-pip
+    - sudo
+    - ufw
   when: ansible_os_family == 'Debian'
 
 - name: install tailscale
   ansible.builtin.shell: |
     curl https://tailscale.com/install.sh | bash
-  when: ansible_os_family != 'Archlinux'
+  when:
+    - ansible_os_family != 'Archlinux'
+    - ansible_os_family != 'Alpine'
+
+- name: install tailscale (alpine)
+  community.general.apk:
+    name: tailscale
+    update_cache: true
+    repository: http://dl-3.alpinelinux.org/alpine/edge/main
+  when:
+    - ansible_os_family == 'Alpine'
 
 - name: enable cronie service
-  ansible.builtin.systemd:
+  ansible.builtin.service:
     name: cronie.service
     enabled: yes
     state: started
-  when: ansible_os_family == 'Archlinux'
+  when: ansible_os_family != 'Debian'
 
 - name: uninstall firefox snap
   when: ansible_distribution == "Ubuntu"
