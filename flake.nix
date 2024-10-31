@@ -31,19 +31,14 @@
       url = "./nushell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    tmux-flake = {
-      url = "./tmux";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.fish-flake.follows = "fish-flake";
-    };
     st-flake = {
       url = "./st";
-      inputs.tmux-flake.follows = "tmux-flake";
+      inputs.fish-flake.follows = "fish-flake";
     };
     wezterm-flake = {
       url = "./wezterm";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.tmux-flake.follows = "tmux-flake";
+      inputs.fish-flake.follows = "fish-flake";
     };
     jetporch-flake = {
       url = "./jetporch";
@@ -74,7 +69,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.nixpkgs-stable.follows = "nixpkgs-stable";
       inputs.fish-flake.follows = "fish-flake";
-      inputs.tmux-flake.follows = "tmux-flake";
     };
     qutebrowser-flake = {
       url = "./qutebrowser";
@@ -100,7 +94,6 @@
     nushell-flake,
     vim-flake,
     helix-flake,
-    tmux-flake,
     vscode-flake,
     st-flake,
     wezterm-flake,
@@ -122,7 +115,7 @@
         fish = fish-flake.packages.${system}.fish;
         nushell = nushell-flake.packages.${system}.nushell;
         git = git-flake.packages.${system}.git;
-        tmux = tmux-flake.packages.${system}.tmux;
+        tmux = fish-flake.packages.${system}.tmux;
         vim = vim-flake.defaultPackage.${system};
         helix = helix-flake.packages.${system}.helix;
         helix-config = helix-flake.packages.${system}.helix-config;
@@ -147,6 +140,7 @@
         qutebrowser-config = qutebrowser-flake.packages.${system}.qutebrowser-config;
         zen-browser = zen-browser-flake.packages.${system}.default;
         tabby = tabby-flake.packages.${system}.tabby-wrapper;
+        zellij = fish-flake.packages.${system}.zellij;
       };
       formatter = pkgs.alejandra;
     });

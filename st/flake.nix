@@ -3,13 +3,13 @@
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/fa804edfb7869c9fb230e174182a8a1a7e512c40"; # pin nixpkgs version
   inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.tmux-flake.url = "github:heywoodlh/flakes?dir=tmux";
+  inputs.fish-flake.url = "github:heywoodlh/flakes?dir=fish";
 
-  outputs = { self, nixpkgs, flake-utils, tmux-flake }:
+  outputs = { self, nixpkgs, flake-utils, fish-flake }:
     flake-utils.lib.eachDefaultSystem (system:
     let
       pkgs = nixpkgs.legacyPackages.${system};
-      myTmux = tmux-flake.packages.${system}.tmux;
+      myZellij = fish-flake.packages.${system}.zellij;
       mySt = (pkgs.st.overrideAttrs (oldAttrs: rec {
         patches = [
           # Nord theme
@@ -34,7 +34,7 @@
       packages = rec {
           st = pkgs.writeShellScriptBin "st" ''
             ${pkgs.fontconfig}/bin/fc-list | grep -iq jetbrains && export extra_args="-f 'JetBrainsMono Nerd Font Mono:size=14'"
-            eval ${mySt}/bin/st $extra_args $@ ${myTmux}/bin/tmux
+            eval ${mySt}/bin/st $extra_args $@ ${myZellij}/bin/zellij
           '';
           default = st;
         };

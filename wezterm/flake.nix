@@ -2,17 +2,17 @@
   description = "heywoodlh wezterm flake";
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.tmux-flake.url = "github:heywoodlh/flakes?dir=tmux";
+  inputs.fish-flake.url = "github:heywoodlh/flakes?dir=fish";
   inputs.nixgl.url = "github:nix-community/nixGL";
 
-  outputs = { self, nixpkgs, tmux-flake, flake-utils, nixgl, }:
+  outputs = { self, nixpkgs, fish-flake, flake-utils, nixgl, }:
     flake-utils.lib.eachDefaultSystem (system:
     let
       pkgs = import nixpkgs {
         inherit system;
         overlays = [ nixgl.overlay ];
       };
-      myTmux = tmux-flake.packages.${system}.tmux;
+      myZellij = fish-flake.packages.${system}.zellij;
       jetbrains_nerdfont = (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; });
       settings = ''
         -- Add config folder to watchlist for config reloads.
@@ -41,8 +41,8 @@
         config.audible_bell = "Disabled"
         config.window_background_opacity = 0.9
 
-        -- Set tmux to default shell
-        config.default_prog = { "${myTmux}/bin/tmux" }
+        -- Set Zellij to default shell
+        config.default_prog = { "${myZellij}/bin/zellij" }
 
         -- Use Jetbrains font directory
         config.font_dirs = { "${jetbrains_nerdfont}/share/fonts" }

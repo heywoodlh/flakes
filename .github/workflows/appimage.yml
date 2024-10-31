@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         os: [x64, arm64]
-        flake: [vim, fish, tmux, git, helix, browsh, tabby]
+        flake: [vim, fish, tmux, git, helix, browsh, tabby, zellij]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout repository

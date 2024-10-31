@@ -9,11 +9,6 @@
       url = "github:heywoodlh/flakes?dir=fish";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    tmux-flake = {
-      url = "github:heywoodlh/flakes?dir=tmux";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.fish-flake.follows = "fish-flake";
-    };
     helix-flake = {
       url = "github:heywoodlh/flakes?dir=helix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -33,7 +28,6 @@
     nixpkgs-stable,
     flake-utils,
     fish-flake,
-    tmux-flake,
     helix-flake,
     vim-ime,
     nordic,
@@ -44,7 +38,7 @@
         config.allowUnfree = true;
       };
       stable-pkgs = nixpkgs-stable.legacyPackages.${system};
-      myTmux = tmux-flake.packages.${system}.tmux;
+      myZellij = fish-flake.packages.${system}.zellij;
       myHelix = helix-flake.packages.${system}.helix;
       vimIme = "${vim-ime}/vim-ime.py";
       wallpaper = ./wallpapers/nix-nord.png;
@@ -63,7 +57,7 @@
         [apps/guake/general]
         abbreviate-tab-names=false
         compat-delete='delete-sequence'
-        default-shell='${myTmux}/bin/tmux'
+        default-shell='${myZellij}/bin/zellij'
         display-n=0
         display-tab-names=0
         gtk-prefer-dark-theme=true
@@ -610,7 +604,7 @@
         cursor-colors-set=true
         cursor-foreground-color='rgb(59,66,82)'
         cursor-shape='ibeam'
-        custom-command='${myTmux}/bin/tmux'
+        custom-command='${myZellij}/bin/zellij'
         font='JetBrains Mono NL 14'
         foreground-color='#D8DEE9'
         highlight-background-color='rgb(136,192,208)'
