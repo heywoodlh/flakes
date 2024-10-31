@@ -109,7 +109,7 @@
         # Custom functions
 
         function op-unlock
-            env | grep -iqE "^OP_SESSION" || eval $(${pkgs._1password}/bin/op signin)
+            env | grep -iqE "^OP_SESSION" || eval $(${pkgs._1password-cli}/bin/op signin)
         end
 
         function geoiplookup

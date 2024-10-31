@@ -11,12 +11,12 @@
         config.allowUnfree = true;
       };
       op-unlock = pkgs.writeShellScriptBin "op-unlock" ''
-        env | grep -iq OP_SESSION || eval $(${pkgs._1password}/bin/op signin) && export OP_SESSION
+        env | grep -iq OP_SESSION || eval $(${pkgs._1password-cli}/bin/op signin) && export OP_SESSION
         echo "export OP_SESSION=$OP_SESSION"
       '';
       op-wrapper = pkgs.writeShellScriptBin "op-wrapper.sh" ''
         ${op-unlock}/bin/op-unlock | grep -v export
-        ${pkgs._1password}/bin/op "$@"
+        ${pkgs._1password-cli}/bin/op "$@"
       '';
       op-desktop-settings = pkgs.writeText "settings.json" ''
         {
