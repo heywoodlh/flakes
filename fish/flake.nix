@@ -248,11 +248,21 @@
         if-shell "[ -n \"$FORCE_TMUX_STATUS\" ]" "set -g status on"
       '';
       # Zellij config
+      zellijEditor = pkgs.writeShellScript "editor" ''
+        # Check for Helix, fall back to Vim if unavailable
+        if ${pkgs.which}/bin/which hx &>/dev/null
+        then
+          hx $@
+        else
+          ${pkgs.vim}/bin/vim $@
+        fi
+      '';
       zellijConf = pkgs.writeText "config.yaml" ''
         default_shell "${fishExe}/bin/fish"
         theme "nord"
         simplified_ui true
         pane_frames false
+        scrollback_editor "${zellijEditor}"
       '';
     in {
       packages = rec {
