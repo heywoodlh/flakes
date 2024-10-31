@@ -274,7 +274,7 @@
         '';
         zellij = pkgs.writeShellScriptBin "zellij" ''
           PATH=${pkgs.zellij}/bin:$PATH # Include zellij in path
-          ${pkgs.zellij}/bin/zellij --config ${zellijConf}
+          ${pkgs.zellij}/bin/zellij --config ${zellijConf} $@
         '';
         default = fish;
         };
