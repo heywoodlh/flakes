@@ -7,28 +7,27 @@
 
 - name: install arch packages
   community.general.pacman:
-    name: "{{ item }}"
+    name:
+      - cronie
+      - git
+      - curl
+      - python-pip
+      - sudo
+      - tailscale
+      - ufw
     update_cache: yes
-  with_items:
-    - cronie
-    - git
-    - curl
-    - python-pip
-    - sudo
-    - tailscale
-    - ufw
   when: ansible_os_family == 'Archlinux'
 
 - name: install debian packages
   ansible.builtin.apt:
-    name: "{{ item }}"
+    pkg:
+      - cron
+      - curl
+      - git
+      - python3-pip
+      - sudo
+      - ufw
     update_cache: yes
-  with_items:
-    - git
-    - curl
-    - python3-pip
-    - sudo
-    - ufw
   when: ansible_os_family == 'Debian'
 
 - name: install tailscale
@@ -42,19 +41,19 @@
   community.general.apk:
     name: tailscale
     update_cache: true
-    repository: http://dl-3.alpinelinux.org/alpine/edge/main
-  when:
-    - ansible_os_family == 'Alpine'
+    repository: http://dl-3.alpinelinux.org/alpine/edge/community
+  when: ansible_os_family == 'Alpine'
 
 - name: enable cronie service
   ansible.builtin.service:
-    name: cronie.service
+    name: cronie
     enabled: yes
     state: started
-  when: ansible_os_family != 'Debian'
+  when: ansible_distribution != 'Ubuntu'
 
 - name: uninstall firefox snap
   when: ansible_distribution == "Ubuntu"
+  ignore_errors: true
   block:
   - name: disable firefox snap service
     ansible.builtin.shell: systemctl disable --now var-snap-firefox-common-host\\x2dhunspell.mount

@@ -1,27 +1,25 @@
 ---
 - name: install gnome and gdm
   ansible.builtin.apt:
-    name: "{{ item }}"
+    name:
+      - gdm3
+      - gnome-control-center
+      - gnome-shell
+      - firefox
+      - network-manager
     update_cache: yes
-  with_items:
-  - gdm3
-  - gnome-control-center
-  - gnome-shell
-  - firefox
-  - network-manager
   when: ansible_os_family == 'Debian'
 
 - name: install gnome and gdm
   community.general.pacman:
-    name: "{{ item }}"
+    name:
+      - gdm
+      - gnome-control-center
+      - gnome-shell
+      - gnome-terminal
+      - firefox
+      - networkmanager
     update_cache: yes
-  with_items:
-  - gdm
-  - gnome-control-center
-  - gnome-shell
-  - gnome-terminal
-  - firefox
-  - networkmanager
   when: ansible_os_family == 'Archlinux'
 
 - name: enable gdm
@@ -46,4 +44,5 @@
 
 - name: Kill apport
   ansible.builtin.shell: "killall system-crash-notification"
+  when: ansible_distribution == 'Ubuntu'
   ignore_errors: true

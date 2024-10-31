@@ -24,6 +24,26 @@
         state: restarted
       when: mirrorlist_perms.changed
 
+    - name: Install Arch Linux packages
+      community.general.pacman:
+        name:
+          - autoconf
+          - curl
+          - cronie
+          - gawk
+          - gcc
+          - gettext
+          - git
+          - lsb-release
+          - make
+          - mosh
+          - openbsd-netcat
+          - openssh
+          - sudo
+          - ufw
+          - wget
+          - tailscale
+
 - name: Debian tasks
   when:
     - ansible_os_family == "Debian"
@@ -44,40 +64,46 @@
         dest: /etc/apt/sources.list
       when: ansible_distribution == "Ubuntu"
 
-    - name: update apt cache
-      ansible.builtin.apt:
-        update_cache: yes
-
     - name: install debian packages
       ansible.builtin.apt:
-        name: "{{ item }}"
-      with_items:
-      - autoconf
-      - bc
-      - build-essential
-      - dc
-      - gawk
-      - gcc
-      - gettext
-      - git
-      - libc6
-      - libmcrypt-dev
-      - libnet-snmp-perl
-      - libssl-dev
-      - lsb-release
-      - make
-      - mosh
-      - netcat-openbsd
-      - snmp
-      - sudo
-      - ufw
-      - wget
+        update_cache: yes
+        pkg:
+          - autoconf
+          - bc
+          - build-essential
+          - cron
+          - curl
+          - dc
+          - gawk
+          - gcc
+          - gettext
+          - git
+          - libc6
+          - libmcrypt-dev
+          - libnet-snmp-perl
+          - libssl-dev
+          - lsb-release
+          - make
+          - mosh
+          - netcat-openbsd
+          - openssh-server
+          - snmp
+          - sudo
+          - ufw
+          - wget
 
-- name: Generic tasks
-  block:
-    - name: Install Tailscale
+    - name: install tailscale
       block:
         - ansible.builtin.get_url:
             url: https://tailscale.com/install.sh
             dest: /tmp/tailscale.sh
         - ansible.builtin.command: bash /tmp/tailscale.sh
+
+- name: Alpine Linux tasks
+  when:
+    - ansible_os_family == "Alpine"
+  block:
+    - name: Install dependencies
+      community.general.apk:
+        name: curl,cronie,wget,ufw,mosh,openssh,gettext,sudo
+        no_cache: true

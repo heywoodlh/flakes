@@ -9,69 +9,44 @@
     ssh_service_name: 'sshd'
   when: ansible_os_family != 'Debian'
 
-- name: Create /opt/scripts directory
-  ansible.builtin.file:
-    path: /opt/scripts
-    state: directory
-    owner: root
-    group: root
-    mode: '0700'
+- name: Setup sshd-alert systemd monitoring script
+  when: ansible_os_family != 'Alpine'
+  block:
+  - name: Create /opt/scripts directory
+    ansible.builtin.file:
+      path: /opt/scripts
+      state: directory
+      owner: root
+      group: root
+      mode: '0700'
 
-- name: Create sshd-alert.sh script
-  ansible.builtin.template:
-    src: sshd-alert.sh.j2
-    dest: /opt/scripts/sshd-alert.sh
-    owner: root
-    group: root
-    mode: '0700'
-    force: true
-  register: sshd_alert_script_copy
+  - name: Create sshd-alert.sh script
+    ansible.builtin.template:
+      src: sshd-alert.sh.j2
+      dest: /opt/scripts/sshd-alert.sh
+      owner: root
+      group: root
+      mode: '0700'
+      force: true
+    register: sshd_alert_script_copy
 
-- name: Copy sshd-alert systemd service
-  ansible.builtin.copy:
-    src: services/sshd-alert.service
-    dest: /etc/systemd/system/sshd-alert.service
+  - name: Copy sshd-alert systemd service
+    ansible.builtin.copy:
+      src: services/sshd-alert.service
+      dest: /etc/systemd/system/sshd-alert.service
 
-- name: Start and enable sshd-alert.service
-  ansible.builtin.systemd:
-    name: sshd-alert.service
-    daemon_reload: true
-    state: started
-    enabled: true
+  - name: Start and enable sshd-alert.service
+    ansible.builtin.systemd:
+      name: sshd-alert.service
+      daemon_reload: true
+      state: started
+      enabled: true
 
-- name: Restart sshd-alert.service if sshd-alert.sh script changed
-  ansible.builtin.systemd:
-    name: sshd-alert.service
-    state: restarted
-  when: sshd_alert_script_copy.changed
-
-#- name: Setup OSQuery
-#  when: ansible_os_family == 'Debian'
-#  block:
-#    - name: Check if osquery http server is accessible
-#      ansible.builtin.wait_for:
-#        host: 100.113.9.57
-#        port: 9080
-#        timeout: 1
-#      register: osquery_http_check
-#      ignore_errors: true
-#
-#    - name: Download osquery package
-#      ansible.builtin.get_url:
-#        url: http://100.113.9.57:9080/fleet-osquery_1.18.3_amd64.deb
-#        dest: /tmp/fleet-osquery.deb
-#      when: osquery_http_check is not failed
-#
-#    - name: Install osquery package
-#      ansible.builtin.apt:
-#        deb: /tmp/fleet-osquery.deb
-#      when: osquery_http_check is not failed
-#
-#    - name: Enable and start orbit service
-#      ansible.builtin.systemd:
-#        name: orbit.service
-#        state: started
-#        enabled: true
+  - name: Restart sshd-alert.service if sshd-alert.sh script changed
+    ansible.builtin.systemd:
+      name: sshd-alert.service
+      state: restarted
+    when: sshd_alert_script_copy.changed
 
 - name: Configure sshd
   lineinfile:
@@ -85,8 +60,8 @@
   register: sshd_configure_root
 
 - name: Restart sshd.service if config changed
-  ansible.builtin.systemd:
-    name: "{{ ssh_service_name }}.service"
+  ansible.builtin.service:
+    name: "{{ ssh_service_name }}"
     state: restarted
   when: sshd_configure_root.changed
 
@@ -100,8 +75,8 @@
         - ufw allow out on tailscale0 to any
         - yes | ufw enable
 
-    - ansible.builtin.systemd_service:
-        name: ufw.service
+    - ansible.builtin.service:
+        name: ufw
         state: started
         enabled: true
 

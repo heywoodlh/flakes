@@ -16,6 +16,9 @@
       installCollections = ''
         sudo ${pkgs.ansible}/bin/ansible-galaxy install -r ${self}/requirements.yml
       '';
+      test-sh = pkgs.writeShellScriptBin "test.sh" ''
+        ${self}/test.sh $@
+      '';
     in {
       packages = {
         workstation = pkgs.writeShellScriptBin "workstation" ''
@@ -28,12 +31,14 @@
           ${installCollections}
           sudo ${pkgs.ansible}/bin/ansible-playbook --connection=local ${self}/server/standalone.yml
         '';
+        tester = test-sh;
       };
       devShell = pkgs.mkShell {
         name = "ansible";
         buildInputs = with pkgs; [
           ansible
           ansible-language-server
+          test-sh
         ];
       };
       formatter = pkgs.alejandra;

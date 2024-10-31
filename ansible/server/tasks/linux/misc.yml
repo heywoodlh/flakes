@@ -1,7 +1,14 @@
 ---
+- name: Create /opt
+  ansible.builtin.file:
+    path: /opt/
+    state: directory
+    mode: 0755
+
 - name: Create /opt/scripts
   ansible.builtin.file:
     path: /opt/scripts
+    state: directory
     mode: 0700
 
 - name: Add install-ansible.sh script

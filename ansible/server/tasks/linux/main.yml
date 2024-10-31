@@ -13,16 +13,17 @@
       ansible.builtin.include_tasks: proxmox.yml
       when: pve_check.stat.exists
 
-- name: Debian/Arch Linux tasks
+- name: Debian/Arch/Alpine tasks
   when: >
     (ansible_os_family == "Debian") or
-    (ansible_os_family == "Archlinux")
+    (ansible_os_family == "Archlinux") or
+    (ansible_os_family == "Alpine")
   block:
     - name: Include deps tasks
       ansible.builtin.include_tasks: deps.yml
 
     - name: Include nix tasks
-      ansible.builtin.include_tasks: nix.yml
+      ansible.builtin.include_tasks: ../../../common/nix.yml
 
     - name: Include config tasks
       ansible.builtin.include_tasks: config.yml
@@ -34,6 +35,7 @@
       ansible.builtin.include_tasks: users.yml
 
     - name: Install node_exporter
+      when: ansible_os_family != "Alpine"
       ansible.builtin.include_role:
         name: prometheus.prometheus.node_exporter
 
