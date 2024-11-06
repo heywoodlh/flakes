@@ -32,6 +32,23 @@
         "type": "github"
       }
     },
+    "crossplane": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1730797894,
+        "narHash": "sha256-4EdYFrYh8bVCOXc7coq7WfZk0Be9rghdvNlOYFn6bm4=",
+        "owner": "crossplane",
+        "repo": "crossplane",
+        "rev": "e663a43ece850e93fe5cdebb2e478e2fb9762ad1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "crossplane",
+        "ref": "release-1.18",
+        "repo": "crossplane",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -392,6 +409,7 @@
       "inputs": {
         "cloudflared-helm": "cloudflared-helm",
         "coredns": "coredns",
+        "crossplane": "crossplane",
         "flake-utils": "flake-utils",
         "minecraft-helm": "minecraft-helm",
         "nfs-helm": "nfs-helm",

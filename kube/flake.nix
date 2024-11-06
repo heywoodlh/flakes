@@ -36,6 +36,10 @@
       url = "github:wazuh/wazuh-kubernetes/v4.9.0";
       flake = false;
     };
+    crossplane = {
+      url = "github:crossplane/crossplane/release-1.18";
+      flake = false;
+    };
   };
 
   outputs = inputs @ {
@@ -53,6 +57,7 @@
     op-scripts,
     coredns,
     wazuh,
+    crossplane,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs {
@@ -178,6 +183,13 @@
               clusterIP = "10.96.0.15";
             };
             isClusterService = false;
+          };
+        });
+        "crossplane" = (kubelib.buildHelmChart {
+          name = "crossplane";
+          chart = "${crossplane}/cluster/charts/crossplane";
+          namespace = "crossplane-system";
+          values = {
           };
         });
         drawio = mkKubeDrv "drawio" {
