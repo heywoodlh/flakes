@@ -15,6 +15,24 @@
         mode: '0600'
         owner: root
 
+- name: delete default users
+  block:
+    - name: "delete user {{ item }}"
+      ansible.builtin.user:
+        name: "{{ item }}"
+        state: absent
+      loop:
+        - linuxuser
+        - ubuntu
+
+    - name: "delete /home/{{ item }}"
+      ansible.builtin.file:
+        path: "/home/{{ item }}"
+        state: absent
+      loop:
+        - linuxuser
+        - ubuntu
+
 - name: configure heywoodlh user
   block:
     - name: create heywoodlh
