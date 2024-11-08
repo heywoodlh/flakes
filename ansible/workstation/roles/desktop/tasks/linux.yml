@@ -5,10 +5,23 @@
       - gdm3
       - gnome-control-center
       - gnome-shell
-      - firefox
       - network-manager
     update_cache: yes
   when: ansible_os_family == 'Debian'
+
+- name: install firefox on debian derivatives that are not debian
+  ansible.builtin.apt:
+    name:
+      - firefox
+  when:
+    - ansible_os_family == 'Debian'
+    - ansible_distribution != 'Debian'
+
+- name: install firefox on debian
+  ansible.builtin.apt:
+    name:
+      - firefox-esr
+  when: ansible_distribution == 'Debian'
 
 - name: install gnome and gdm
   community.general.pacman:

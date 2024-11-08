@@ -28,6 +28,7 @@
       - sudo
       - ufw
     update_cache: yes
+    lock_timeout: 600
   when: ansible_os_family == 'Debian'
 
 - name: install tailscale
@@ -49,7 +50,7 @@
     name: cronie
     enabled: yes
     state: started
-  when: ansible_distribution != 'Ubuntu'
+  when: ansible_os_family != 'Debian'
 
 - name: uninstall firefox snap
   when: ansible_distribution == "Ubuntu"

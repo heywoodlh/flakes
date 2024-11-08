@@ -58,6 +58,13 @@
     - ansible_os_family != 'Archlinux'
     - ansible_os_family != 'Alpine'
   block:
+    - name: Install curl if on Debian
+      ansible.builtin.apt:
+        name: curl
+        update_cache: yes
+        lock_timeout: 600
+      when: ansible_os_family == "Debian"
+
     - name: Check if Nix store exists
       ansible.builtin.stat:
         path: "/nix"
