@@ -1,10 +1,12 @@
 ---
 - name: start and enable ufw
+  ignore_errors: true # archlinux container doesn't like this
   ansible.builtin.service:
     name: ufw
     state: started
     enabled: yes
 
 - name: activate ufw
+  ignore_errors: true # archlinux container doesn't like this
   community.general.ufw:
     state: enabled

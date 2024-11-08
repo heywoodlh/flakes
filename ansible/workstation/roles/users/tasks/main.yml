@@ -13,20 +13,20 @@
   - /etc/sudoers
   - /etc/sudoers.d/heywoodlh
 
-- name: "Get user home dir"
+- name: get user home dir
   shell: >
     getent passwd heywoodlh | cut -d: -f6
   changed_when: false
   register: user_home
 
-- name: "Create {{ user_home.stdout }}/bin"
+- name: "create {{ user_home.stdout }}/bin"
   ansible.builtin.file:
     state: directory
     path: "{{ user_home.stdout }}/bin"
     owner: heywoodlh
     mode: "0755"
 
-- name: "Add ansible-switch script to {{ user_home.stdout }}/bin/ansible-switch"
+- name: "add ansible-switch script to {{ user_home.stdout }}/bin/ansible-switch"
   ansible.builtin.copy:
     src: "ansible-switch"
     dest: "{{ user_home.stdout }}/bin/ansible-switch"

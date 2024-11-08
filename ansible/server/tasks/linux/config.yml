@@ -1,5 +1,5 @@
 ---
-- name: Copy journald.conf
+- name: copy journald.conf
   ansible.builtin.copy:
     src: systemd/journald.conf
     dest: /etc/systemd/journald.conf
@@ -7,7 +7,7 @@
   register: journald_config
   when: ansible_os_family != "Alpine"
 
-- name: Restart journald
+- name: restart journald
   ansible.builtin.systemd:
     name: systemd-journald.service
     state: restarted

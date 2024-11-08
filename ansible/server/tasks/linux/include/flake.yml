@@ -1,21 +1,21 @@
 ---
-- name: Get user home directory
+- name: get user home directory
   shell: >
     getent passwd heywoodlh | cut -d: -f6
   changed_when: false
   register: user_home
 
-- name: "Check if {{ user_home.stdout }}/.nix-profile/bin/{{ item }} exists"
+- name: "check if {{ user_home.stdout }}/.nix-profile/bin/{{ item }} exists"
   ansible.builtin.command: "ls -l {{ user_home.stdout }}/.nix-profile/bin/{{ item }}"
   register: home_flake_check
   ignore_errors: true
 
-- name: "Check if /nix/var/nix/profiles/default/bin/{{ item }} exists"
+- name: "check if /nix/var/nix/profiles/default/bin/{{ item }} exists"
   ansible.builtin.command: "ls -l /nix/var/nix/profiles/default/bin/tmux/{{ item }}"
   register: system_flake_check
   ignore_errors: true
 
-- name: Install flake if it doesn't exist
+- name: install flake if it doesn't exist
   ansible.builtin.shell: "/nix/var/nix/profiles/default/bin/nix --extra-experimental-features 'nix-command flakes' profile install github:heywoodlh/flakes#{{ item }} --no-write-lock-file"
   when:
     - home_flake_check.rc != 0

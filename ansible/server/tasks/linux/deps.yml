@@ -1,9 +1,9 @@
 ---
-- name: Arch Linux tasks
+- name: arch linux tasks
   when:
     - ansible_os_family == 'Archlinux'
   block:
-    - name: Arch Linux ARM mirrorlist repo configuration
+    - name: arch linux mirrorlist repo configuration
       ansible.builtin.copy:
         src: "archlinux/mirrorlist-{{ ansible_architecture }}"
         dest: /etc/pacman.d/mirrorlist
@@ -11,20 +11,25 @@
         owner: root
         mode: 644
 
-    - name: Ensure that /etc/pacman.d/mirrorlist has 644 permissions
+    - name: ensure that /etc/pacman.d/mirrorlist has 644 permissions
       ansible.builtin.file:
         path: /etc/pacman.d/mirrorlist
         mode: '0644'
         force: true
       register: mirrorlist_perms
 
-    - name: Restart archlinux-keyring-wkd-sync.service
+    - name: restart archlinux-keyring-wkd-sync.service
       ansible.builtin.systemd:
         name: archlinux-keyring-wkd-sync.service
         state: restarted
       when: mirrorlist_perms.changed
 
-    - name: Install Arch Linux packages
+    - name: install archlinux-keyring
+      community.general.pacman:
+        name:
+          - archlinux-keyring
+
+    - name: install arch linux packages
       community.general.pacman:
         name:
           - autoconf
@@ -44,7 +49,7 @@
           - wget
           - tailscale
 
-- name: Debian tasks
+- name: debian tasks
   when:
     - ansible_os_family == "Debian"
   block:
@@ -100,11 +105,11 @@
             dest: /tmp/tailscale.sh
         - ansible.builtin.command: bash /tmp/tailscale.sh
 
-- name: Alpine Linux tasks
+- name: alpine linux tasks
   when:
     - ansible_os_family == "Alpine"
   block:
-    - name: Install dependencies
+    - name: install dependencies
       community.general.apk:
         name: curl,cronie,wget,ufw,mosh,openssh,gettext,sudo
         no_cache: true

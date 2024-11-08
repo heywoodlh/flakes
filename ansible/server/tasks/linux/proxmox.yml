@@ -1,5 +1,5 @@
 ---
-- name: Install lsb_release
+- name: install lsb_release
   ansible.builtin.apt:
     name: "{{ item }}"
     install_recommends: no
@@ -9,41 +9,41 @@
     - lsb-release
     - ufw
 
-- name: Disable Enterprise repository
+- name: disable enterprise repository
   ansible.builtin.file:
     path: /etc/apt/sources.list.d/pve-enterprise.list
     state: absent
 
-- name: Get distribution codename
+- name: get distribution codename
   ansible.builtin.shell: lsb_release -c | cut -f 2
   register: codename
 
 - ansible.builtin.set_fact:
     codename: "{{ codename.stdout }}"
 
-- name: Add no-subscription repository
+- name: add no-subscription repository
   template:
     src: templates/pve-no-subscription.list.j2
     dest: /etc/apt/sources.list.d/pve-no-subscription.list
 
-- name: Disable subscription notice
+- name: disable subscription notice
   ansible.builtin.replace:
       path: /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
       regexp: "res === null \\|\\| res === undefined \\|\\| \\!res \\|\\| res\\n\\t\\t\\t.data.status.toLowerCase\\(\\) \\!== 'active'"
       replace: "false"
       backup: yes
 
-- name: Allow proxmox ports in ufw
+- name: allow proxmox ports in ufw
   ansible.builtin.command: "ufw allow {{ item }}"
   with_items:
     - "8006"
     - "6789"
     - "6800:7568/tcp"
 
-- name: Enable snippets on local storage
+- name: enable snippets on local storage
   ansible.builtin.command: "pvesm set local --content images,rootdir,vztmpl,iso,snippets"
 
-- name: Restart proxmox web interface
+- name: restart proxmox web interface
   ansible.builtin.systemd_service:
     name: pveproxy.service
     state: restarted

@@ -47,7 +47,7 @@
     enabled: yes
   when: ansible_os_family == 'Archlinux'
 
-- name: Disable error reporting in Ubuntu
+- name: disable error reporting in ubuntu
   ansible.builtin.replace:
     path: /etc/default/apport
     regexp: 'enabled=1'
@@ -55,7 +55,7 @@
   when: ansible_distribution == 'Ubuntu'
   register: disable_apport
 
-- name: Kill apport
+- name: kill apport
   ansible.builtin.shell: "killall system-crash-notification"
   when: ansible_distribution == 'Ubuntu'
   ignore_errors: true

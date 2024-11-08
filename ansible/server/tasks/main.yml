@@ -1,5 +1,5 @@
 ---
-- name: Set server status
+- name: set server status
   operator_sdk.util.k8s_status:
     api_version: compute.heywoodlh.io/v1
     kind: Server
@@ -11,7 +11,7 @@
         status: "False"
         message: "Starting playbook run"
 
-- name: Retrieve status
+- name: retrieve status
   operator_sdk.util.k8s_status:
     api_version: compute.heywoodlh.io/v1
     kind: Server
@@ -19,36 +19,36 @@
     name: "{{ ansible_operator_meta.name }}"
   register: server_status_reg
 
-- name: Register fact for current status
+- name: register fact for current status
   ansible.builtin.set_fact:
     server_status: "{{ server_status_reg.result.status }}"
 
-- name: Set server facts
+- name: set server facts
   ansible.builtin.set_fact:
     hostname: "{{ server_status | json_query('hostname') }}"
     username: "{{ server_status | json_query('username') }}"
     sshkey: "{{ server_status | json_query('sshkey') }}"
     sshport: "{{ server_status | json_query('sshport') }}"
 
-- name: Create ssh key file
+- name: create ssh key file
   ansible.builtin.tempfile:
     state: file
   register: ssh_keyfile
 
-- name: Write ssh key contents to file
+- name: write ssh key contents to file
   ansible.builtin.copy:
     content: "{{ sshkey }}"
     dest: "{{ ssh_keyfile.path }}"
     mode: "0600"
 
-- name: Add host to in-memory inventory
+- name: add host to in-memory inventory
   ansible.builtin.add_host:
     name: "{{ hostname }}"
     ansible_user: "{{ username }}"
     ansible_ssh_private_key_file: "{{ ssh_keyfile.path }}"
     ansible_python_interpreter: "auto"
 
-- name: Set server status
+- name: set server status
   operator_sdk.util.k8s_status:
     api_version: compute.heywoodlh.io/v1
     kind: Server
@@ -60,16 +60,16 @@
         status: "False"
         message: "Running server tasks"
 
-- name: Run Linux tasks
+- name: run linux tasks
   ansible.builtin.import_tasks: ./linux/main.yml
   delegate_to: "{{ hostname }}"
 
-- name: Remove keyfile
+- name: remove keyfile
   ansible.builtin.file:
     path: "{{ ssh_keyfile.path }}"
     state: absent
 
-- name: Set server status
+- name: set server status
   operator_sdk.util.k8s_status:
     api_version: compute.heywoodlh.io/v1
     kind: Server
