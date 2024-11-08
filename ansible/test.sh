@@ -18,5 +18,5 @@ do
   set -ex
   docker build -q -t ansible-${os}-test -f ${dir}/Dockerfile --target ${os}-test ${dir} || printf "Error occurred on operating system: ${os}"
   mkdir -p /tmp/ansible
-  docker run -i --rm -v /tmp/.ansible:/root/.ansible --privileged ansible-${os}-test
+  docker run -it --rm -v /tmp/.ansible:/root/.ansible --privileged ansible-${os}-test
 done
