@@ -35,17 +35,17 @@
     "crossplane": {
       "flake": false,
       "locked": {
-        "lastModified": 1730797894,
-        "narHash": "sha256-4EdYFrYh8bVCOXc7coq7WfZk0Be9rghdvNlOYFn6bm4=",
-        "owner": "crossplane",
-        "repo": "crossplane",
-        "rev": "e663a43ece850e93fe5cdebb2e478e2fb9762ad1",
+        "lastModified": 1730805521,
+        "narHash": "sha256-nsDug906q7M+ZXhBtmKFREEY/TmEHuzCm8DWtcpe0EI=",
+        "owner": "upbound",
+        "repo": "universal-crossplane",
+        "rev": "183f337668921f56aa48c4c2a75527f80a472c20",
         "type": "github"
       },
       "original": {
-        "owner": "crossplane",
+        "owner": "upbound",
         "ref": "release-1.18",
-        "repo": "crossplane",
+        "repo": "universal-crossplane",
         "type": "github"
       }
     },

@@ -37,7 +37,7 @@
       flake = false;
     };
     crossplane = {
-      url = "github:crossplane/crossplane/release-1.18";
+      url = "github:upbound/universal-crossplane/release-1.18";
       flake = false;
     };
   };
@@ -187,10 +187,9 @@
         });
         "crossplane" = (kubelib.buildHelmChart {
           name = "crossplane";
-          chart = "${crossplane}/cluster/charts/crossplane";
-          namespace = "crossplane-system";
-          values = {
-          };
+          chart = "${crossplane}/cluster/charts/universal-crossplane";
+          namespace = "upbound-system";
+          values = {};
         });
         drawio = mkKubeDrv "drawio" {
           src = ./templates/draw-io.yaml;
