@@ -322,6 +322,7 @@
           webui_image = "ghcr.io/open-webui/open-webui:git-1b91e7f";
           hostfolder = "/opt/open-webui";
         };
+        # Ensure to deploy prometheus-blackbox-exporter first
         prometheus = (kubelib.buildHelmChart {
           name = "prometheus";
           chart = (nixhelm.charts { inherit pkgs; }).prometheus-community.prometheus;
@@ -354,7 +355,34 @@
                   - proxmox-nvidia.barn-banana.ts.net:9100
                   - kasmweb.barn-banana.ts.net:9100
                   - wazuh.barn-banana.ts.net:9100
+
+              - job_name: blackbox
+                      metrics_path: /probe
+                      params:
+                        module: [http_2xx]
+                      static_configs:
+                        - targets:
+                          - https://honeypot.heywoodlh.io/log_session.json
+                      relabel_configs:
+                        - source_labels: [__address__]
+                          target_label: __param_target
+                        - source_labels: [__param_target]
+                          target_label: instance
+                        - target_label: __address__
+                          replacement: prometheus-prometheus-blackbox-exporter:9115
             '';
+          };
+        });
+        prometheus-blackbox-exporter = (kubelib.buildHelmChart {
+          name = "prometheus";
+          chart = (nixhelm.charts { inherit pkgs; }).prometheus-community.prometheus-blackbox-exporter;
+          namespace = "monitoring";
+          values = {
+            image = {
+              registry = "quay.io";
+              repository = "prometheus/blackbox-exporter";
+              tag = "v0.25.0";
+            };
           };
         });
         protonmail-bridge = mkKubeDrv "protonmail-bridge" {
