@@ -40,6 +40,10 @@
       url = "github:upbound/universal-crossplane/release-1.18";
       flake = false;
     };
+    elastic-cloud = {
+      url = "github:elastic/cloud-on-k8s/2.15";
+      flake = false;
+    };
   };
 
   outputs = inputs @ {
@@ -58,6 +62,7 @@
     coredns,
     wazuh,
     crossplane,
+    elastic-cloud,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs {
@@ -197,6 +202,20 @@
           tag = "23.0.0";
           port = "80";
           replicas = "1";
+        };
+        elastic-cloud-operator = (kubelib.buildHelmChart {
+          name = "elastic-cloud-operator";
+          chart = "${elastic-cloud}/deploy/eck-operator";
+          namespace = "monitoring";
+          values.image.tag = "2.15.0-bc4";
+        });
+        elastic-cloud-elastic-stack = mkKubeDrv "elastic-stack" {
+          src = ./templates/elastic-stack.yaml;
+          namespace = "monitoring";
+          version = "8.15.3";
+          elasticsearch_nodecount = 1;
+          kibana_nodecount = 1;
+          storage = "100Gi";
         };
         grafana = mkKubeDrv "grafana" {
           src = ./templates/grafana.yaml;

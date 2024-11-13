@@ -49,6 +49,23 @@
         "type": "github"
       }
     },
+    "elastic-cloud": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1731347671,
+        "narHash": "sha256-N0rOV+kPAj7YjDG5N0tbUlR7r8DdWGv23F/eOyaFs2g=",
+        "owner": "elastic",
+        "repo": "cloud-on-k8s",
+        "rev": "61f99ee53895d7b03db7018bd14e2de85e76811d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "elastic",
+        "ref": "2.15",
+        "repo": "cloud-on-k8s",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -410,6 +427,7 @@
         "cloudflared-helm": "cloudflared-helm",
         "coredns": "coredns",
         "crossplane": "crossplane",
+        "elastic-cloud": "elastic-cloud",
         "flake-utils": "flake-utils",
         "minecraft-helm": "minecraft-helm",
         "nfs-helm": "nfs-helm",
