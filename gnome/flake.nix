@@ -38,7 +38,7 @@
         config.allowUnfree = true;
       };
       stable-pkgs = nixpkgs-stable.legacyPackages.${system};
-      myZellij = fish-flake.packages.${system}.zellij;
+      myShell = "${fish-flake.packages.${system}.tmux}/bin/tmux";
       myHelix = helix-flake.packages.${system}.helix;
       vimIme = "${vim-ime}/vim-ime.py";
       wallpaper = ./wallpapers/nix-nord.png;
@@ -57,7 +57,7 @@
         [apps/guake/general]
         abbreviate-tab-names=false
         compat-delete='delete-sequence'
-        default-shell='${myZellij}/bin/zellij'
+        default-shell='${myShell}'
         display-n=0
         display-tab-names=0
         gtk-prefer-dark-theme=true
@@ -200,11 +200,11 @@
         [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2]
         binding='<Ctrl><Super>s'
         command='${pkgs._1password-gui}/bin/1password --quick-access'
-        name='rofi-1pass'
+        name='1pass-quick-access'
 
         [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4]
         binding='<Super><Shift>s'
-        command='${pkgs.gnome-screenshot}/bin/gnome-screenshot -a -f /tmp/screenshot.png && ${pkgs.xclip}/bin/xclip -in -selection clipboard -target image/png /tmp/screenshot.png'
+        command='${pkgs.gnome-screenshot}/bin/gnome-screenshot -ac'
         name='screenshot'
 
         [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5]
@@ -604,7 +604,7 @@
         cursor-colors-set=true
         cursor-foreground-color='rgb(59,66,82)'
         cursor-shape='ibeam'
-        custom-command='${myZellij}/bin/zellij'
+        custom-command='${myShell}'
         font='JetBrains Mono NL 14'
         foreground-color='#D8DEE9'
         highlight-background-color='rgb(136,192,208)'
