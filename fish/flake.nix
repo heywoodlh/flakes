@@ -76,13 +76,25 @@
         # Direnv
         eval (${pkgs.direnv}/bin/direnv hook fish)
 
-        # Use 1password SSH agent if it exists
+        # Use 1password SSH agent if it exists (not over SSH/headless environment)
         if test -z $SSH_CONNECTION
             if test -e $HOME/.1password/agent.sock
                 set -gx SSH_AUTH_SOCK "$HOME/.1password/agent.sock"
             end
             if test -e "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
                 set -gx SSH_AUTH_SOCK "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+            end
+        end
+
+        # Start ssh-agent if not using 1password
+        if not echo $SSH_AUTH_SOCK | ${pkgs.gnugrep}/bin/grep -q 1password
+            # Check if ssh-agent running with ~/.ssh/agent.sock socket
+            if not ${pkgs.ps}/bin/ps -fjH -u $USER | ${pkgs.gnugrep}/bin/grep ssh-agent | ${pkgs.gnugrep}/bin/grep -q "$HOME/.ssh/agent.sock" &> /dev/null
+                mkdir -p $HOME/.ssh
+                eval (${pkgs.openssh}/bin/ssh-agent -t 4h -c -a "$HOME/.ssh/agent.sock") &> /dev/null || true
+            else
+                # ssh-agent running, set SSH_AUTH_SOCK
+                export SSH_AUTH_SOCK="$HOME/.ssh/agent.sock"
             end
         end
 
