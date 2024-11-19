@@ -1,4 +1,4 @@
-{ callPackage, helix-vim, ...}:
+{ callPackage, ...}:
 
 let
   modFiles = [
@@ -25,8 +25,7 @@ let
     ./localvimrc.nix
     # Base vim config
     ./vimrc.nix
-    ./helix.nix
   ];
 
-  importModFile = f: callPackage f { inherit helix-vim; };
+  importModFile = f: callPackage f {};
 in map importModFile modFiles
