@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         os: [x64, arm64]
-        flake: [vim, fish, tmux, git, helix, browsh, tabby, zellij]
+        flake: [vim, fish, git, helix, browsh]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout repository
@@ -35,6 +35,48 @@ jobs:
         with:
           name: ${{ matrix.os }}-${{ matrix.flake }}
           path: ./${{ matrix.os }}-${{ matrix.flake }}
+
+  build-custom-flake-appimages:
+    name: Build custom flake appimages
+    strategy:
+      matrix:
+        include:
+          - os: x64
+            flake: "./fish#tmux"
+            out: "tmux"
+          - os: arm64
+            flake: "./fish#tmux"
+            out: "tmux"
+          - os: x64
+            flake: "./fish#zellij"
+            out: "zellij"
+          - os: arm64
+            flake: "./fish#zellij"
+            out: "zellij"
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v27
+        with:
+          nix_path: nixpkgs=channel:nixpkgs-unstable
+
+      - name: Setup Nix Magic Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Build ${{ matrix.flake }} flake
+        run: |
+          release="${{ matrix.out }}-$(arch).appimage"
+          mkdir -p ./out
+          nix bundle -o "./${{ matrix.os }}-${{ matrix.out }}/$release" --bundler github:ralismark/nix-appimage "${{ matrix.flake }}"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.os }}-${{ matrix.out }}
+          path: ./${{ matrix.os }}-${{ matrix.out }}
 
   #build-x86-appimages:
   #  name: Build x88_64 exclusive appimages
