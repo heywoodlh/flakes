@@ -21,7 +21,8 @@ let
     ./betterwhitespace.nix
     ./shell.nix
     ./os-specific.nix
-    ./vim-pets.nix
+    ./pets.nix
+    ./copilot.nix
     ./localvimrc.nix
     # Base vim config
     ./vimrc.nix
