@@ -91,6 +91,7 @@
             # Check if ssh-agent running with ~/.ssh/agent.sock socket
             if not ${pkgs.ps}/bin/ps -fjH -u $USER | ${pkgs.gnugrep}/bin/grep ssh-agent | ${pkgs.gnugrep}/bin/grep -q "$HOME/.ssh/agent.sock" &> /dev/null
                 mkdir -p $HOME/.ssh
+                rm -f $HOME/.ssh/agent.sock &> /dev/null
                 eval (${pkgs.openssh}/bin/ssh-agent -t 4h -c -a "$HOME/.ssh/agent.sock") &> /dev/null || true
             else
                 # ssh-agent running, set SSH_AUTH_SOCK
