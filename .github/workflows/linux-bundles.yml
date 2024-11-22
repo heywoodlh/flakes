@@ -1,4 +1,4 @@
-name: build-appimages
+name: build-linux-bundles
 
 on:
   workflow_dispatch:
@@ -6,8 +6,8 @@ on:
     - cron: "0 0 * * 2"
 
 jobs:
-  build-multiarch-appimages:
-    name: Build multiarch appimages
+  build-multiarch-bundles:
+    name: Build multiarch bundles
     strategy:
       matrix:
         os: [x64, arm64]
@@ -25,16 +25,20 @@ jobs:
       - name: Setup Nix Magic Cache
         uses: DeterminateSystems/magic-nix-cache-action@main
 
-      - name: Build ${{ matrix.flake }} flake
+      - name: Build ${{ matrix.flake }} flake bundles
         run: |
-          release="${{ matrix.flake }}-$(arch).appimage"
-          mkdir -p ./out
-          nix bundle -o "./${{ matrix.os }}-${{ matrix.flake }}/$release" --bundler github:ralismark/nix-appimage "./${{ matrix.flake }}"
+          release="${{ matrix.flake }}-$(arch)"
+          nix bundle -o "./${{ matrix.os }}-${{ matrix.flake }}-appimage/$release.appimage" --bundler github:ralismark/nix-appimage "./${{ matrix.flake }}"
+          nix bundle -o "./${{ matrix.os }}-${{ matrix.flake }}-deb/$release.deb" --bundler github:nixos/bundlers#toDEB "./${{ matrix.flake }}"
+          nix bundle -o "./${{ matrix.os }}-${{ matrix.flake }}-rpm/$release.rpm" --bundler github:nixos/bundlers#toRPM "./${{ matrix.flake }}"
 
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}-${{ matrix.flake }}
-          path: ./${{ matrix.os }}-${{ matrix.flake }}
+          path: |
+            ./${{ matrix.os }}-${{ matrix.flake }}-appimage
+            ./${{ matrix.os }}-${{ matrix.flake }}-deb
+            ./${{ matrix.os }}-${{ matrix.flake }}-rpm
 
   build-custom-flake-appimages:
     name: Build custom flake appimages
@@ -67,58 +71,41 @@ jobs:
       - name: Setup Nix Magic Cache
         uses: DeterminateSystems/magic-nix-cache-action@main
 
-      - name: Build ${{ matrix.flake }} flake
+      - name: Build ${{ matrix.flake }} flake bundles
         run: |
-          release="${{ matrix.out }}-$(arch).appimage"
+          release="${{ matrix.out }}-$(arch)"
           mkdir -p ./out
-          nix bundle -o "./${{ matrix.os }}-${{ matrix.out }}/$release" --bundler github:ralismark/nix-appimage "${{ matrix.flake }}"
+          nix bundle -o "./${{ matrix.os }}-${{ matrix.out }}-appimage/$release.appimage" --bundler github:ralismark/nix-appimage "${{ matrix.flake }}"
+          nix bundle -o "./${{ matrix.os }}-${{ matrix.out }}-deb/$release.deb" --bundler github:nixos/bundlers#toDEB "${{ matrix.flake }}"
+          nix bundle -o "./${{ matrix.os }}-${{ matrix.out }}-rpm/$release.rpm" --bundler github:nixos/bundlers#toRPM "${{ matrix.flake }}"
 
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}-${{ matrix.out }}
-          path: ./${{ matrix.os }}-${{ matrix.out }}
-
-  #build-x86-appimages:
-  #  name: Build x88_64 exclusive appimages
-  #  strategy:
-  #    matrix:
-  #      flake: [browsh]
-  #  runs-on: ubuntu-latest
-  #  steps:
-  #    - name: Checkout repository
-  #      uses: actions/checkout@v4
-
-  #    - name: Install Nix
-  #      uses: cachix/install-nix-action@v27
-  #      with:
-  #        nix_path: nixpkgs=channel:nixpkgs-unstable
-
-  #    - name: Setup Nix Magic Cache
-  #      uses: DeterminateSystems/magic-nix-cache-action@main
-  #    
-  #    - name: Build ${{ matrix.flake }} flake
-  #      run: |
-  #        release="${{ matrix.flake }}-$(arch).appimage"
-  #        mkdir -p ./out
-  #        nix bundle -o "./${{ matrix.os }}-${{ matrix.flake }}/$release" --bundler github:ralismark/nix-appimage "./${{ matrix.flake }}"
-
-  #    - uses: actions/upload-artifact@v4
-  #      with:
-  #        name: ${{ matrix.os }}-${{ matrix.flake }}
-  #        path: ./${{ matrix.os }}-${{ matrix.flake }}
+          path: |
+            ./${{ matrix.os }}-${{ matrix.out }}-appimage
+            ./${{ matrix.os }}-${{ matrix.out }}-deb
+            ./${{ matrix.os }}-${{ matrix.out }}-rpm
 
   push-releases:
     name: Push releases
     runs-on: ubuntu-latest
-    needs: [build-multiarch-appimages]
     steps:
-      - name: Download appimages
+      - name: Download bundles
         uses: actions/download-artifact@v4
 
-      - name: Create release with flake executables
+      - name: Create appimage release with flake executables
         uses: ncipollo/release-action@v1
         with:
           artifacts: './*/*.appimage'
           tag: "appimages"
+          artifactErrorsFailBuild: false
+          allowUpdates: true
+
+      - name: Create deb/rpm release with flake executables
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "./*/*.deb,./*/*.rpm"
+          tag: "packages"
           artifactErrorsFailBuild: false
           allowUpdates: true
