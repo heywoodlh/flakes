@@ -27,18 +27,22 @@ jobs:
 
       - name: Build ${{ matrix.flake }} flake bundles
         run: |
-          release="${{ matrix.flake }}-$(arch)"
-          nix bundle -o "./${{ matrix.os }}-${{ matrix.flake }}-appimage/$release.appimage" --bundler github:ralismark/nix-appimage "./${{ matrix.flake }}"
+          mkdir -p appimage deb rpm
+          nix bundle -o "./${{ matrix.os }}-${{ matrix.out }}-appimage" --bundler github:ralismark/nix-appimage "./${{ matrix.flake }}"
+          cp "./${{ matrix.os }}-${{ matrix.out }}-appimage" "./appimage/${{ matrix.flake }}.appimage"
           nix bundle -o "./${{ matrix.os }}-${{ matrix.flake }}-deb" --bundler github:nixos/bundlers#toDEB "./${{ matrix.flake }}"
+          cp "./${{ matrix.os }}-${{ matrix.flake }}-deb"/*.deb "./deb/${{ matrix.flake }}.deb"
           nix bundle -o "./${{ matrix.os }}-${{ matrix.flake }}-rpm" --bundler github:nixos/bundlers#toRPM "./${{ matrix.flake }}"
+          cp "./${{ matrix.os }}-${{ matrix.flake }}-rpm"/*.rpm "./rpm/${{ matrix.flake }}.rpm"
+          nix run nixpkgs#tree
 
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}-${{ matrix.flake }}
           path: |
-            ./${{ matrix.os }}-${{ matrix.flake }}-appimage
-            ./${{ matrix.os }}-${{ matrix.flake }}-deb
-            ./${{ matrix.os }}-${{ matrix.flake }}-rpm
+            ./appimage/*.appimage
+            ./rpm/*.rpm
+            ./deb/*.deb
 
   build-custom-bundles:
     name: Build custom flake bundles
@@ -73,11 +77,14 @@ jobs:
 
       - name: Build ${{ matrix.flake }} flake bundles
         run: |
-          release="${{ matrix.out }}-$(arch)"
-          mkdir -p ./out
-          nix bundle -o "./${{ matrix.os }}-${{ matrix.out }}-appimage/$release.appimage" --bundler github:ralismark/nix-appimage "${{ matrix.flake }}"
+          mkdir -p appimage deb rpm
+          nix bundle -o "./${{ matrix.os }}-${{ matrix.out }}-appimage" --bundler github:ralismark/nix-appimage "${{ matrix.flake }}"
+          cp "./${{ matrix.os }}-${{ matrix.out }}-appimage" "./appimage/${{ matrix.out }}.appimage"
           nix bundle -o "./${{ matrix.os }}-${{ matrix.out }}-deb" --bundler github:nixos/bundlers#toDEB "${{ matrix.flake }}"
+          cp "./${{ matrix.os }}-${{ matrix.out }}-deb"/*.deb "./deb/${{ matrix.out }}.deb"
           nix bundle -o "./${{ matrix.os }}-${{ matrix.out }}-rpm" --bundler github:nixos/bundlers#toRPM "${{ matrix.flake }}"
+          cp "./${{ matrix.os }}-${{ matrix.out }}-rpm"/*.rpm "./rpm/${{ matrix.out }}.rpm"
+          nix run nixpkgs#tree
 
       - uses: actions/upload-artifact@v4
         with:
@@ -92,13 +99,25 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build-multiarch-bundles, build-custom-bundles]
     steps:
+      - name: Install Nix
+        uses: cachix/install-nix-action@v27
+        with:
+          nix_path: nixpkgs=channel:nixpkgs-unstable
+
+      - name: Setup Nix Magic Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+
       - name: Download bundles
         uses: actions/download-artifact@v4
+
+      - name: Build ${{ matrix.flake }} flake
+        run: |
+          nix run nixpkgs#tree
 
       - name: Create appimage release with flake executables
         uses: ncipollo/release-action@v1
         with:
-          artifacts: './*/*.appimage'
+          artifacts: './*/appimage/*.appimage'
           tag: "appimages"
           artifactErrorsFailBuild: false
           allowUpdates: true
@@ -106,7 +125,7 @@ jobs:
       - name: Create deb/rpm release with flake executables
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "./*/*.deb,./*/*.rpm"
+          artifacts: "./*/deb/*.deb,./*/rpm/*.rpm"
           tag: "packages"
           artifactErrorsFailBuild: false
           allowUpdates: true
