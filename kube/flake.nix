@@ -515,6 +515,12 @@
             ${pkgs.kubectl}/bin/kubectl kustomize ${finalWazuh}/kustomize/wazuh > $out
           '';
         };
+        whishper = mkKubeDrv "whishper" {
+          src = ./templates/whishper.yaml;
+          namespace = "default";
+          replicas = 1;
+          image = "docker.io/pluja/whishper:v3.1.4-gpu";
+        };
       };
       devShell = pkgs.mkShell {
         name = "kubernetes-shell";
