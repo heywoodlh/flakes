@@ -29,8 +29,8 @@ jobs:
         run: |
           release="${{ matrix.flake }}-$(arch)"
           nix bundle -o "./${{ matrix.os }}-${{ matrix.flake }}-appimage/$release.appimage" --bundler github:ralismark/nix-appimage "./${{ matrix.flake }}"
-          nix bundle -o "./${{ matrix.os }}-${{ matrix.flake }}-deb/$release.deb" --bundler github:nixos/bundlers#toDEB "./${{ matrix.flake }}"
-          nix bundle -o "./${{ matrix.os }}-${{ matrix.flake }}-rpm/$release.rpm" --bundler github:nixos/bundlers#toRPM "./${{ matrix.flake }}"
+          nix bundle -o "./${{ matrix.os }}-${{ matrix.flake }}-deb" --bundler github:nixos/bundlers#toDEB "./${{ matrix.flake }}"
+          nix bundle -o "./${{ matrix.os }}-${{ matrix.flake }}-rpm" --bundler github:nixos/bundlers#toRPM "./${{ matrix.flake }}"
 
       - uses: actions/upload-artifact@v4
         with:
@@ -40,8 +40,8 @@ jobs:
             ./${{ matrix.os }}-${{ matrix.flake }}-deb
             ./${{ matrix.os }}-${{ matrix.flake }}-rpm
 
-  build-custom-flake-appimages:
-    name: Build custom flake appimages
+  build-custom-bundles:
+    name: Build custom flake bundles
     strategy:
       matrix:
         include:
@@ -76,8 +76,8 @@ jobs:
           release="${{ matrix.out }}-$(arch)"
           mkdir -p ./out
           nix bundle -o "./${{ matrix.os }}-${{ matrix.out }}-appimage/$release.appimage" --bundler github:ralismark/nix-appimage "${{ matrix.flake }}"
-          nix bundle -o "./${{ matrix.os }}-${{ matrix.out }}-deb/$release.deb" --bundler github:nixos/bundlers#toDEB "${{ matrix.flake }}"
-          nix bundle -o "./${{ matrix.os }}-${{ matrix.out }}-rpm/$release.rpm" --bundler github:nixos/bundlers#toRPM "${{ matrix.flake }}"
+          nix bundle -o "./${{ matrix.os }}-${{ matrix.out }}-deb" --bundler github:nixos/bundlers#toDEB "${{ matrix.flake }}"
+          nix bundle -o "./${{ matrix.os }}-${{ matrix.out }}-rpm" --bundler github:nixos/bundlers#toRPM "${{ matrix.flake }}"
 
       - uses: actions/upload-artifact@v4
         with:
@@ -90,6 +90,7 @@ jobs:
   push-releases:
     name: Push releases
     runs-on: ubuntu-latest
+    needs: [build-multiarch-bundles, build-custom-bundles]
     steps:
       - name: Download bundles
         uses: actions/download-artifact@v4
