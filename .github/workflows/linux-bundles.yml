@@ -90,9 +90,9 @@ jobs:
         with:
           name: ${{ matrix.os }}-${{ matrix.out }}
           path: |
-            ./${{ matrix.os }}-${{ matrix.out }}-appimage
-            ./${{ matrix.os }}-${{ matrix.out }}-deb
-            ./${{ matrix.os }}-${{ matrix.out }}-rpm
+            ./appimage/*.appimage
+            ./rpm/*.rpm
+            ./deb/*.deb
 
   push-releases:
     name: Push releases
