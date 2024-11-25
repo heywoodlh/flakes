@@ -283,7 +283,14 @@
         tmux = pkgs.writeShellScriptBin "tmux" ''
           # Include BASH (for appimage to work properly)
           PATH=${pkgs.bash}/bin:$PATH
-          ${pkgs.tmux}/bin/tmux -f ${tmuxConf} $@
+          if env | grep -i en_US
+          then
+            # If running on normal system
+            ${pkgs.tmux}/bin/tmux -f ${tmuxConf} $@
+          else
+            # If running in more minimal env
+            ${pkgs.tmux}/bin/tmux -u -f ${tmuxConf} $@
+          fi
         '';
         zellij = pkgs.writeShellScriptBin "zellij" ''
           PATH=${pkgs.zellij}/bin:$PATH # Include zellij in path
