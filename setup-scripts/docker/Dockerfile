@@ -3,6 +3,7 @@ FROM docker.io/heywoodlh/systemd:ubuntu AS ubuntu-base
 COPY ./linux.sh /linux.sh
 COPY docker/server.sh /server.sh
 COPY docker/desktop.sh /desktop.sh
+COPY docker/debs.sh /debs.sh
 
 RUN apt update && apt install -y sudo git curl \
     && useradd -ms /bin/bash heywoodlh
@@ -17,11 +18,16 @@ CMD [ "/server.sh"]
 FROM ubuntu-base AS ubuntu-desktop
 CMD [ "/desktop.sh"]
 
+# Ubuntu debs only
+FROM ubuntu-base AS ubuntu-debs
+CMD [ "/debs.sh"]
+
 # Debian target
 FROM docker.io/heywoodlh/systemd:debian AS debian-base
 COPY ./linux.sh /linux.sh
 COPY docker/server.sh /server.sh
 COPY docker/desktop.sh /desktop.sh
+COPY docker/debs.sh /debs.sh
 
 RUN apt update && apt install -y sudo git curl \
     && useradd -ms /bin/bash heywoodlh
@@ -35,6 +41,10 @@ CMD [ "/server.sh"]
 # Debian desktop
 FROM debian-base AS debian-desktop
 CMD [ "/desktop.sh"]
+
+# Debian debs only
+FROM debian-base AS debian-debs
+CMD [ "/debs.sh"]
 
 # Alpine target
 FROM docker.io/heywoodlh/openrc AS alpine-base

@@ -2,6 +2,12 @@
 
 Various scripts for setting up a new system.
 
+Test with the following (omit `ubuntu` if you want to test everything):
+
+```
+./docker/test.sh ubuntu
+```
+
 ## Dependencies
 
 Debian:

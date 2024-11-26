@@ -8,36 +8,36 @@ then
 fi
 
 print-usage () {
-    printf "\nUsage: %s [workstation|server|files-only] [--ansible --home-manager]\n" "$0"
+    printf "\nUsage: %s [workstation|server|files-only|debs] [--ansible --home-manager]\n" "$0"
     exit 0
 }
 
 [[ $# -eq 0 ]] && print-usage
 
+if command -v curl &> /dev/null
+then
+    download_file () {
+        url="$1"
+        dest="$2"
+
+        [[ ! -e "${dest}" ]] && echo "Downloading: $url => $dest" && curl --silent -L "${url}" -o "${dest}"
+    }
+else
+    echo "Please install curl and re-run this script"
+    exit 1
+fi
+
 # Flakes variable for all things to reference
-flakes="vim zellij git"
+flakes="vim tmux git"
 
 # Exit if $1 doesn't exist or is not workstation/server/files-only
 system="$1"
-[[ "${system}" != "workstation" && "${system}" != "server" && "${system}" != "files-only" ]] && print-usage
+[[ "${system}" != "workstation" && "${system}" != "server" && "${system}" != "files-only" && "${system}" != "debs" ]] && print-usage
 
 if [[ "${system}" == "files-only" ]]
 then
     # Install appimages only and place them in $HOME/bin
     mkdir -p $HOME/bin
-    if command -v curl &> /dev/null
-    then
-        download_file () {
-          url="$1"
-          dest="$2"
-
-          [[ ! -e "${dest}" ]] && echo "Downloading: $url => $dest" && curl --silent -L "${url}" -o "${dest}"
-        }
-    else
-        echo "Please install curl and re-run this script"
-        exit 1
-    fi
-
     # Download flakes
     for flake in $flakes
     do
@@ -51,6 +51,29 @@ then
         echo "Setting up PATH in ${HOME}/.profile"
         printf "#heywoodlh-PATH\nexport PATH=\"$HOME/bin:$PATH\"" >> ${HOME}/.profile
     fi
+elif [[ "${system}" == "debs" ]]
+then
+    install-deb() {
+        url="$1"
+        curl -L "${url}" --clobber -o /tmp/heywoodlh-installer.deb
+        # if not root, add sudo
+        if [[ $EUID -ne 0 ]]
+        then
+            sudo dpkg -i /tmp/heywoodlh-installer.deb
+        else
+            dpkg -i /tmp/heywoodlh-installer.deb
+        fi
+        rm /tmp/heywoodlh-installer.deb
+    }
+    grep -qi debian /etc/os-release || { echo "Option debs only supported on debian-derivatives. Exiting."; exit 1; }
+    [[ "$(id -u)" != 0 ]] && { command -v sudo &>/dev/null || { echo "Please install sudo and re-run this script."; exit 1; } }
+    [[ "$(arch)" == "x86_64" ]] || { echo "Option debs only support on x86_64. Exiting."; exit 1; }
+    for deb in flakes
+    do
+        install-deb "https://github.com/heywoodlh/flakes/releases/download/packages/${deb}-amd64.deb"
+    done
+    # include 1password deb
+    install-deb https://github.com/heywoodlh/flakes/releases/download/packages/1password-amd64.deb
 else
     # If --ansible provided, set ansible=true
     echo "$@" | grep -q '\-\-ansible' && ansible=true
