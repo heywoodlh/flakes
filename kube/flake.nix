@@ -144,9 +144,7 @@
           src = ./templates/attic.yaml;
           namespace = "default";
           replicas = 1;
-          image = "docker.io/heywoodlh/attic:4dbdbee45728d8ce5788db6461aaaa89d98081f0";
-          nodename = "nix-nvidia";
-          hostfolder = "/opt/attic";
+          image = "docker.io/heywoodlh/attic:47752427561f1c34debb16728a210d378f0ece36";
         };
         cloudflared = mkKubeDrv "cloudflared" {
           src = ./templates/cloudflared.yaml;

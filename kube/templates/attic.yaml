@@ -55,6 +55,32 @@ spec:
     app.kubernetes.io/name: attic
     app.kubernetes.io/instance: attic
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: attic-data
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 500Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: attic-config
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 10Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -77,17 +103,26 @@ spec:
     spec:
       securityContext:
         {}
+      initContainers:
+        - name: db-init
+          image: docker.io/alpine/sqlite
+          command:
+            - "/bin/ash"
+            - "-c"
+          args:
+            - |
+              test -e /data/db/server.db || sqlite3 /data/db/server.db "VACUUM;"
+          volumeMounts:
+            - name: dbdir
+              mountPath: /data/db
       containers:
         - name: attic
-          securityContext:
-            runAsNonRoot: true
-            runAsUser: 1000
           image: "@image@"
           command:
             - "/bin/ash"
             - "-c"
           args:
-            - /bin/atticd -f /server.toml
+            - /bin/atticd -f /var/empty/.config/attic/server.toml
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -97,7 +132,7 @@ spec:
             {}
           volumeMounts:
             - name: server-toml
-              mountPath: /server.toml
+              mountPath: /var/empty/.config/attic/server.toml
               subPath: server.toml
             - name: dbdir
               mountPath: /data/db
@@ -113,13 +148,9 @@ spec:
         - name: server-toml
           configMap:
             name: server-toml
-        - hostPath:
-            path: @hostfolder@/db
-            type: Directory
-          name: dbdir
-        - hostPath:
-            path: @hostfolder@/storage
-            type: Directory
-          name: storagedir
-      nodeSelector:
-        kubernetes.io/hostname: @nodename@
+        - name: dbdir
+          persistentVolumeClaim:
+            claimName: attic-config
+        - name: storagedir
+          persistentVolumeClaim:
+            claimName: attic-data
