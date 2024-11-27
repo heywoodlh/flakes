@@ -146,6 +146,12 @@
           replicas = 1;
           image = "docker.io/heywoodlh/attic:47752427561f1c34debb16728a210d378f0ece36";
         };
+        dev = mkKubeDrv "dev" {
+          src = ./templates/dev.yaml;
+          namespace = "default";
+          replicas = 1;
+          image = "docker.io/heywoodlh/dev:2024_11_snapshot";
+        };
         cloudflared = mkKubeDrv "cloudflared" {
           src = ./templates/cloudflared.yaml;
           namespace = "cloudflared";

@@ -1,0 +1,189 @@
+---
+apiVersion: onepassword.com/v1
+kind: OnePasswordItem
+metadata:
+  name: "dev-password"
+  namespace: "@namespace@"
+spec:
+  itemPath: "vaults/Kubernetes/items/boofeqmvt6vmcdqsyzczhiwqre"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dev
+  namespace: @namespace@
+  labels:
+    app.kubernetes.io/name: dev
+    app.kubernetes.io/instance: dev
+  annotations:
+    tailscale.com/expose: "true"
+    tailscale.com/hostname: "dev"
+    tailscale.com/tags: "tag:http,tag:sshd"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: ttyd
+      protocol: TCP
+      name: ttyd
+    - port: 22
+      targetPort: sshd
+      protocol: TCP
+      name: sshd
+  selector:
+    app.kubernetes.io/name: dev
+    app.kubernetes.io/instance: dev
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dev-nix
+  namespace: @namespace@
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 128Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dev-home
+  namespace: @namespace@
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 128Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dev-dind-storage
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 50Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dev-dind-certs
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dev
+  namespace: @namespace@
+  labels:
+    app.kubernetes.io/name: dev
+    app.kubernetes.io/instance: dev
+spec:
+  replicas: @replicas@
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dev
+      app.kubernetes.io/instance: dev
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: dev
+        app.kubernetes.io/instance: dev
+    spec:
+      securityContext:
+        {}
+      containers:
+        - name: dind
+          image: docker.io/docker:dind
+          ports:
+            - name: dind-con-port
+              containerPort: 2376
+              protocol: TCP
+          volumeMounts:
+            - name: dev-dind-certs
+              mountPath: /certs/client
+            - name: dev-dind-storage
+              mountPath: /var/lib/docker
+          env:
+            - name: DOCKER_TLS_CERTDIR
+              value: '/certs'
+            - name: DOCKER_CERT_PATH
+              value: '/certs/client'
+            - name: DOCKER_TLS_VERIFY
+              value: "1"
+            - name: DOCKER_HOST
+              value: "tcp://localhost:2376"
+          tty: true
+          securityContext:
+            privileged: true
+        - name: dev
+          image: "@image@"
+          command:
+            - "/usr/bin/supervisord"
+            - "-c"
+          args:
+            - /etc/supervisor/conf.d/supervisord.conf
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: ttyd
+              containerPort: 80
+              protocol: TCP
+            - name: sshd
+              containerPort: 22
+              protocol: TCP
+          resources:
+            {}
+          volumeMounts:
+            - name: dev-nix
+              mountPath: /nix
+            - name: dev-home
+              mountPath: /home/heywoodlh
+            - name: dev-dind-certs
+              mountPath: /certs
+          env:
+            - name: DOCKER_TLS_CERTDIR
+              value: '/certs'
+            - name: DOCKER_CERT_PATH
+              value: '/certs/client'
+            - name: DOCKER_HOST
+              value: "tcp://docker:2376"
+            - name: DOCKER_TLS_VERIFY
+              value: "1"
+            - name: TTYD_USER
+              valueFrom:
+                secretKeyRef:
+                  name: dev-password
+                  key: username
+            - name: TTYD_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: dev-password
+                  key: password
+      volumes:
+        - name: dev-dind-certs
+          persistentVolumeClaim:
+            claimName: dev-dind-certs
+        - name: dev-dind-storage
+          persistentVolumeClaim:
+            claimName: dev-dind-storage
+        - name: dev-nix
+          persistentVolumeClaim:
+            claimName: dev-nix
+        - name: dev-home
+          persistentVolumeClaim:
+            claimName: dev-home
+
