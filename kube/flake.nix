@@ -536,7 +536,7 @@
             plugins.krew
           ]));
         in pkgs.writeShellScriptBin "kubectl" ''
-          PATH="$HOME/.krew/bin:PATH" ${kubectl}/bin/kubectl "$@";
+          PATH="$HOME/.krew/bin:$PATH" ${kubectl}/bin/kubectl "$@";
         '';
       };
       devShell = pkgs.mkShell {
