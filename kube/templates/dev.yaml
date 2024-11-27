@@ -8,6 +8,71 @@ spec:
   itemPath: "vaults/Kubernetes/items/boofeqmvt6vmcdqsyzczhiwqre"
 ---
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dev-sshd-config
+  namespace: @namespace@
+data:
+  sshd_config: |-
+    Include /etc/ssh/sshd_config.d/*.conf
+    ListenAddress 0.0.0.0
+    KbdInteractiveAuthentication no
+    UsePAM yes
+    X11Forwarding yes
+    PrintMotd no
+    AcceptEnv LANG LC_*
+    Subsystem       sftp    /usr/lib/openssh/sftp-server
+    AuthorizedKeysCommand /keys.sh
+    AuthorizedKeysCommandUser nobody
+    PermitRootLogin prohibit-password
+    HostKey /etc/ssh/host_keys/ssh_host_rsa_key
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dev-keys
+  namespace: @namespace@
+data:
+  keys.sh: |-
+    #!/usr/bin/env bash
+    curl -L --silent https://github.com/heywoodlh.keys
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dev-gen-host-keys
+  namespace: @namespace@
+data:
+  gen-host-keys.sh: |-
+    #!/usr/bin/env bash
+    [[ -e /etc/ssh/host_keys/ssh_host_rsa_key ]] || ssh-keygen -f /etc/ssh/host_keys/ssh_host_rsa_key -N '' -t rsa
+    [[ -e /etc/ssh/host_keys/ssh_host_dsa_key ]] || ssh-keygen -f /etc/ssh/host_keys/ssh_host_dsa_key -N '' -t dsa
+    # Overwrite host keys
+    cp -rf /etc/ssh/host_keys/* /etc/ssh
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dev-custom-fish
+  namespace: @namespace@
+data:
+  custom.fish: |-
+    function ssh-unlock
+      op read 'op://Personal/rlt3q545cf5a4r4arhnb4h5qmi/private_key' | ssh-add -t 4h -
+    end
+
+    function k9s
+      op-unlock
+      $HOME/.nix-profile/bin/k9s $argv
+    end
+
+    function kubectl
+      op-unlock
+      $HOME/.nix-profile/bin/kubectl $argv
+    end
+
+---
+apiVersion: v1
 kind: Service
 metadata:
   name: dev
@@ -84,6 +149,18 @@ spec:
     requests:
       storage: 100Mi
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dev-host-keys
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 100Mi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -118,25 +195,15 @@ spec:
               mountPath: /certs/client
             - name: dev-dind-storage
               mountPath: /var/lib/docker
-          env:
-            - name: DOCKER_TLS_CERTDIR
-              value: '/certs'
-            - name: DOCKER_CERT_PATH
-              value: '/certs/client'
-            - name: DOCKER_TLS_VERIFY
-              value: "1"
-            - name: DOCKER_HOST
-              value: "tcp://localhost:2376"
           tty: true
           securityContext:
             privileged: true
         - name: dev
           image: "@image@"
           command:
-            - "/usr/bin/supervisord"
+            - "bash"
             - "-c"
-          args:
-            - /etc/supervisor/conf.d/supervisord.conf
+          args: [ "/gen-host-keys.sh && /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf" ]
           imagePullPolicy: IfNotPresent
           ports:
             - name: ttyd
@@ -154,13 +221,27 @@ spec:
               mountPath: /home/heywoodlh
             - name: dev-dind-certs
               mountPath: /certs
+            - name: dev-sshd-config
+              mountPath: /etc/ssh/sshd_config.d/sshd.conf
+              subPath: sshd.conf
+            - name: dev-keys
+              mountPath: /keys.sh
+              subPath: keys.sh
+            - name: dev-gen-host-keys
+              mountPath: /gen-host-keys.sh
+              subPath: gen-host-keys.sh
+            - name: dev-custom-fish
+              mountPath: /home/heywoodlh/.config/fish/custom.fish
+              subPath: custom.fish
+            - name: dev-host-keys
+              mountPath: /etc/ssh/host_keys
           env:
             - name: DOCKER_TLS_CERTDIR
               value: '/certs'
             - name: DOCKER_CERT_PATH
-              value: '/certs/client'
+              value: '/certs'
             - name: DOCKER_HOST
-              value: "tcp://docker:2376"
+              value: "tcp://localhost:2376"
             - name: DOCKER_TLS_VERIFY
               value: "1"
             - name: TTYD_USER
@@ -186,4 +267,22 @@ spec:
         - name: dev-home
           persistentVolumeClaim:
             claimName: dev-home
+        - name: dev-sshd-config
+          configMap:
+            name: dev-sshd-config
+        - name: dev-custom-fish
+          configMap:
+            name: dev-custom-fish
+        - name: dev-keys
+          configMap:
+            name: dev-keys
+            defaultMode: 0777
+        - name: dev-gen-host-keys
+          configMap:
+            name: dev-gen-host-keys
+            defaultMode: 0777
+        - name: dev-host-keys
+          persistentVolumeClaim:
+            claimName: dev-host-keys
+
 
