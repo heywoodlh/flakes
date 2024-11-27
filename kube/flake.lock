@@ -101,6 +101,21 @@
       }
     },
     "flake-utils_2": {
+      "locked": {
+        "lastModified": 1659877975,
+        "narHash": "sha256-zllb8aq3YO3h8B/U0/J1WBgAL8EX5yWf5pMj3G0NAmc=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "c0e246b9b83f637f4681389ecabcb2681b4f3af0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_3": {
       "inputs": {
         "systems": "systems_2"
       },
@@ -117,7 +132,7 @@
         "type": "indirect"
       }
     },
-    "flake-utils_3": {
+    "flake-utils_4": {
       "inputs": {
         "systems": "systems_3"
       },
@@ -135,7 +150,7 @@
         "type": "github"
       }
     },
-    "flake-utils_4": {
+    "flake-utils_5": {
       "inputs": {
         "systems": "systems_5"
       },
@@ -153,7 +168,7 @@
         "type": "github"
       }
     },
-    "flake-utils_5": {
+    "flake-utils_6": {
       "inputs": {
         "systems": "systems_6"
       },
@@ -190,6 +205,27 @@
         "owner": "nix-community",
         "ref": "v0.2.2",
         "repo": "haumea",
+        "type": "github"
+      }
+    },
+    "krew2nix": {
+      "inputs": {
+        "flake-utils": "flake-utils_2",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1716272275,
+        "narHash": "sha256-JWDyPhAJp263EVVsGrKwrJU+xdDReHsDmSe7A190/Cg=",
+        "owner": "eigengrau",
+        "repo": "krew2nix",
+        "rev": "0c1fecaab044dba1249c5d09366891ec467b4ad2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "eigengrau",
+        "repo": "krew2nix",
         "type": "github"
       }
     },
@@ -279,7 +315,7 @@
     },
     "nixhelm": {
       "inputs": {
-        "flake-utils": "flake-utils_2",
+        "flake-utils": "flake-utils_3",
         "haumea": "haumea",
         "nix-kube-generators": "nix-kube-generators_2",
         "nixpkgs": "nixpkgs",
@@ -362,7 +398,7 @@
     },
     "op-scripts": {
       "inputs": {
-        "flake-utils": "flake-utils_4",
+        "flake-utils": "flake-utils_5",
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
@@ -399,7 +435,7 @@
     },
     "poetry2nix": {
       "inputs": {
-        "flake-utils": "flake-utils_3",
+        "flake-utils": "flake-utils_4",
         "nix-github-actions": "nix-github-actions",
         "nixpkgs": [
           "nixhelm",
@@ -429,6 +465,7 @@
         "crossplane": "crossplane",
         "elastic-cloud": "elastic-cloud",
         "flake-utils": "flake-utils",
+        "krew2nix": "krew2nix",
         "minecraft-helm": "minecraft-helm",
         "nfs-helm": "nfs-helm",
         "nix-kube-generators": "nix-kube-generators",
@@ -533,7 +570,7 @@
     "tailscale": {
       "inputs": {
         "flake-compat": "flake-compat",
-        "flake-utils": "flake-utils_5",
+        "flake-utils": "flake-utils_6",
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {

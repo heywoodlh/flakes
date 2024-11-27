@@ -44,6 +44,10 @@
       url = "github:elastic/cloud-on-k8s/2.15";
       flake = false;
     };
+    krew2nix = {
+      url = "github:eigengrau/krew2nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
@@ -63,6 +67,7 @@
     wazuh,
     crossplane,
     elastic-cloud,
+    krew2nix,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs {
@@ -525,6 +530,14 @@
           replicas = 1;
           image = "docker.io/pluja/whishper:v3.1.4-gpu";
         };
+        # Kubectl wrapper with plugins
+        kubectl = let
+          kubectl = (krew2nix.packages.${system}.kubectl.withKrewPlugins (plugins: [
+            plugins.krew
+          ]));
+        in pkgs.writeShellScriptBin "kubectl" ''
+          PATH="$HOME/.krew/bin:PATH" ${kubectl}/bin/kubectl "$@";
+        '';
       };
       devShell = pkgs.mkShell {
         name = "kubernetes-shell";
