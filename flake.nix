@@ -82,6 +82,10 @@
       url = "./tabby";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    kube-flake = {
+      url = "./kube";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
@@ -107,6 +111,7 @@
     qutebrowser-flake,
     zen-browser-flake,
     tabby-flake,
+    kube-flake,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = nixpkgs.legacyPackages.${system};
@@ -141,6 +146,7 @@
         zen-browser = zen-browser-flake.packages.${system}.default;
         tabby = tabby-flake.packages.${system}.tabby-wrapper;
         zellij = fish-flake.packages.${system}.zellij;
+        kubectl = kube-flake.packages.${system}.kubectl;
       };
       formatter = pkgs.alejandra;
     });
