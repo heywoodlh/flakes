@@ -26,6 +26,7 @@ data:
     AuthorizedKeysCommandUser nobody
     PermitRootLogin prohibit-password
     HostKey /etc/ssh/host_keys/ssh_host_rsa_key
+    PubkeyAuthentication yes
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -35,7 +36,10 @@ metadata:
 data:
   keys.sh: |-
     #!/usr/bin/env bash
-    curl -L --silent https://github.com/heywoodlh.keys
+    mkdir -p -m 700 /home/heywoodlh/.ssh
+    curl -L --silent https://github.com/heywoodlh.keys -o /home/heywoodlh/.ssh/authorized_keys
+    chmod 600 /home/heywoodlh/.ssh/authorized_keys
+    chown -R heywoodlh:heywoodlh /home/heywoodlh/.ssh
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -49,6 +53,10 @@ data:
     [[ -e /etc/ssh/host_keys/ssh_host_dsa_key ]] || ssh-keygen -f /etc/ssh/host_keys/ssh_host_dsa_key -N '' -t dsa
     # Overwrite host keys
     cp -rf /etc/ssh/host_keys/* /etc/ssh
+
+    # Ensure heywoodlh permissions are correct
+    chown -R heywoodlh /home/heywoodlh
+    chmod 700 /home/heywoodlh
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -57,7 +65,13 @@ metadata:
   namespace: @namespace@
 data:
   custom.fish: |-
+    export DOCKER_TLS_CERTDIR='/certs'
+    export DOCKER_CERT_PATH='/certs'
+    export DOCKER_HOST="tcp://localhost:2376"
+    export DOCKER_TLS_VERIFY="1"
+
     function ssh-unlock
+      op-unlock
       op read 'op://Personal/rlt3q545cf5a4r4arhnb4h5qmi/private_key' | ssh-add -t 4h -
     end
 
@@ -71,6 +85,17 @@ data:
       $HOME/.nix-profile/bin/kubectl $argv
     end
 
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dev-bash-profile
+  namespace: @namespace@
+data:
+  .bash_profile: |-
+    # Start tmux over ssh
+    # Use `k9s`/`kubectl` to get a non-tmux shell in the container
+    [[ -n $SSH_CONNECTION ]] && [[ -e /home/heywoodlh/.nix-profile/bin/tmux ]] && [ -z $TMUX ] && { /home/heywoodlh/.nix-profile/bin/tmux new-session && exit;}
 ---
 apiVersion: v1
 kind: Service
@@ -203,7 +228,7 @@ spec:
           command:
             - "bash"
             - "-c"
-          args: [ "/gen-host-keys.sh && /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf" ]
+          args: [ "/gen-host-keys.sh; /keys.sh; /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf" ]
           imagePullPolicy: IfNotPresent
           ports:
             - name: ttyd
@@ -233,8 +258,13 @@ spec:
             - name: dev-custom-fish
               mountPath: /home/heywoodlh/.config/fish/custom.fish
               subPath: custom.fish
+            - name: dev-bash-profile
+              mountPath: /home/heywoodlh/.bash_profile
+              subPath: .bash_profile
             - name: dev-host-keys
               mountPath: /etc/ssh/host_keys
+            - name: syncthing-data
+              mountPath: /opt/syncthing
           env:
             - name: DOCKER_TLS_CERTDIR
               value: '/certs'
@@ -273,6 +303,9 @@ spec:
         - name: dev-custom-fish
           configMap:
             name: dev-custom-fish
+        - name: dev-bash-profile
+          configMap:
+            name: dev-bash-profile
         - name: dev-keys
           configMap:
             name: dev-keys
@@ -284,5 +317,9 @@ spec:
         - name: dev-host-keys
           persistentVolumeClaim:
             claimName: dev-host-keys
+        - name: syncthing-data
+          hostPath:
+            path: /opt/syncthing
+            type: Directory
 
 
