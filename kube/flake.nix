@@ -155,7 +155,7 @@
           src = ./templates/dev.yaml;
           namespace = "default";
           replicas = 1;
-          image = "docker.io/heywoodlh/dev:2024_11_snapshot";
+          image = "docker.io/heywoodlh/dev:2024_12_snapshot";
         };
         cloudflared = mkKubeDrv "cloudflared" {
           src = ./templates/cloudflared.yaml;
