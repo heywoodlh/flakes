@@ -277,6 +277,12 @@
           src = ./templates/metrics-server.yaml;
           image = "registry.k8s.io/metrics-server/metrics-server:v0.7.1";
         };
+        metube = mkKubeDrv "metube" {
+          src = ./templates/metube.yaml;
+          namespace = "default";
+          image = "ghcr.io/alexta69/metube:2024-12-04";
+          replicas = 1;
+        };
         minecraft-bedrock = mkKubeDrv "minecraft-bedrock" {
           src = ./templates/minecraft-bedrock.yaml;
           namespace = "default";
