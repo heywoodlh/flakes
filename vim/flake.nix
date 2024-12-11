@@ -8,9 +8,18 @@
         config.allowUnfree = true;
       };
       mods = pkgs.callPackage ./settings {};
-    in {
-      defaultPackage = pkgs.callPackage ./default.nix {
+      myVim = pkgs.callPackage ./default.nix {
         inherit mods;
+      };
+    in {
+      packages = rec {
+        # bulkier wrapper including languages
+        vimWrapper = pkgs.writeShellScriptBin "vim" ''
+          export PATH="${pkgs.go}/bin:${pkgs.python3}/bin:$PATH"
+          ${myVim}/bin/vim "$@"
+        '';
+        vim = myVim;
+        default = vimWrapper;
       };
     }
   );

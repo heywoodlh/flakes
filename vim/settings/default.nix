@@ -5,25 +5,28 @@ let
     # Plugins
     ./ale.nix
     ./base16-vim.nix
+    ./betterwhitespace.nix
     ./colorizer.nix
+    ./copilot.nix
+    ./cursor.nix
     ./fugitive.nix
     ./git.nix
     ./gitgutter.nix
     ./glow.nix
-    ./go.nix
     ./indentline.nix
     ./json.nix
+    ./languages.nix
     ./lastplace.nix
     ./llm.nix
+    ./localvimrc.nix
     ./nerdtree.nix
-    ./theme.nix
-    ./sensible.nix
-    ./betterwhitespace.nix
-    ./shell.nix
+    ./oil.nix
     ./os-specific.nix
     ./pets.nix
-    ./copilot.nix
-    ./localvimrc.nix
+    ./sensible.nix
+    ./shell.nix
+    ./theme.nix
+    ./which-key.nix
     # Base vim config
     ./vimrc.nix
   ];

@@ -40,7 +40,7 @@ If you want to use it in a Flake, do something like this:
       modules = [
         {
           environment.systemPackages = [
-            vim-configs.defaultPackage.${system}
+            vim-configs.packages.${system}.vim
           ];
         }
       ];

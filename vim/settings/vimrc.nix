@@ -59,5 +59,7 @@
     autocmd FileType markdown setlocal textwidth=80 wrapmargin=2
     " Spell check
     autocmd FileType markdown setlocal spell spelllang=en_us
+    " Disable copilot
+    autocmd FileType markdown Copilot disable
   '';
 }
