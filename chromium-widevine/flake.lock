@@ -3,11 +3,11 @@
     "asahi-widevine": {
       "flake": false,
       "locked": {
-        "lastModified": 1700955572,
-        "narHash": "sha256-XI1y4pVNpXS+jqFs0KyVMrxcULOJ5rADsgvwfLF6e0Y=",
+        "lastModified": 1723388729,
+        "narHash": "sha256-ox2xU7PraSexer7+M+4Bc5gxpRYr1d4elh1e6erpsUg=",
         "owner": "AsahiLinux",
         "repo": "widevine-installer",
-        "rev": "7a3928fe1342fb07d96f61c2b094e3287588958b",
+        "rev": "eab8c668ad3f9db27a444ee1f94b82d8f3ab5336",
         "type": "github"
       },
       "original": {
@@ -30,12 +30,10 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1707743206,
-        "narHash": "sha256-AehgH64b28yKobC/DAWYZWkJBxL/vP83vkY+ag2Hhy4=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "2d627a2a704708673e56346fcb13d25344b8eaf3",
-        "type": "github"
+        "lastModified": 0,
+        "narHash": "sha256-+5qdtgXceqhK5ZR1YbP1fAUsweBIrhL38726oIEAtDs=",
+        "path": "/nix/store/w5fqkpwgg6q0iw7c5sd9nab8dq94wapk-source",
+        "type": "path"
       },
       "original": {
         "id": "nixpkgs",
