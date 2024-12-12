@@ -20,7 +20,6 @@
     git-flake = {
       url = "./git";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.vim-flake.follows = "vim-flake";
     };
     vscode-flake = {
       url = "./vscode";
