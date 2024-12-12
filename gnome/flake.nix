@@ -9,8 +9,8 @@
       url = "github:heywoodlh/flakes?dir=fish";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    helix-flake = {
-      url = "github:heywoodlh/flakes?dir=helix";
+    vim-flake = {
+      url = "github:heywoodlh/flakes?dir=vim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     vim-ime = {
@@ -28,7 +28,7 @@
     nixpkgs-stable,
     flake-utils,
     fish-flake,
-    helix-flake,
+    vim-flake,
     vim-ime,
     nordic,
   }:
@@ -39,7 +39,7 @@
       };
       stable-pkgs = nixpkgs-stable.legacyPackages.${system};
       myShell = "${fish-flake.packages.${system}.tmux}/bin/tmux";
-      myHelix = helix-flake.packages.${system}.helix;
+      myVim = vim-flake.packages.${system}.vim;
       vimIme = "${vim-ime}/vim-ime.py";
       wallpaper = ./wallpapers/nix-nord.png;
       jetbrains-font = builtins.fetchurl {
@@ -209,7 +209,7 @@
 
         [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5]
         binding='<Shift><Control>e'
-        command='${vimIme} --cmd "gnome-terminal --geometry=60x8 -- ${myHelix}/bin/hx" --outfile "/home/heywoodlh/tmp/vim-ime.txt"'
+        command='${vimIme} --cmd "gnome-terminal --geometry=60x8 -- ${myVim}/bin/vim" --outfile "/home/heywoodlh/tmp/vim-ime.txt"'
         name='vim-ime'
 
         [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6]
