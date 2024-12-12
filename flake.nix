@@ -72,6 +72,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.nixpkgs-stable.follows = "nixpkgs-stable";
       inputs.fish-flake.follows = "fish-flake";
+      inputs.vim-flake.follows = "vim-flake";
     };
     qutebrowser-flake = {
       url = "./qutebrowser";
