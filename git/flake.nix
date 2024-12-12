@@ -2,13 +2,11 @@
   description = "heywoodlh git config";
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.vim-flake.url = "github:heywoodlh/flakes?dir=vim";
 
-  outputs = { self, nixpkgs, flake-utils, vim-flake, ... }:
+  outputs = { self, nixpkgs, flake-utils, ... }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        vim = vim-flake.defaultPackage.${system};
         gitignore = pkgs.writeText "gitignore" ''
 # Direnv
 .envrc
@@ -35,7 +33,7 @@ terraform.rc
 
 [core]
   autocrlf = "input"
-  editor = "${vim}/bin/vim"
+  editor = "vim"
   pager = "${pkgs.less}/bin/less -+F"
   whitespace = "cr-at-eol"
   excludesFile = "${gitignore}"
