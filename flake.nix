@@ -126,7 +126,7 @@
         nushell = nushell-flake.packages.${system}.nushell;
         git = git-flake.packages.${system}.git;
         tmux = fish-flake.packages.${system}.tmux;
-        vim = vim-flake.defaultPackage.${system};
+        vim = vim-flake.packages.${system}.vim;
         helix = helix-flake.packages.${system}.helix;
         helix-config = helix-flake.packages.${system}.helix-config;
         vscode = vscode-flake.packages.${system}.default;
