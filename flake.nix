@@ -22,7 +22,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     jujutsu-flake = {
-      url = "./git";
+      url = "./jj";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     vscode-flake = {
