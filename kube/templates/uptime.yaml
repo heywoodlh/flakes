@@ -24,7 +24,8 @@ data:
     ping:
       hosts:
         - nix-drive
-        - nixos-mac-mini
+        - nix-nvidia
+        - nixos-zalman
       options: "-c 1 -W 5"
       silent: "true"
     curl:
