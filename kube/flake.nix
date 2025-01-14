@@ -226,6 +226,12 @@
           kibana_nodecount = 1;
           storage = "100Gi";
         };
+        gomuks = mkKubeDrv "gomuks" {
+          src = ./templates/gomuks.yaml;
+          namespace = "default";
+          image = "dock.mau.dev/tulir/gomuks:latest";
+          replicas = 1;
+        };
         grafana = mkKubeDrv "grafana" {
           src = ./templates/grafana.yaml;
           namespace = "monitoring";
