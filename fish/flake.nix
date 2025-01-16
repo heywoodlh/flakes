@@ -1,7 +1,10 @@
 {
   description = "heywoodlh fish flake";
 
-  inputs.flake-utils.url = "github:numtide/flake-utils";
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
+  };
 
   outputs = { self, nixpkgs, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system:
@@ -277,9 +280,30 @@
         pane_frames false
         scrollback_editor "${zellijEditor}"
       '';
+      ghosttyConf = pkgs.writeText "config" ''
+        theme = nord
+        command = ${pkgs.tmux}/bin/tmux -f ${tmuxConf}
+        window-decoration = false
+        font-size = 16
+        # https://github.com/ghostty-org/ghostty/pull/3742
+        # quick-terminal-size = 80%
+
+        # quake mode; on MacOS give Ghostty accessibility permissions
+        keybind = global:ctrl+grave_accent=toggle_quick_terminal
+        quick-terminal-animation-duration = 0.1
+      '';
+      ghosttyXdgDir = pkgs.stdenv.mkDerivation {
+        name = "xdgDir";
+        builder = pkgs.bash;
+        args = [ "-c" "${pkgs.coreutils}/bin/mkdir -p $out/ghostty; ${pkgs.coreutils}/bin/cp ${ghosttyConf} $out/ghostty/config;" ];
+      };
     in {
       packages = rec {
         fish = fishExe;
+        ghostty = pkgs.writeShellScriptBin "ghostty" ''
+          XDG_CONFIG_HOME=${ghosttyXdgDir} ${pkgs.ghostty}/bin/ghostty $@
+        '';
+	ghostty-conf = ghosttyConf;
         tmux = pkgs.writeShellScriptBin "tmux" ''
           # Include BASH (for appimage to work properly)
           PATH=${pkgs.bash}/bin:$PATH
