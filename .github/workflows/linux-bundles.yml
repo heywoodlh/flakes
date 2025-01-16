@@ -61,6 +61,14 @@ jobs:
           - os: arm64
             flake: "./fish#zellij"
             out: "zellij"
+          - os: x64
+            flake: "./fish#ghostty"
+            out: "ghostty"
+          - os: arm64
+            flake: "./fish#ghostty"
+            out: "ghostty"
+
+
 
     runs-on: ${{ matrix.os }}
     steps:
