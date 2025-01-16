@@ -280,17 +280,24 @@
         pane_frames false
         scrollback_editor "${zellijEditor}"
       '';
-      ghosttyConf = pkgs.writeText "config" ''
-        theme = nord
-        command = ${pkgs.tmux}/bin/tmux -f ${tmuxConf}
-        window-decoration = false
-        font-size = 16
+      ghosttyOsConf = if pkgs.stdenv.isDarwin then ''
+        # macos ghostty config
+        macos-window-shadow = false
         # https://github.com/ghostty-org/ghostty/pull/3742
         # quick-terminal-size = 80%
 
         # quake mode; on MacOS give Ghostty accessibility permissions
         keybind = global:ctrl+grave_accent=toggle_quick_terminal
         quick-terminal-animation-duration = 0.1
+      '' else ''
+        # linux ghostty config
+      '';
+      ghosttyConf = pkgs.writeText "config" ''
+        theme = catppuccin-frappe
+        command = ${pkgs.tmux}/bin/tmux -f ${tmuxConf}
+        window-decoration = false
+        font-size = 12
+        ${ghosttyOsConf}
       '';
       ghosttyXdgDir = pkgs.stdenv.mkDerivation {
         name = "xdgDir";
