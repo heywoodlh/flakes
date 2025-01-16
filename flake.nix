@@ -133,6 +133,8 @@
         jujutsu = jujutsu-flake.packages.${system}.jujutsu;
         jujutsu-config = jujutsu-flake.packages.${system}.config;
         tmux = fish-flake.packages.${system}.tmux;
+        ghostty = fish-flake.packages.${system}.ghostty;
+        ghostty-config = fish-flake.packages.${system}.ghostty-config;
         vim = vim-flake.packages.${system}.vim;
         helix = helix-flake.packages.${system}.helix;
         helix-config = helix-flake.packages.${system}.helix-config;
