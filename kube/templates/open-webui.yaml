@@ -5,6 +5,32 @@ metadata:
   name: @namespace@
 ---
 apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: open-webui-data
+  namespace: @namespace@
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 50Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ollama-data
+  namespace: @namespace@
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 50Gi
+---
+apiVersion: v1
 kind: Service
 metadata:
   name: ollama-service
@@ -64,17 +90,16 @@ spec:
             cpu: 500m
             memory: 500Mi
         volumeMounts:
-        - name: webui-data
+        - name: open-webui-data
           mountPath: /app/backend/data
         env:
         - name: OLLAMA_API_BASE_URL
-          value: "http://ollama-service.@namespace@.svc.cluster.local:11434/api"
+          value: "http://ollama-service:11434/api"
         tty: true
       volumes:
-      - name: webui-data
-        hostPath:
-          path: @hostfolder@/data
-          type: Directory
+      - name: open-webui-data
+        persistentVolumeClaim:
+          claimName: open-webui-data
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -92,17 +117,21 @@ spec:
       labels:
         app: ollama
     spec:
+      runtimeClassName: nvidia
       containers:
       - name: ollama
         image: @ollama_image@
         ports:
         - containerPort: 11434
         env:
+        - name: NVIDIA_VISIBLE_DEVICES
+          value: all
+        - name: NVIDIA_DRIVER_CAPABILITIES
+          value: all
         resources:
           limits:
             cpu: 4000m
             memory: 4Gi
-            nvidia.com/gpu: "0"
           requests:
             cpu: 2000m
             memory: 2Gi
@@ -112,6 +141,5 @@ spec:
         tty: true
       volumes:
       - name: ollama-data
-        hostPath:
-          path: @hostfolder@/ollama
-          type: Directory
+        persistentVolumeClaim:
+          claimName: ollama-data

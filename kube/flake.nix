@@ -358,9 +358,8 @@
         open-webui = mkKubeDrv "open-webui" {
           src = ./templates/open-webui.yaml;
           namespace = "open-webui";
-          ollama_image = "docker.io/ollama/ollama:0.1.28";
-          webui_image = "ghcr.io/open-webui/open-webui:git-1b91e7f";
-          hostfolder = "/opt/open-webui";
+          ollama_image = "docker.io/ollama/ollama:0.5.5";
+          webui_image = "ghcr.io/open-webui/open-webui:git-f6a54c9-ollama";
         };
         # Ensure to deploy prometheus-blackbox-exporter first
         prometheus = (kubelib.buildHelmChart {
