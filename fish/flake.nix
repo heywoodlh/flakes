@@ -310,7 +310,7 @@
         ghostty = pkgs.writeShellScriptBin "ghostty" ''
           XDG_CONFIG_HOME=${ghosttyXdgDir} ${pkgs.ghostty}/bin/ghostty $@
         '';
-	ghostty-conf = ghosttyConf;
+	ghostty-config = ghosttyConf;
         tmux = pkgs.writeShellScriptBin "tmux" ''
           # Include BASH (for appimage to work properly)
           PATH=${pkgs.bash}/bin:$PATH
