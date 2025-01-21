@@ -296,7 +296,7 @@
         theme = catppuccin-frappe
         command = ${pkgs.tmux}/bin/tmux -f ${tmuxConf}
         window-decoration = false
-        font-size = 12
+        font-size = 16
         ${ghosttyOsConf}
       '';
       ghosttyXdgDir = pkgs.stdenv.mkDerivation {
