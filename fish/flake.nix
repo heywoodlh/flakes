@@ -286,6 +286,9 @@
         # https://github.com/ghostty-org/ghostty/pull/3742
         # quick-terminal-size = 80%
 
+        # don't open a window when starting Ghostty
+        initial-window = false
+
         # quake mode; on MacOS give Ghostty accessibility permissions
         keybind = global:ctrl+grave_accent=toggle_quick_terminal
         quick-terminal-animation-duration = 0.1
