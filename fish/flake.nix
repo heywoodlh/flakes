@@ -297,6 +297,7 @@
         command = ${pkgs.tmux}/bin/tmux -f ${tmuxConf}
         window-decoration = false
         font-size = 16
+        auto-update = off
         ${ghosttyOsConf}
       '';
       ghosttyXdgDir = pkgs.stdenv.mkDerivation {
