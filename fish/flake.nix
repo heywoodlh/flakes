@@ -96,10 +96,8 @@
                 mkdir -p $HOME/.ssh
                 rm -f $HOME/.ssh/agent.sock &> /dev/null
                 eval (${pkgs.openssh}/bin/ssh-agent -t 4h -c -a "$HOME/.ssh/agent.sock") &> /dev/null || true
-            else
-                # ssh-agent running, set SSH_AUTH_SOCK
-                export SSH_AUTH_SOCK="$HOME/.ssh/agent.sock"
             end
+            export SSH_AUTH_SOCK="$HOME/.ssh/agent.sock"
         end
 
         # Add ~/bin to $PATH (ALWAYS)
