@@ -280,6 +280,7 @@
       '';
       ghosttyOsConf = if pkgs.stdenv.isDarwin then ''
         # macos ghostty config
+        font-size = 16
         macos-window-shadow = false
         # https://github.com/ghostty-org/ghostty/pull/3742
         # quick-terminal-size = 80%
@@ -293,12 +294,12 @@
         quick-terminal-animation-duration = 0.1
       '' else ''
         # linux ghostty config
+        font-size = 14
       '';
       ghosttyConf = pkgs.writeText "config" ''
         theme = catppuccin-frappe
         command = ${pkgs.tmux}/bin/tmux -f ${tmuxConf}
         window-decoration = false
-        font-size = 16
         auto-update = off
         ${ghosttyOsConf}
       '';
