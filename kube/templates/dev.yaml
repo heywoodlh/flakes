@@ -61,6 +61,17 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  name: dev-timezone
+  namespace: @namespace@
+data:
+  timezone.sh: |-
+    #!/usr/bin/env bash
+    rm /etc/localtime
+    ln -s /usr/share/zoneinfo/America/Denver /etc/localtime
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
   name: dev-custom-fish
   namespace: @namespace@
 data:
@@ -228,7 +239,7 @@ spec:
           command:
             - "bash"
             - "-c"
-          args: [ "/gen-host-keys.sh; /keys.sh; /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf" ]
+          args: [ "/gen-host-keys.sh; /keys.sh; /timezone.sh; /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf" ]
           imagePullPolicy: IfNotPresent
           ports:
             - name: ttyd
@@ -265,6 +276,9 @@ spec:
               mountPath: /etc/ssh/host_keys
             - name: syncthing-data
               mountPath: /opt/syncthing
+            - name: dev-timezone
+              mountPath: /timezone.sh
+              subPath: timezone.sh
           env:
             - name: DOCKER_TLS_CERTDIR
               value: '/certs'
@@ -313,6 +327,10 @@ spec:
         - name: dev-gen-host-keys
           configMap:
             name: dev-gen-host-keys
+            defaultMode: 0777
+        - name: dev-timezone
+          configMap:
+            name: dev-timezone
             defaultMode: 0777
         - name: dev-host-keys
           persistentVolumeClaim:
