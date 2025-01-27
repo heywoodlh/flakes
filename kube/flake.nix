@@ -272,7 +272,7 @@
         };
         kubevirt = mkKubeDrv "kubevirt" {
           src = ./templates/kubevirt.yaml;
-          version = "v1.2.0";
+          version = "v1.4.0";
         };
         longhorn = mkKubeDrv "longhorn" {
           src = ./templates/longhorn.yaml;
