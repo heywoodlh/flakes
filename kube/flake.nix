@@ -555,6 +555,7 @@
           k9s
           kubectl
           kubernetes-helm
+          kubevirt
           talos-wrapper
           ts-env
         ];
