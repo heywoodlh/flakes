@@ -7593,8 +7593,6 @@ metadata:
 
 # kubevirt-manager
 ---
-
----
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
@@ -8017,3 +8015,32 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 8080
+---
+apiVersion: onepassword.com/v1
+kind: OnePasswordItem
+metadata:
+  annotations:
+  finalizers:
+  - onepassword.com/finalizer.secret
+  name: auth-secret
+  namespace: kubevirt-manager
+  labels:
+    app: kubevirt-manager
+    kubevirt-manager.io/version: 1.5.0
+    kubevirt-manager.io/managed: "true"
+spec:
+  itemPath: vaults/Kubernetes/items/o54vahy5bzg4gh4l3pjsjzcckq
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: auth-config
+  namespace: kubevirt-manager
+  labels:
+    app: kubevirt-manager
+    kubevirt-manager.io/version: 1.5.0
+    kubevirt-manager.io/managed: "true"
+data:
+  basicauth.conf: |
+    auth_basic "Restricted Content";
+    auth_basic_user_file /etc/nginx/secret.d/.htpasswd;
