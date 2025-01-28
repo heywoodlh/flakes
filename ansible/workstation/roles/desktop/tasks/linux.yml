@@ -17,6 +17,13 @@
     - ansible_os_family == 'Debian'
     - ansible_distribution != 'Debian'
 
+- name: ensure ubuntu-desktop is installed on ubuntu
+  ansible.builtin.apt:
+    name:
+      - ubuntu-desktop
+  when:
+    - ansible_distribution == 'Ubuntu'
+
 - name: install firefox on debian
   ansible.builtin.apt:
     name:
