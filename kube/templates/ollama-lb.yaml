@@ -52,8 +52,8 @@ spec:
           command:
             - "ollama_load_balancer"
           args:
-            - "--server=mac-mini.barn-banana.ts.net:11434=mac-mini"
-            - "--server=nix-nvidia.barn-banana.ts.net:11434=nix-nvidia"
+            - "--server=100.83.100.5:11434=nvidia"
+            - "--server=100.108.77.60:11434=mac"
           imagePullPolicy: IfNotPresent
           ports:
             - name: ollama

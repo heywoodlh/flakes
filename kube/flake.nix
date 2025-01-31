@@ -357,15 +357,14 @@
         };
         ollama-lb = mkKubeDrv "ollama-lb" {
           src = ./templates/ollama-lb.yaml;
-          namespace = "default";
+          namespace = "machine-learning";
           image = "docker.io/heywoodlh/ollama_load_balancer:1.0.3";
           replicas = 1;
         };
         open-webui = mkKubeDrv "open-webui" {
           src = ./templates/open-webui.yaml;
-          namespace = "open-webui";
-          ollama_image = "docker.io/ollama/ollama:0.5.5";
-          webui_image = "ghcr.io/open-webui/open-webui:git-f6a54c9-ollama";
+          namespace = "machine-learning";
+          webui_image = "ghcr.io/open-webui/open-webui:v0.5.7";
         };
         # Ensure to deploy prometheus-blackbox-exporter first
         prometheus = (kubelib.buildHelmChart {
