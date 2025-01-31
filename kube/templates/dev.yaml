@@ -104,9 +104,8 @@ metadata:
   namespace: @namespace@
 data:
   .bash_profile: |-
-    # Start tmux over ssh
-    # Use `k9s`/`kubectl` to get a non-tmux shell in the container
-    [[ -n $SSH_CONNECTION ]] && [[ -e /home/heywoodlh/.nix-profile/bin/tmux ]] && [ -z $TMUX ] && { /home/heywoodlh/.nix-profile/bin/tmux new-session && exit;}
+    # Always use "main" session (for multiple devices to retain continuity)
+    [[ -e /home/heywoodlh/.nix-profile/bin/tmux ]] && [ -z $TMUX ] && { /home/heywoodlh/.nix-profile/bin/tmux new-session -A -s main && exit;}
 ---
 apiVersion: v1
 kind: Service
