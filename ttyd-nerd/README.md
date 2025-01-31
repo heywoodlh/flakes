@@ -4,8 +4,8 @@ This is a patching of ttyd to support nerd fonts.
 
 ```
 nix run .#gen
-git add html
-nix run .# -- -W -t fontSize=16 -t fontFamily="JetBrains" -p 8000 /bin/zsh
+git add src/html
+nix run .# -- -W -t fontSize=16 -t fontFamily="JetBrains Mono Regular" -p 8000 /bin/zsh
 ```
 
 # Generate patch
@@ -17,7 +17,10 @@ Generate a patch file like so:
 ```
 git clone https://github.com/tsl0922/ttyd /tmp/ttyd
 
-# make changes in /tmp/ttyd
+# apply the current patch
+git -C /tmp/ttyd apply $(realpath ttyd.patch)
+
+# make changes in /tmp/ttyd, then generate a new patch
 
 git -C /tmp/ttyd diff > ttyd.patch
 ```

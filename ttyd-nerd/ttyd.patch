@@ -19,7 +19,7 @@ index d8cf47f..322ad71 100644
 +  "packageManager": "yarn@1.22.22"
  }
 diff --git a/html/src/style/index.scss b/html/src/style/index.scss
-index 0f9244b..eba2058 100644
+index 0f9244b..396325c 100644
 --- a/html/src/style/index.scss
 +++ b/html/src/style/index.scss
 @@ -1,18 +1,46 @@
@@ -43,10 +43,10 @@ index 0f9244b..eba2058 100644
 +}
 +
 +@font-face {
-+    font-family: Iosevka;
++    font-family: 'JetBrains Mono Regular';
 +    font-style: normal;
 +    font-weight: normal;
-+    src: url('webfont/iosevka-regular.woff2') format('WOFF2');
++    src: url('webfont/jetbrains-mono-regular.woff2') format('WOFF2');
 +}
 +
 +@font-face {
@@ -81,6 +81,19 @@ index 0f9244b..eba2058 100644
 +        height: calc(100% - 10px);
 +    }
  }
+diff --git a/html/src/template.html b/html/src/template.html
+index 80ee93c..2b2f44c 100644
+--- a/html/src/template.html
++++ b/html/src/template.html
+@@ -9,6 +9,8 @@
+     <% for (const css in htmlWebpackPlugin.files.css) { %>
+     <link inline rel="stylesheet" type="text/css" href="<%= htmlWebpackPlugin.files.css[css] %>">
+     <% } %>
++    <!-- Remove white bars in Safari https://web.archive.org/web/20190621194842/https://stephenradford.me/removing-the-white-bars-in-safari-on-iphone-x/ -->
++    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+ </head>
+ <body>
+ <% for (const js in htmlWebpackPlugin.files.js) { %>
 diff --git a/html/webpack.config.js b/html/webpack.config.js
 index 18bfcf3..77dcbc2 100644
 --- a/html/webpack.config.js
@@ -100,4 +113,3 @@ index 18bfcf3..77dcbc2 100644
          extensions: ['.tsx', '.ts', '.js'],
      },
      plugins: [
-
