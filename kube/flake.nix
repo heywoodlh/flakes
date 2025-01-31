@@ -355,6 +355,12 @@
           httpd_image = "docker.io/httpd:2.4.58";
           replicas = 1;
         };
+        ollama-lb = mkKubeDrv "ollama-lb" {
+          src = ./templates/ollama-lb.yaml;
+          namespace = "default";
+          image = "docker.io/heywoodlh/ollama_load_balancer:1.0.3";
+          replicas = 1;
+        };
         open-webui = mkKubeDrv "open-webui" {
           src = ./templates/open-webui.yaml;
           namespace = "open-webui";
