@@ -1,10 +1,5 @@
 ---
 apiVersion: v1
-kind: Namespace
-metadata:
-  name: @namespace@
----
-apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: open-webui-data
@@ -16,33 +11,6 @@ spec:
   resources:
     requests:
       storage: 50Gi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: ollama-data
-  namespace: @namespace@
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: local-path
-  resources:
-    requests:
-      storage: 50Gi
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: ollama-service
-  namespace: @namespace@
-spec:
-  type: ClusterIP
-  selector:
-    app: ollama
-  ports:
-  - protocol: TCP
-    port: 11434
-    targetPort: 11434
 ---
 apiVersion: v1
 kind: Service
@@ -94,52 +62,9 @@ spec:
           mountPath: /app/backend/data
         env:
         - name: OLLAMA_API_BASE_URL
-          value: "http://ollama-service:11434/api"
+          value: "http://nix-nvidia.barn-banana.ts.net:11434/api"
         tty: true
       volumes:
       - name: open-webui-data
         persistentVolumeClaim:
           claimName: open-webui-data
----
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  name: ollama
-  namespace: @namespace@
-spec:
-  serviceName: "ollama"
-  replicas: 1
-  selector:
-    matchLabels:
-      app: ollama
-  template:
-    metadata:
-      labels:
-        app: ollama
-    spec:
-      runtimeClassName: nvidia
-      containers:
-      - name: ollama
-        image: @ollama_image@
-        ports:
-        - containerPort: 11434
-        env:
-        - name: NVIDIA_VISIBLE_DEVICES
-          value: all
-        - name: NVIDIA_DRIVER_CAPABILITIES
-          value: all
-        resources:
-          limits:
-            cpu: 4000m
-            memory: 4Gi
-          requests:
-            cpu: 2000m
-            memory: 2Gi
-        volumeMounts:
-        - name: ollama-data
-          mountPath: /root/.ollama
-        tty: true
-      volumes:
-      - name: ollama-data
-        persistentVolumeClaim:
-          claimName: ollama-data
