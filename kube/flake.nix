@@ -364,7 +364,7 @@
         open-webui = mkKubeDrv "open-webui" {
           src = ./templates/open-webui.yaml;
           namespace = "machine-learning";
-          ollama_image = "docker.io/ollama/ollama:0.5.5";
+          ollama_image = "docker.io/ollama/ollama:0.5.7";
           webui_image = "ghcr.io/open-webui/open-webui:git-f6a54c9-ollama";
         };
         # Ensure to deploy prometheus-blackbox-exporter first
