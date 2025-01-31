@@ -13,9 +13,9 @@
 }:
 
 let
-  myZenVersion = "1.7.2b";
+  myZenVersion = "1.7.3b";
   x86_64-darwin-hash = "";
-  aarch64-darwin-hash = "01cn8gskwmzb10s5c6q1p96y5f0s5f9jxipldf0f1sp9496h070y";
+  aarch64-darwin-hash = "";
   x86_64-linux-hash = "";
   sources = {
     x86_64-darwin = fetchurl {
