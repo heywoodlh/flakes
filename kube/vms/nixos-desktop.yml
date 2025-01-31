@@ -25,6 +25,15 @@ spec:
         kubevirt.io/domain: nixos-desktop
     spec:
       domain:
+        firmware:
+          bootloader:
+            efi:
+              persistent: true
+              secureBoot: false
+        features:
+          acpi: {}
+          smm:
+            enabled: true
         cpu:
           cores: 4
         devices:
@@ -37,6 +46,8 @@ spec:
               bus: virtio
             name: harddrive
             bootOrder: 2
+          tpm:
+            persistent: true
         machine:
           type: q35
         resources:

@@ -7943,6 +7943,7 @@ spec:
     developerConfiguration:
       featureGates:
         - HostDisk
+        - VMPersistentState
   customizeComponents: {}
   imagePullPolicy: IfNotPresent
   workloadUpdateStrategy: {}
