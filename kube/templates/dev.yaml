@@ -95,7 +95,6 @@ data:
       op-unlock
       $HOME/.nix-profile/bin/kubectl $argv
     end
-
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -104,8 +103,45 @@ metadata:
   namespace: @namespace@
 data:
   .bash_profile: |-
+    # This file is only used over ssh
     # Always use "main" session (for multiple devices to retain continuity)
     [[ -e /home/heywoodlh/.nix-profile/bin/tmux ]] && [ -z $TMUX ] && { /home/heywoodlh/.nix-profile/bin/tmux new-session -A -s main && exit;}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dev-tmux
+  namespace: @namespace@
+data:
+  tmux.sh: |-
+    #!/usr/bin/env bash
+    [ -z $TMUX ] && { /home/heywoodlh/.nix-profile/bin/tmux new-session -A -s main && exit;}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dev-ttyd
+  namespace: @namespace@
+data:
+  ttyd.sh: |-
+    #!/usr/bin/env bash
+
+    TTYD_ARGS=""
+
+    if [ -n "${TTYD_USER}" ] && [ -n "${TTYD_PASS}" ];
+    then
+        TTYD_ARGS="${TTYD_ARGS} --credential ${TTYD_USER}:${TTYD_PASS}"
+    fi
+
+    COMMAND="/bin/bash"
+    [[ -e /home/heywoodlh/.nix-profile/bin/tmux ]] && COMMAND="/tmux.sh"
+
+    if [[ -e /home/heywoodlh/.nix-profile/bin/ttyd ]]
+    then
+        /home/heywoodlh/.nix-profile/bin/ttyd -W -t fontSize=16 -t fontFamily="JetBrains Mono Regular" -p 80 --uid 1000 --gid 1000 -w /home/heywoodlh --writable ${TTYD_ARGS} ${COMMAND}
+    else
+        /usr/bin/ttyd -W -t fontSize=16 -t fontFamily="JetBrains Mono Regular" -p 80 --uid 1000 --gid 1000 -w /home/heywoodlh --writable ${TTYD_ARGS} ${COMMAND}
+    fi
 ---
 apiVersion: v1
 kind: Service
@@ -271,6 +307,12 @@ spec:
             - name: dev-bash-profile
               mountPath: /home/heywoodlh/.bash_profile
               subPath: .bash_profile
+            - name: dev-tmux
+              mountPath: /tmux.sh
+              subPath: tmux.sh
+            - name: dev-ttyd
+              mountPath: /ttyd.sh
+              subPath: ttyd.sh
             - name: dev-host-keys
               mountPath: /etc/ssh/host_keys
             - name: syncthing-data
@@ -319,6 +361,14 @@ spec:
         - name: dev-bash-profile
           configMap:
             name: dev-bash-profile
+        - name: dev-tmux
+          configMap:
+            name: dev-tmux
+            defaultMode: 0777
+        - name: dev-ttyd
+          configMap:
+            name: dev-ttyd
+            defaultMode: 0777
         - name: dev-keys
           configMap:
             name: dev-keys
