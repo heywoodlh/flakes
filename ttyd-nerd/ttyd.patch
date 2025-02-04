@@ -19,10 +19,10 @@ index d8cf47f..322ad71 100644
 +  "packageManager": "yarn@1.22.22"
  }
 diff --git a/html/src/style/index.scss b/html/src/style/index.scss
-index 0f9244b..2f20c32 100644
+index 0f9244b..f314fc0 100644
 --- a/html/src/style/index.scss
 +++ b/html/src/style/index.scss
-@@ -1,18 +1,60 @@
+@@ -1,18 +1,66 @@
  html,
  body {
 -  height: 100%;
@@ -33,6 +33,12 @@ index 0f9244b..2f20c32 100644
 +    min-height: 100%;
 +    margin: 0;
 +    overflow: hidden;
++}
++
++* {
++  /* Fix weird font issues in Safari https://stackoverflow.com/a/9450719 */
++  -webkit-font-smoothing: antialiased;
++  -font-synthesis: none !important;
 +}
 +
 +@font-face {
