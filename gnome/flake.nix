@@ -83,7 +83,7 @@
         use-scrollbar=false
         use-trayicon=false
         window-halignment=0
-        window-height=80
+        window-height=95
         window-losefocus=false
         window-refocus=false
         window-tabbar=false
