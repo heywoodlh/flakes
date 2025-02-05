@@ -208,6 +208,23 @@
         "type": "github"
       }
     },
+    "kasmweb": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1726861391,
+        "narHash": "sha256-npd0CLiWGJ3p6RgHbmouIULkS7xW4braFKSQ9Qd9QnM=",
+        "owner": "kasmtech",
+        "repo": "kasm-helm",
+        "rev": "39d86068839aab97483ccdb30eb0a5fafde50c6e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kasmtech",
+        "ref": "release/1.16.0",
+        "repo": "kasm-helm",
+        "type": "github"
+      }
+    },
     "krew2nix": {
       "inputs": {
         "flake-utils": "flake-utils_2",
@@ -465,6 +482,7 @@
         "crossplane": "crossplane",
         "elastic-cloud": "elastic-cloud",
         "flake-utils": "flake-utils",
+        "kasmweb": "kasmweb",
         "krew2nix": "krew2nix",
         "minecraft-helm": "minecraft-helm",
         "nfs-helm": "nfs-helm",

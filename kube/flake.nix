@@ -48,6 +48,10 @@
       url = "github:eigengrau/krew2nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    kasmweb = {
+      url = "github:kasmtech/kasm-helm/release/1.16.0";
+      flake = false;
+    };
   };
 
   outputs = inputs @ {
@@ -68,6 +72,7 @@
     crossplane,
     elastic-cloud,
     krew2nix,
+    kasmweb,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs {
@@ -183,22 +188,12 @@
           postgres_replicas = "1";
           postgres_storage_class = "local-path";
         };
-        "coredns" = (kubelib.buildHelmChart {
-          name = "coredns";
-          chart = "${coredns}/charts/coredns";
-          namespace = "default";
-          values = {
-            image = {
-              repository = "docker.io/coredns/coredns";
-              tag = "1.11.1";
-            };
-            service = {
-              name = "coredns-external";
-              clusterIP = "10.96.0.15";
-            };
-            isClusterService = false;
-          };
-        });
+        coredns = mkKubeDrv "coredns" {
+          src = ./templates/coredns.yaml;
+          namespace = "coredns";
+          image = "docker.io/coredns/coredns:1.12.0";
+          replicas = "1";
+        };
         "crossplane" = (kubelib.buildHelmChart {
           name = "crossplane";
           chart = "${crossplane}/cluster/charts/universal-crossplane";
@@ -270,6 +265,23 @@
           tag = "20231213.1-unstable";
           replicas = 1;
         };
+        # Create ns first: kubectl create ns kasmweb
+        "kasmweb" = (kubelib.buildHelmChart {
+          name = "kasmweb";
+          chart = "${kasmweb}/kasm-single-zone";
+          namespace = "kasmweb";
+          values = {
+            global = {
+              namespace = "kasmweb";
+              hostname = "kasmweb";
+              altHostnames = [
+                "kasmweb.barn-banana.ts.net"
+                "kasmweb.kasmweb.svc.cluster.local"
+                "kasmweb.heywoodlh.io"
+              ];
+            };
+          };
+        });
         kubevirt = mkKubeDrv "kubevirt" {
           src = ./templates/kubevirt.yaml;
           version = "v1.4.0";
