@@ -275,8 +275,7 @@
               namespace = "kasmweb";
               hostname = "kasmweb";
               altHostnames = [
-                "kasmweb.barn-banana.ts.net"
-                "kasmweb.kasmweb.svc.cluster.local"
+                "kasm-proxy.kasmweb.svc.cluster.local"
                 "kasmweb.heywoodlh.io"
               ];
             };
