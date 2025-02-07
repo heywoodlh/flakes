@@ -229,8 +229,8 @@
 
         [org/gnome/shell]
         disable-user-extensions=false
-        disabled-extensions=@as ['disabled','ubuntu-dock@ubuntu.com','ding@rastersoft.com','nightthemeswitcher@romainvigier.fr','switcher@landau.fi', 'search-light@icedman.github.com', 'openbar@neuromorph']
-        enabled-extensions=@as ['caffeine@patapon.info','gsconnect@andyholmes.github.io','just-perfection-desktop@just-perfection','native-window-placement@gnome-shell-extensions.gcampax.github.com','pop-shell@system76.com','user-theme@gnome-shell-extensions.gcampax.github.com','gnomebedtime@ionutbortis.gmail.com','forge@jmmaranan.com','hide-cursor@elcste.com']
+        disabled-extensions=@as ['disabled','ubuntu-dock@ubuntu.com','ding@rastersoft.com','nightthemeswitcher@romainvigier.fr', 'openbar@neuromorph', 'pop-shell@system76.com', 'search-light@icedman.github.com']
+        enabled-extensions=@as ['caffeine@patapon.info','gsconnect@andyholmes.github.io','just-perfection-desktop@just-perfection','native-window-placement@gnome-shell-extensions.gcampax.github.com','user-theme@gnome-shell-extensions.gcampax.github.com','gnomebedtime@ionutbortis.gmail.com','forge@jmmaranan.com','hide-cursor@elcste.com', 'paperwm@paperwm.github.com', 'switcher@landau.fi']
         favorite-apps=@as ['firefox.desktop','wezterm.desktop']
         had-bluetooth-devices-setup=true
         remember-mount-password=false
@@ -300,7 +300,7 @@
         [org/gnome/shell/extensions/switcher]
         font-size=uint32 24
         max-width-percentage=uint32 48
-        show-switcher=@as ['disabled']
+        show-switcher=['<Super>space']
 
         [org/gnome/shell/extensions/search-light]
         blur-brightness=0.59999999999999998
@@ -309,7 +309,7 @@
         preferred-monitor=0
         scale-height=0.10000000000000001
         scale-width=0.10000000000000001
-        show-switcher=@as ['disabled']
+        shortcut-search=['<Super>space']
 
         [org/gnome/shell/extensions/openbar]
         accent-color=['0', '0.75', '0.75']
@@ -586,7 +586,7 @@
         switch-to-application-2='disabled'
         switch-to-application-3='disabled'
         switch-to-application-4='disabled'
-        toggle-overview=['<Super>space']
+        toggle-overview=@as ['disabled']
 
         [org/gnome/terminal/legacy]
         default-show-menubar=false
@@ -657,7 +657,9 @@
                                "native-window-placement@gnome-shell-extensions.gcampax.github.com"
                                "forge@jmmaranan.com"
                                "hide-cursor@elcste.com"
-                               "user-theme@gnome-shell-extensions.gcampax.github.com")
+                               "user-theme@gnome-shell-extensions.gcampax.github.com"
+                               "paperwm@paperwm.github.com"
+                               "switcher@landau.fi")
 
         for extension in "''${extensions[@]}"
         do
