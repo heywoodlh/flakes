@@ -696,14 +696,19 @@
           ${stable-pkgs.gnome-extensions-cli}/bin/gext enable "$extension"
         done
       '';
+      renderNix = pkgs.writeShellScript "render-nix" ''
+        # wrapper to remove doubled newlines
+        ${pkgs.coreutils}/bin/cat ${dconf-ini} | ${pkgs.gnused}/bin/sed -e '/./b' -e :n -e 'N;s/\n$//;tn' | ${pkgs.dconf2nix}/bin/dconf2nix > $out
+      '';
       dconf-nix = pkgs.stdenv.mkDerivation {
         name = "dconf-nix";
         builder = pkgs.bash;
-        args = [ "-c" "${pkgs.dconf2nix}/bin/dconf2nix -i ${dconf-ini} -o $out" ];
+        args = [ "${renderNix}" ];
       };
     in {
       packages = rec {
         dconf = dconf-nix;
+        test = renderNix;
         gnome-desktop-setup = pkgs.writeShellScriptBin "gnome-desktop-setup" ''
           ## Install JetBrains nerd font
           mkdir -p ~/.local/share/fonts/ttf
