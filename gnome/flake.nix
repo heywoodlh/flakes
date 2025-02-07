@@ -229,8 +229,8 @@
 
         [org/gnome/shell]
         disable-user-extensions=false
-        disabled-extensions=@as ['disabled','ubuntu-dock@ubuntu.com','ding@rastersoft.com','nightthemeswitcher@romainvigier.fr', 'openbar@neuromorph', 'pop-shell@system76.com', 'search-light@icedman.github.com']
-        enabled-extensions=@as ['caffeine@patapon.info','gsconnect@andyholmes.github.io','just-perfection-desktop@just-perfection','native-window-placement@gnome-shell-extensions.gcampax.github.com','user-theme@gnome-shell-extensions.gcampax.github.com','gnomebedtime@ionutbortis.gmail.com','forge@jmmaranan.com','hide-cursor@elcste.com', 'paperwm@paperwm.github.com', 'switcher@landau.fi']
+        disabled-extensions=@as ['disabled','ubuntu-dock@ubuntu.com','ding@rastersoft.com','nightthemeswitcher@romainvigier.fr', 'openbar@neuromorph', 'pop-shell@system76.com', 'switcher@landau.fi']
+        enabled-extensions=@as ['caffeine@patapon.info','gsconnect@andyholmes.github.io','just-perfection-desktop@just-perfection','native-window-placement@gnome-shell-extensions.gcampax.github.com','user-theme@gnome-shell-extensions.gcampax.github.com','gnomebedtime@ionutbortis.gmail.com','forge@jmmaranan.com','hide-cursor@elcste.com', 'paperwm@paperwm.github.com', 'search-light@icedman.github.com']
         favorite-apps=@as ['firefox.desktop','wezterm.desktop']
         had-bluetooth-devices-setup=true
         remember-mount-password=false
@@ -659,7 +659,7 @@
                                "hide-cursor@elcste.com"
                                "user-theme@gnome-shell-extensions.gcampax.github.com"
                                "paperwm@paperwm.github.com"
-                               "switcher@landau.fi")
+                               "search-light@icedman.github.com")
 
         for extension in "''${extensions[@]}"
         do
