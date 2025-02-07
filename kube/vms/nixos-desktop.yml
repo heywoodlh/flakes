@@ -41,11 +41,11 @@ spec:
           - cdrom:
               bus: sata
             name: cdromiso
-            bootOrder: 1
+            bootOrder: 2
           - disk:
               bus: virtio
             name: harddrive
-            bootOrder: 2
+            bootOrder: 1
           tpm:
             persistent: true
         machine:
