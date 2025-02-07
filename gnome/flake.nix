@@ -53,59 +53,88 @@
       datepop = pkgs.writeShellScript "datepop" ''
         ${pkgs.libnotify}/bin/notify-send "$(${pkgs.coreutils}/bin/date "+%T")"
       '';
+      guakeConf = {
+        general = ''
+          abbreviate-tab-names=false
+          compat-delete='delete-sequence'
+          default-shell='${myShell}'
+          display-n=0
+          display-tab-names=0
+          gtk-prefer-dark-theme=true
+          gtk-theme-name='Adwaita-dark'
+          gtk-use-system-default-theme=true
+          hide-tabs-if-one-tab=false
+          history-size=1000
+          load-guake-yml=true
+          max-tab-name-length=100
+          mouse-display=true
+          open-tab-cwd=true
+          prompt-on-quit=true
+          quick-open-command-line='${pkgs.xdg-utils}/bin/xdg-open %(file_path)s'
+          restore-tabs-notify=false
+          restore-tabs-startup=false
+          save-tabs-when-changed=false
+          schema-version='3.9.0'
+          scroll-keystroke=true
+          start-at-login=true
+          use-default-font=false
+          use-login-shell=false
+          use-popup=false
+          use-scrollbar=false
+          use-trayicon=false
+          window-halignment=0
+          window-height=95
+          window-losefocus=false
+          window-refocus=false
+          window-tabbar=false
+          window-width=100
+        '';
+        keybindings.local = ''
+          focus-terminal-left='<Primary>braceleft'
+          focus-terminal-right='<Primary>braceright'
+          split-tab-horizontal='<Primary>underscore'
+          split-tab-vertical='<Primary>bar'
+        '';
+        style = {
+          base = ''
+            cursor-shape=0
+          '';
+          background = ''
+            transparency=100
+          '';
+          font = ''
+            allow-bold=true
+            palette='#3B3B42425252:#BFBF61616A6A:#A3A3BEBE8C8C:#EBEBCBCB8B8B:#8181A1A1C1C1:#B4B48E8EADAD:#8888C0C0D0D0:#E5E5E9E9F0F0:#4C4C56566A6A:#BFBF61616A6A:#A3A3BEBE8C8C:#EBEBCBCB8B8B:#8181A1A1C1C1:#B4B48E8EADAD:#8F8FBCBCBBBB:#ECECEFEFF4F4:#D8D8DEDEE9E9:#2E2E34344040'
+            palette-name='Nord'
+            style='JetBrains Mono 14'
+          '';
+        };
+      };
       dconf-ini = pkgs.writeText "dconf.ini" ''
         [apps/guake/general]
-        abbreviate-tab-names=false
-        compat-delete='delete-sequence'
-        default-shell='${myShell}'
-        display-n=0
-        display-tab-names=0
-        gtk-prefer-dark-theme=true
-        gtk-theme-name='Adwaita-dark'
-        gtk-use-system-default-theme=true
-        hide-tabs-if-one-tab=false
-        history-size=1000
-        load-guake-yml=true
-        max-tab-name-length=100
-        mouse-display=true
-        open-tab-cwd=true
-        prompt-on-quit=true
-        quick-open-command-line='${pkgs.xdg-utils}/bin/xdg-open %(file_path)s'
-        restore-tabs-notify=false
-        restore-tabs-startup=false
-        save-tabs-when-changed=false
-        schema-version='3.9.0'
-        scroll-keystroke=true
-        start-at-login=true
-        use-default-font=false
-        use-login-shell=false
-        use-popup=false
-        use-scrollbar=false
-        use-trayicon=false
-        window-halignment=0
-        window-height=95
-        window-losefocus=false
-        window-refocus=false
-        window-tabbar=false
-        window-width=100
+        ${guakeConf.general}
+        [org/guake/general]
+        ${guakeConf.general}
 
         [apps/guake/keybindings/local]
-        focus-terminal-left='<Primary>braceleft'
-        focus-terminal-right='<Primary>braceright'
-        split-tab-horizontal='<Primary>underscore'
-        split-tab-vertical='<Primary>bar'
+        ${guakeConf.keybindings.local}
+        [org/guake/keybindings/local]
+        ${guakeConf.keybindings.local}
 
         [apps/guake/style]
-        cursor-shape=0
+        ${guakeConf.style.base}
+        [org/guake/style]
+        ${guakeConf.style.base}
 
         [apps/guake/style/background]
-        transparency=100
+        ${guakeConf.style.background}
+        [org/guake/style/background]
+        ${guakeConf.style.background}
 
         [apps/guake/style/font]
-        allow-bold=true
-        palette='#3B3B42425252:#BFBF61616A6A:#A3A3BEBE8C8C:#EBEBCBCB8B8B:#8181A1A1C1C1:#B4B48E8EADAD:#8888C0C0D0D0:#E5E5E9E9F0F0:#4C4C56566A6A:#BFBF61616A6A:#A3A3BEBE8C8C:#EBEBCBCB8B8B:#8181A1A1C1C1:#B4B48E8EADAD:#8F8FBCBCBBBB:#ECECEFEFF4F4:#D8D8DEDEE9E9:#2E2E34344040'
-        palette-name='Nord'
-        style='JetBrains Mono 14'
+        ${guakeConf.style.font}
+        [org/guake/style/font]
+        ${guakeConf.style.font}
 
         [org/gnome/desktop/background]
         color-shading='solid'
