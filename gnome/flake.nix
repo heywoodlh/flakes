@@ -110,6 +110,14 @@
           '';
         };
       };
+      paperWm.winProps = (map builtins.toJSON [
+        {
+          wm_class = "Firefox";
+          preferredWidth = "80%";
+          spaceIndex = 1;
+          focus = true;
+        }
+      ]);
       dconf-ini = pkgs.writeText "dconf.ini" ''
         [apps/guake/general]
         ${guakeConf.general}
@@ -312,7 +320,7 @@
         [org/gnome/shell/extensions/paperwm]
         show-window-position-bar=false
         use-default-background=true
-        winprops=['{"wm_class":"Firefox","preferredWidth":"80%","spaceIndex":1,"focus":true,}','{"wm_class":"Guake","preferredWidth":"100%","scratch_layer":true,}']
+        winprops=['{"wm_class":"Guake","preferredWidth":"100%","scratch_layer":true,}']
 
         [org/gnome/shell/extensions/paperwm/keybindings]
         move-left=@as ['<Shift><Super>braceleft']
@@ -709,7 +717,9 @@
     in {
       packages = rec {
         dconf = dconf-nix;
-        test = renderNix;
+        apply = pkgs.writeShellScriptBin "apply-dconf" ''
+          ${pkgs.dconf}/bin/dconf load / < ${dconf-ini};
+        '';
         gnome-desktop-setup = pkgs.writeShellScriptBin "gnome-desktop-setup" ''
           ## Install JetBrains nerd font
           mkdir -p ~/.local/share/fonts/ttf
