@@ -156,6 +156,12 @@
           replicas = 1;
           image = "docker.io/heywoodlh/attic:47752427561f1c34debb16728a210d378f0ece36";
         };
+        actual = mkKubeDrv "actual" {
+          src = ./templates/actual.yaml;
+          namespace = "default";
+          replicas = 1;
+          image = "docker.io/actualbudget/actual-server:25.2.1-alpine";
+        };
         dev = mkKubeDrv "dev" {
           src = ./templates/dev.yaml;
           namespace = "default";
