@@ -10,7 +10,7 @@ COPY . /ansible
 
 ENV ANSIBLE_REMOTE_TMP="/tmp/ansible"
 
-ENTRYPOINT [ "/bin/bash", "/ansible/entrypoint.sh" ]
+ENTRYPOINT [ "/docker-entrypoint.sh", "/bin/bash", "/ansible/entrypoint.sh" ]
 
 # Debian target
 FROM docker.io/heywoodlh/systemd:debian AS debian-test
@@ -25,7 +25,7 @@ COPY . /ansible
 
 ENV ANSIBLE_REMOTE_TMP="/tmp/ansible"
 
-ENTRYPOINT [ "/bin/bash", "/ansible/entrypoint.sh" ]
+ENTRYPOINT [ "/docker-entrypoint.sh", "/bin/bash", "/ansible/entrypoint.sh" ]
 
 # Arch Linux target
 FROM docker.io/heywoodlh/systemd:archlinux AS archlinux-test
@@ -36,7 +36,7 @@ COPY . /ansible
 
 ENV ANSIBLE_REMOTE_TMP="/tmp/ansible"
 
-ENTRYPOINT [ "/bin/bash", "/ansible/entrypoint.sh" ]
+ENTRYPOINT [ "/docker-entrypoint.sh", "/bin/bash", "/ansible/entrypoint.sh" ]
 
 # Alpine target
 FROM docker.io/heywoodlh/openrc AS alpine-test
@@ -47,4 +47,4 @@ COPY . /ansible
 
 ENV ANSIBLE_REMOTE_TMP="/tmp/ansible"
 
-ENTRYPOINT [ "/bin/ash", "/ansible/entrypoint.sh" ]
+ENTRYPOINT [ "/openrc.sh", "/bin/ash", "/ansible/entrypoint.sh" ]

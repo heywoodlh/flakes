@@ -14,4 +14,3 @@
   when:
     - journald_config.changed
     - ansible_os_family != "Alpine"
-  ignore_errors: true # can fail if journald is not running
