@@ -227,6 +227,14 @@
           kibana_nodecount = 1;
           storage = "100Gi";
         };
+        fleetdm = mkKubeDrv "fleetdm" {
+          src = ./templates/fleetdm.yaml;
+          namespace = "monitoring";
+          image = "docker.io/fleetdm/fleet:c62899e";
+          mysql_image = "docker.io/mysql:8.1.0";
+          redis_image = "docker.io/redis:8.0-M02-alpine3.21";
+          replicas = 1;
+        };
         gomuks = mkKubeDrv "gomuks" {
           src = ./templates/gomuks.yaml;
           namespace = "default";

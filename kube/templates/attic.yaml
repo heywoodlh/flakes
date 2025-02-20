@@ -5,7 +5,7 @@ metadata:
   name: "attic-server-token"
   namespace: "@namespace@"
 spec:
-  itemPath: "vaults/Kubernetes/items/3dsvyd5opjjrdyobc3e3cgwl2i"
+  itemPath: "vaults/Kubernetes/items/za3oirjkd6ehdlnzvisb445hga"
 ---
 apiVersion: v1
 kind: ConfigMap
