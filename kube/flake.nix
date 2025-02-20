@@ -527,7 +527,7 @@
         tor-socks-proxy = mkKubeDrv "tor-socks-proxy" {
           src = ./templates/tor-socks-proxy.yaml;
           namespace = "default";
-          image = "docker.io/heywoodlh/tor-socks-proxy:0.4.8.12";
+          image = "docker.io/heywoodlh/tor-socks-proxy:0.4.8.13";
           replicas = 1;
         };
         uptime = mkKubeDrv "uptime" {
