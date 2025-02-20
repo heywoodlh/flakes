@@ -389,7 +389,7 @@
         open-webui = mkKubeDrv "open-webui" {
           src = ./templates/open-webui.yaml;
           namespace = "machine-learning";
-          webui_image = "ghcr.io/open-webui/open-webui:v0.5.10";
+          webui_image = "ghcr.io/open-webui/open-webui:v0.5.15";
         };
         # Ensure to deploy prometheus-blackbox-exporter first
         prometheus = (kubelib.buildHelmChart {
