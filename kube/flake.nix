@@ -177,7 +177,7 @@
         cloudtube = mkKubeDrv "cloudtube" {
           src = ./templates/cloudtube.yaml;
           namespace = "default";
-          image = "docker.io/heywoodlh/cloudtube:2024_04";
+          image = "docker.io/heywoodlh/cloudtube:2024_12";
           second_image = "docker.io/heywoodlh/second:2023_12";
           replicas = 1;
         };
