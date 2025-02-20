@@ -10,7 +10,7 @@ jobs:
     name: Build multiarch bundles
     strategy:
       matrix:
-        os: [x64, arm64]
+        os: [ubuntu-24.04, ubuntu-24.04-arm]
         flake: [vim, fish, git, jj, helix, browsh, 1password, ttyd-nerd]
     runs-on: ${{ matrix.os }}
     steps:
@@ -49,25 +49,24 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: x64
+          - os: ubuntu-24.04
             flake: "./fish#tmux"
             out: "tmux"
-          - os: arm64
+          - os: ubuntu-24.04-arm
             flake: "./fish#tmux"
             out: "tmux"
-          - os: x64
+          - os: ubuntu-24.04
             flake: "./fish#zellij"
             out: "zellij"
-          - os: arm64
+          - os: ubuntu-24.04-arm
             flake: "./fish#zellij"
             out: "zellij"
-          - os: x64
+          - os: ubuntu-24.04
             flake: "./fish#ghostty"
             out: "ghostty"
-          - os: arm64
+          - os: ubuntu-24.04-arm
             flake: "./fish#ghostty"
             out: "ghostty"
-
 
 
     runs-on: ${{ matrix.os }}
