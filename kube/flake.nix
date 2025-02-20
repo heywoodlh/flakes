@@ -185,7 +185,7 @@
           src = ./templates/coder.yaml;
           namespace = "coder";
           version = "2.8.3";
-          image = "ghcr.io/coder/coder:v2.8.4";
+          image = "ghcr.io/coder/coder:v2.19.0";
           access_url = "https://coder.heywoodlh.io";
           replicas = "1";
           port = "80";
