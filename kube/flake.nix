@@ -306,7 +306,7 @@
         };
         metrics-server = mkKubeDrv "metrics-server" {
           src = ./templates/metrics-server.yaml;
-          image = "registry.k8s.io/metrics-server/metrics-server:v0.7.1";
+          image = "registry.k8s.io/metrics-server/metrics-server:v0.7.2";
         };
         metube = mkKubeDrv "metube" {
           src = ./templates/metube.yaml;
