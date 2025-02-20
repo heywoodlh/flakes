@@ -377,7 +377,7 @@
           namespace = "nuclei";
           image = "docker.io/heywoodlh/nuclei:v3.3.0-dev";
           interactsh_image = "docker.io/projectdiscovery/interactsh-server:v1.1.9";
-          httpd_image = "docker.io/httpd:2.4.58";
+          httpd_image = "docker.io/httpd:2.4.63";
           replicas = 1;
         };
         ollama-lb = mkKubeDrv "ollama-lb" {
