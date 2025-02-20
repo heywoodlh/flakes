@@ -17,13 +17,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Login to Tailnet
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+
       - name: Install Nix
         uses: cachix/install-nix-action@v27
         with:
           nix_path: nixpkgs=channel:nixpkgs-unstable
-
-      - name: Setup Nix Magic Cache
-        uses: DeterminateSystems/magic-nix-cache-action@main
+          extra_nix_config: |
+            extra-substituters = http://attic/nixos
+            extra-trusted-public-keys = nixos:uRCswSsap/ho6e2Vp4HXpH9SMdN4rW62N8Uq3r+mQ5E=
 
       - name: Build ${{ matrix.flake }} flake bundles
         run: |
@@ -74,13 +81,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Login to Tailnet
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+
       - name: Install Nix
         uses: cachix/install-nix-action@v27
         with:
           nix_path: nixpkgs=channel:nixpkgs-unstable
-
-      - name: Setup Nix Magic Cache
-        uses: DeterminateSystems/magic-nix-cache-action@main
+          extra_nix_config: |
+            extra-substituters = http://attic/nixos
+            extra-trusted-public-keys = nixos:uRCswSsap/ho6e2Vp4HXpH9SMdN4rW62N8Uq3r+mQ5E=
 
       - name: Build ${{ matrix.flake }} flake bundles
         run: |
@@ -106,13 +120,20 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build-multiarch-bundles, build-custom-bundles]
     steps:
+      - name: Login to Tailnet
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+
       - name: Install Nix
         uses: cachix/install-nix-action@v27
         with:
           nix_path: nixpkgs=channel:nixpkgs-unstable
-
-      - name: Setup Nix Magic Cache
-        uses: DeterminateSystems/magic-nix-cache-action@main
+          extra_nix_config: |
+            extra-substituters = http://attic/nixos
+            extra-trusted-public-keys = nixos:uRCswSsap/ho6e2Vp4HXpH9SMdN4rW62N8Uq3r+mQ5E=
 
       - name: Download bundles
         uses: actions/download-artifact@v4
