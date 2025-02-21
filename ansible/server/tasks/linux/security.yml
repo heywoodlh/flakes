@@ -90,8 +90,9 @@
       ignore_errors: true # archlinux container doesn't like this
 
 - name: check if connected to tailscale
-  ansible.builtin.stat:
-    path: /etc/file.txt
+  ansible.netcommon.net_ping:
+    dest: 100.100.100.100
+    count: 1
   register: tailscale_check
   ignore_errors: true
 
@@ -115,3 +116,20 @@
         daemon_reload: true
         enabled: true
         name: wazuh-agent
+
+- name: install fleet agent
+  when:
+    - tailscale_check is succeeded
+    - ansible_os_family == 'Debian'
+    - ansible_architecture == 'x86_64'
+  block:
+    - name: gather package facts
+      ansible.builtin.package_facts:
+        manager: "apt"
+
+    - ansible.builtin.apt:
+        deb: "http://files.barn-banana.ts.net/fleet/fleet-osquery.deb"
+      when:
+        - "'fleet-osquery' not in ansible_facts.packages"
+      ignore_errors: true
+
