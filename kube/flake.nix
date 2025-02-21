@@ -250,7 +250,7 @@
         healthchecks = mkKubeDrv "healthchecks" {
           src = ./templates/healthchecks.yaml;
           namespace = "monitoring";
-          image = "docker.io/curlimages/curl:8.6.0";
+          image = "docker.io/curlimages/curl:8.12.1";
         };
         heralding = mkKubeDrv "heralding" {
           src = ./templates/heralding.yaml;
