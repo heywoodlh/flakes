@@ -267,6 +267,12 @@
           replicas = 1;
           nodename = "nix-nvidia";
         };
+        http-files = mkKubeDrv "http-files" {
+          src = ./templates/http-files.yaml;
+          namespace = "default";
+          image = "docker.io/heywoodlh/http-files:v2.9.1";
+          replicas = 1;
+        };
         iperf = mkKubeDrv "iperf" {
           src = ./templates/iperf3.yaml;
           namespace = "default";
