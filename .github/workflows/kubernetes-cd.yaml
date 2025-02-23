@@ -4,9 +4,13 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "0 0 * * 2"
-  paths:
-    - kube/**
-    - '!kube/**.md'
+  push:
+    branches:
+      - 'main'
+    paths:
+      - kube/**
+      - '!kube/**.md'
+      - .github/workflows/kubernetes-cd.yaml
 
 jobs:
   deploy-services:
