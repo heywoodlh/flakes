@@ -162,6 +162,96 @@
           replicas = 1;
           image = "docker.io/actualbudget/actual-server:25.2.1-alpine";
         };
+        # After applying this, run the following: `kubectl apply -f ./kubectl/argo-nix-configmap.yaml`
+        argo = (kubelib.buildHelmChart {
+          name = "argo";
+          chart = (nixhelm.charts { inherit pkgs; }).argoproj.argo-cd;
+          namespace = "argo";
+          values = {
+            repoServer = {
+              volumes = [
+                {
+                  name = "nix-cmp-config";
+                  configMap = { name = "nix-cmp-config"; };
+                }
+                {
+                  name = "nix-cmp-tmp";
+                  emptyDir = { };
+                }
+                {
+                  name = "nix-cmp-nix";
+                  emptyDir = { };
+                }
+                {
+                  name = "nix-cmp-home";
+                  emptyDir = { };
+                }
+              ];
+              initContainers = [
+                {
+                  name = "nix-bootstrap";
+                  command = [ "sh" "-c" "cp -a /nix/* /nixvol && chown -R 999 /nixvol/*" ];
+                  image = "docker.io/nixos/nix:latest";
+                  imagePullPolicy = "Always";
+                  volumeMounts = [
+                    {
+                      mountPath = "/nixvol";
+                      name = "nix-cmp-nix";
+                    }
+                  ];
+              }];
+              extraContainers = [
+                {
+                  name = "nix-cmp-plugin";
+                  command = [ "/var/run/argocd/argocd-cmp-server" ];
+                  image = "docker.io/nixos/nix:latest";
+                  imagePullPolicy = "Never";
+                  securityContext = {
+                    runAsNonRoot = true;
+                    runAsUser = 999;
+                  };
+                  volumeMounts = [
+                    {
+                      mountPath = "/var/run/argocd";
+                      name = "var-files";
+                    }
+                    {
+                      mountPath = "/home/argocd/cmp-server/plugins";
+                      name = "plugins";
+                    }
+                    {
+                      mountPath = "/home/argocd/cmp-server/config/plugin.yaml";
+                      subPath = "plugin.yaml";
+                      name = "nix-cmp-config";
+                    }
+                    {
+                      mountPath = "/etc/passwd";
+                      subPath = "passwd";
+                      name = "nix-cmp-config";
+                    }
+                    {
+                      mountPath = "/etc/nix/nix.conf";
+                      subPath = "nix.conf";
+                      name = "nix-cmp-config";
+                    }
+                    {
+                      mountPath = "/tmp";
+                      name = "nix-cmp-tmp";
+                    }
+                    {
+                      mountPath = "/nix";
+                      name = "nix-cmp-nix";
+                    }
+                    {
+                      mountPath = "/home/nix";
+                      name = "nix-cmp-home";
+                    }
+                  ];
+                }
+              ];
+            };
+          };
+        });
         dev = mkKubeDrv "dev" {
           src = ./templates/dev.yaml;
           namespace = "default";
