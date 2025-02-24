@@ -280,7 +280,7 @@
           replicas = "1";
           port = "80";
           postgres_version = "16.1.0";
-          postgres_image = "docker.io/bitnami/postgresql:16.2.0";
+          postgres_image = "docker.io/bitnami/postgresql:16.6.0";
           postgres_replicas = "1";
           postgres_storage_class = "local-path";
         };
