@@ -102,7 +102,7 @@ spec:
       nodeSelector:
         kubernetes.io/hostname: nix-nvidia
       containers:
-      - image: docker.io/miniflux/miniflux:2.2.5
+      - image: docker.io/miniflux/miniflux:2.2.6
         name: miniflux
         ports:
         - name: miniflux
