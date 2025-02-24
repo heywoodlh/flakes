@@ -463,7 +463,7 @@
         ntfy = mkKubeDrv "ntfy" {
           src = ./templates/ntfy.yaml;
           namespace = "default";
-          image = "docker.io/binwiederhier/ntfy:v2.9.0";
+          image = "docker.io/binwiederhier/ntfy:v2.11.0";
           base_url = "http://ntfy.barn-banana.ts.net";
           timezone = "America/Denver";
           replicas = 1;
