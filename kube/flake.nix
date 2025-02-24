@@ -573,7 +573,7 @@
         retroarcher = mkKubeDrv "retroarcher" {
           src = ./templates/retroarcher.yaml;
           namespace = "default";
-          image = "docker.io/lizardbyte/retroarcher:v2024.210.22900";
+          image = "docker.io/lizardbyte/retroarcher:v2024.922.10155";
           nodename = "nix-nvidia";
           hostfolder = "/opt/retroarcher";
           replicas = 1;
