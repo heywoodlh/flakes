@@ -27,7 +27,7 @@ spec:
       nodeSelector:
         kubernetes.io/hostname: nix-nvidia
       containers:
-      - image: docker.io/postgres:15.6
+      - image: docker.io/postgres:15.12
         name: miniflux-db
         ports:
         - name: postgres
