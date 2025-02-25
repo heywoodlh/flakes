@@ -60,5 +60,4 @@ spec:
       prune: true
       selfHeal: true
 EOL
-
 done
