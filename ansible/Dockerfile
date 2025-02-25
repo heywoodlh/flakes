@@ -30,7 +30,7 @@ ENTRYPOINT [ "/docker-entrypoint.sh", "/bin/bash", "/ansible/entrypoint.sh" ]
 # Arch Linux target
 FROM docker.io/heywoodlh/systemd:archlinux AS archlinux-test
 
-RUN pacman -Sy --noconfirm ansible python
+RUN pacman -Sy --noconfirm ansible python bash grep
 
 COPY . /ansible
 
@@ -41,10 +41,10 @@ ENTRYPOINT [ "/docker-entrypoint.sh", "/bin/bash", "/ansible/entrypoint.sh" ]
 # Alpine target
 FROM docker.io/heywoodlh/openrc AS alpine-test
 
-RUN apk --no-cache add ansible python3
+RUN apk --no-cache add ansible python3 bash grep
 
 COPY . /ansible
 
 ENV ANSIBLE_REMOTE_TMP="/tmp/ansible"
 
-ENTRYPOINT [ "/openrc.sh", "/bin/ash", "/ansible/entrypoint.sh" ]
+ENTRYPOINT [ "/openrc.sh", "/bin/bash", "/ansible/entrypoint.sh" ]

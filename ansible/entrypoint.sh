@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 PATH="/root/.local/bin:/usr/bin:/usr/local/bin:$PATH"
 
 set -ex
