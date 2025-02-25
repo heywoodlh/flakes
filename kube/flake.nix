@@ -601,7 +601,7 @@
         squid = mkKubeDrv "squid" {
           src = ./templates/squid.yaml;
           namespace = "default";
-          image = "docker.io/heywoodlh/squid:5.7";
+          image = "docker.io/heywoodlh/squid:6.10";
           nodename = "nix-nvidia";
           hostfolder = "/opt/squid";
           replicas = 1;
