@@ -18,6 +18,16 @@
   ],
   "packageRules": [
     {
+      "matchPaths": [
+        "kube/**"
+      ],
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true
+    },
+    {
+      "matchPaths": [
+        "ansible/**"
+      ],
       "automerge": true
     }
   ]
