@@ -334,7 +334,7 @@
         grafana = mkKubeDrv "grafana" {
           src = ./templates/grafana.yaml;
           namespace = "monitoring";
-          image = "docker.io/grafana/grafana:10.4.16";
+          image = "docker.io/grafana/grafana:11.5.2";
           storageclass = "local-path";
         };
         healthchecks = mkKubeDrv "healthchecks" {
