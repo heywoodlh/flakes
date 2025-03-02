@@ -7,6 +7,11 @@
         name: "nix"
         update_cache: yes
 
+    - name: ensure nix-users group exists
+      ansible.builtin.group:
+        name: nix-users
+        state: present
+
     - name: add heywoodlh to nix group
       ansible.builtin.user:
         name: heywoodlh
@@ -17,6 +22,7 @@
       ansible.builtin.lineinfile:
         path: /etc/nix/nix.conf
         line: "extra-experimental-features = nix-command flakes"
+        create: yes
 
     - name: enable nix-daemon
       ansible.builtin.systemd_service:
@@ -36,6 +42,11 @@
         name: nix
         update_cache: true
 
+    - name: ensure nix group exists
+      ansible.builtin.group:
+        name: nix
+        state: present
+
     - name: add heywoodlh to nix group
       ansible.builtin.user:
         name: heywoodlh
@@ -46,6 +57,7 @@
       ansible.builtin.lineinfile:
         path: /etc/nix/nix.conf
         line: "extra-experimental-features = nix-command flakes"
+        create: yes
 
     - name: enable nix-daemon service
       ansible.builtin.service:

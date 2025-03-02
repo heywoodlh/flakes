@@ -29,6 +29,10 @@
         "ansible/**"
       ],
       "automerge": true
+    },
+    {
+      "matchPackageNames": ["/postgres/"],
+      "matchUpdateTypes": ["minor", "patch"]
     }
   ]
 }
