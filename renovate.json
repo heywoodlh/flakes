@@ -31,7 +31,7 @@
       "automerge": true
     },
     {
-      "matchPackageNames": ["/postgres/"],
+      "matchPackageNames": ["/postgres/", "/mysql/"],
       "matchUpdateTypes": ["minor", "patch"]
     }
   ]
