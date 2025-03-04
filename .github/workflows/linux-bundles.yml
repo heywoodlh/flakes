@@ -4,6 +4,11 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "0 0 * * 2"
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/linux-bundles.yml
 
 jobs:
   build-multiarch-bundles:
@@ -118,6 +123,8 @@ jobs:
   push-releases:
     name: Push releases
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     needs: [build-multiarch-bundles, build-custom-bundles]
     steps:
       - name: Login to Tailnet
@@ -138,12 +145,12 @@ jobs:
       - name: Download bundles
         uses: actions/download-artifact@v4
 
-      - name: Build ${{ matrix.flake }} flake
+      - name: Show final structure of bundles
         run: |
           nix run nixpkgs#tree
 
       - name: Create appimage release with flake executables
-        uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@v1.16.0
         with:
           artifacts: './*/appimage/*.appimage'
           tag: "appimages"
@@ -151,7 +158,7 @@ jobs:
           allowUpdates: true
 
       - name: Create deb/rpm release with flake executables
-        uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@v1.16.0
         with:
           artifacts: "./*/deb/*.deb,./*/rpm/*.rpm"
           tag: "packages"
