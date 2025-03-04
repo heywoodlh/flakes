@@ -6,16 +6,19 @@
   when: ansible_os_family == 'Alpine'
 
 - name: install arch packages
-  community.general.pacman:
-    name:
-      - cronie
-      - git
-      - curl
-      - python-pip
-      - sudo
-      - tailscale
-      - ufw
-    update_cache: yes
+  block:
+    - name: include archlinux-keyring
+      ansible.builtin.include_tasks: ../../../common/archlinux-keyring.yml
+
+    - community.general.pacman:
+        name:
+          - cronie
+          - git
+          - curl
+          - python-pip
+          - sudo
+          - tailscale
+          - ufw
   when: ansible_os_family == 'Archlinux'
 
 - name: install debian packages
@@ -63,3 +66,15 @@
     community.general.snap:
       name: firefox
       state: absent
+
+  - name: disallow apt from installing firefox via snap
+    ansible.builtin.copy:
+      create: true
+      src: apt/mozilla-firefox
+      dest: /etc/apt/preferences.d/mozilla-firefox
+
+  - name: enable autoupgrades for firefox
+    ansible.builtin.copy:
+      create: true
+      src: apt/51-autoupgrade-firefox
+      dest: /etc/apt/apt.conf.d/51-autoupgrade-firefox

@@ -85,23 +85,31 @@
     - name: install flakes
       include_tasks: ./include/flake.yml
       loop:
-      - zellij
+      - tmux
       - vim
       - git
       - helix
 
-    - name: check if zellij flake installed
-      ansible.builtin.command: "ls -l {{ user_home.stdout }}/.nix-profile/bin/zellij"
-      register: zellij_check
+    - name: check if tmux flake installed
+      ansible.builtin.command: "ls -l {{ user_home.stdout }}/.nix-profile/bin/tmux"
+      register: tmux_check
       ignore_errors: true
+
+    - name: launch zellij with bash
+      ansible.builtin.lineinfile:
+        path: "{{ user_home.stdout }}/.bashrc"
+        create: true
+        state: absent
+        line: "[ -z ${ZELLIJ} ] && { {{ user_home.stdout }}/.nix-profile/bin/zellij && exit;}"
+        owner: heywoodlh
 
     - name: launch tmux with bash
       ansible.builtin.lineinfile:
         path: "{{ user_home.stdout }}/.bashrc"
         create: true
-        line: "[ -z ${ZELLIJ} ] && { {{ user_home.stdout }}/.nix-profile/bin/zellij && exit;}"
+        line: "[ -z $TMUX ] && { {{ user_home.stdout }}/.nix-profile/bin/tmux new-session -A -s main && exit;}"
         owner: heywoodlh
-      when: zellij_check is succeeded
+      when: tmux_check is succeeded
 
     - name: "remove former ansible-switch alias from {{ user_home.stdout }}/.config/fish/config.fish"
       ansible.builtin.lineinfile:
@@ -109,7 +117,7 @@
         owner: heywoodlh
         line: "alias ansible-switch \"nix run 'github:heywoodlh/flakes/main?dir=ansible#server'\""
         state: absent
-      when: zellij_check is succeeded
+      when: tmux_check is succeeded
       become_user: heywoodlh
       become: true
 
@@ -118,7 +126,7 @@
         state: directory
         path: "{{ user_home.stdout }}/.config/fish"
         owner: heywoodlh
-      when: zellij_check is succeeded
+      when: tmux_check is succeeded
       become_user: heywoodlh
       become: true
 
@@ -127,6 +135,6 @@
         src: users/heywoodlh/machine.fish
         dest: "{{ user_home.stdout }}/.config/fish/machine.fish"
         owner: heywoodlh
-      when: zellij_check is succeeded
+      when: tmux_check is succeeded
       become_user: heywoodlh
       become: true
