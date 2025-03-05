@@ -167,7 +167,7 @@ spec:
       serviceAccountName: nuclei
       containers:
         - name: nuclei-interactsh
-          image: "docker.io/projectdiscovery/interactsh-server:v1.2.3"
+          image: "docker.io/projectdiscovery/interactsh-server:v1.2.4"
           imagePullPolicy: IfNotPresent
           command: ["interactsh-server", "-skip-acme", "-d", "nuclei-interactsh"]
           ports:
