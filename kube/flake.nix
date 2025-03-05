@@ -495,7 +495,7 @@
           values = {
             server.image = {
               repository = "quay.io/prometheus/prometheus";
-              tag = "v2.55.1";
+              tag = "v3.2.1";
             };
             prometheus-node-exporter.enabled = false;
             extraScrapeConfigs = ''
