@@ -45,7 +45,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: cloudflare-tunnel
-          image: "docker.io/cloudflare/cloudflared:2024.12.2"
+          image: "docker.io/cloudflare/cloudflared:2025.2.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: CLOUDFLARED_TOKEN
