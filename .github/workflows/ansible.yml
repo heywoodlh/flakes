@@ -9,6 +9,7 @@ on:
 jobs:
   ansible-playbooks-test:
     name: Test ansible playbooks with Docker
+    if: github.event.pull_request.merged != true # don't run on merged PRs
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout repository
