@@ -332,13 +332,19 @@
         show-switcher=['<Super>space']
 
         [org/gnome/shell/extensions/search-light]
+        background-color=(0.27058824896812439, 0.27450981736183167, 0.29019609093666077, 0.25)
+        blur-background=false
         blur-brightness=0.59999999999999998
         blur-sigma=30.0
+        border-radius=5.76171875
         entry-font-size=1
+        monitor-count=1
         preferred-monitor=0
         scale-height=0.10000000000000001
         scale-width=0.10000000000000001
         shortcut-search=['<Super>space']
+        window-effect=0
+        window-effect-color=(0.27058824896812439, 0.27450981736183167, 0.29019609093666077, 1.0)
 
         [org/gnome/shell/extensions/openbar]
         accent-color=['0', '0.75', '0.75']
