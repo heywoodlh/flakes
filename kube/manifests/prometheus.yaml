@@ -429,27 +429,6 @@ data:
       - targets:
         - nix-nvidia.barn-banana.ts.net:9100
         - nix-drive.barn-banana.ts.net:9100
-        - nixos-gaming.barn-banana.ts.net:9100
-        - nixos-zalman.barn-banana.ts.net:9100
-        - proxmox-mac-mini.barn-banana.ts.net:9100
-        - proxmox-oryx-pro.barn-banana.ts.net:9100
-        - kasmweb.barn-banana.ts.net:9100
-        - wazuh.barn-banana.ts.net:9100
-    
-    - job_name: blackbox
-            metrics_path: /probe
-            params:
-              module: [http_2xx]
-            static_configs:
-              - targets:
-                - https://honeypot.heywoodlh.io/log_session.json
-            relabel_configs:
-              - source_labels: [__address__]
-                target_label: __param_target
-              - source_labels: [__param_target]
-                target_label: instance
-              - target_label: __address__
-                replacement: prometheus-prometheus-blackbox-exporter:9115
     
     alerting:
       alertmanagers:
