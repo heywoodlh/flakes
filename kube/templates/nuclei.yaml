@@ -83,22 +83,22 @@ kind: ConfigMap
 metadata:
   name: nuclei-target-list
   namespace: @namespace@
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: nuclei-target-updater-init
-  namespace: @namespace@
-spec:
-  serviceAccountName: nuclei
-  containers:
-    - name: nuclei-target-updater
-      image: "docker.io/heywoodlh/k8s-service-scanner:latest"
-      imagePullPolicy: IfNotPresent
-      command: ["/bin/bash", "-c"]
-      args: [
-        "/entrypoint | sort -u | tee /out/target-list.txt && kubectl create configmap -n @namespace@ nuclei-target-list --from-file=/out/target-list.txt --dry-run=client -o yaml | kubectl apply -f - && kubectl delete pod nuclei-target-updater-init -n @namespace@"
-      ]
+#---
+#apiVersion: v1
+#kind: Pod
+#metadata:
+#  name: nuclei-target-updater-init
+#  namespace: @namespace@
+#spec:
+#  serviceAccountName: nuclei
+#  containers:
+#    - name: nuclei-target-updater
+#      image: "docker.io/heywoodlh/k8s-service-scanner:latest"
+#      imagePullPolicy: IfNotPresent
+#      command: ["/bin/bash", "-c"]
+#      args: [
+#        "/entrypoint | sort -u | tee /out/target-list.txt && kubectl create configmap -n @namespace@ nuclei-target-list --from-file=/out/target-list.txt --dry-run=client -o yaml | kubectl apply -f - && kubectl delete pod nuclei-target-updater-init -n @namespace@"
+#      ]
 ---
 apiVersion: batch/v1
 kind: CronJob
