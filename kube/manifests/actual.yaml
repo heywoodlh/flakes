@@ -59,7 +59,7 @@ spec:
         {}
       containers:
         - name: actual
-          image: "docker.io/actualbudget/actual-server:25.2.1-alpine"
+          image: "docker.io/actualbudget/actual-server:25.3.1-alpine"
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
