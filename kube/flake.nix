@@ -561,7 +561,7 @@
           src = ./templates/rsshub.yaml;
           namespace = "default";
           replicas = 1;
-          image = "docker.io/diygod/rsshub:2024-02-19";
+          image = "docker.io/diygod/rsshub:2025-02-19";
           browserless_image = "docker.io/browserless/chrome:1.61-puppeteer-13.1.3";
           browserless_replicas = 1;
           redis_image = "docker.io/redis:7.4.2";
