@@ -122,7 +122,7 @@ spec:
       nodeSelector:
         kubernetes.io/hostname: nix-nvidia
       containers:
-      - image: docker.io/diygod/rsshub:2024-02-19
+      - image: docker.io/diygod/rsshub:2025-02-19
         name: rsshub
         ports:
         - name: rsshub
