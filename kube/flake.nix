@@ -595,7 +595,7 @@
         };
         tailscale-operator = mkKubeDrv "tailscale-operator" {
           src = ./templates/tailscale-operator.yaml;
-          operator_image = "docker.io/tailscale/k8s-operator:v1.80.0";
+          operator_image = "docker.io/tailscale/k8s-operator:v1.80.3";
           proxy_image = "docker.io/tailscale/tailscale:v1.80.3";
           replicas = 1;
         };
