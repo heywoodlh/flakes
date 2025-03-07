@@ -154,13 +154,13 @@ jobs:
         with:
           artifacts: './*/appimage/*.appimage'
           tag: "appimages"
-          artifactErrorsFailBuild: false
           allowUpdates: true
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create deb/rpm release with flake executables
         uses: ncipollo/release-action@v1.16.0
         with:
           artifacts: "./*/deb/*.deb,./*/rpm/*.rpm"
           tag: "packages"
-          artifactErrorsFailBuild: false
           allowUpdates: true
+          token: ${{ secrets.GITHUB_TOKEN }}
