@@ -531,7 +531,7 @@
         protonmail-bridge = mkKubeDrv "protonmail-bridge" {
           src = ./templates/protonmail-bridge.yaml;
           namespace = "default";
-          image = "docker.io/shenxn/protonmail-bridge:3.17.0-1";
+          image = "docker.io/shenxn/protonmail-bridge:3.18.0-1";
           nodename = "nix-nvidia";
           hostfolder = "/opt/protonmail-bridge";
           replicas = 1;
