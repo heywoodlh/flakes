@@ -590,7 +590,7 @@
           namespace = "syncthing";
           nodename = "nix-nvidia";
           hostfolder = "/opt/syncthing";
-          image = "docker.io/syncthing/syncthing:1.29.2";
+          image = "docker.io/syncthing/syncthing:1.29.3";
           replicas = 1;
         };
         tailscale-operator = mkKubeDrv "tailscale-operator" {
