@@ -352,7 +352,7 @@
           src = ./templates/home-assistant.yaml;
           namespace = "default";
           timezone = "America/Denver";
-          image = "ghcr.io/home-assistant/home-assistant:2025.3.2";
+          image = "ghcr.io/home-assistant/home-assistant:2025.3.3";
           port = 80;
           replicas = 1;
           nodename = "nix-nvidia";
