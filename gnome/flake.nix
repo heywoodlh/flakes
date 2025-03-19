@@ -283,6 +283,7 @@
         app-menu=true
         app-menu-icon=true
         background-menu=true
+        clock-menu=false
         controls-manager-spacing-size=22
         dash=true
         dash-icon-size=0
@@ -295,6 +296,9 @@
         panel-arrow=true
         panel-corner-size=1
         panel-in-overview=true
+        panel-notification-icon=true
+        panel-size=36
+        power-icon=true
         ripple-box=false
         search=false
         show-apps-button=true
