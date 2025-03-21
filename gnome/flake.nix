@@ -228,7 +228,7 @@
 
         [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2]
         binding='<Ctrl><Super>s'
-        command='${pkgs._1password-gui}/bin/1password --quick-access'
+        command='${pkgs._1password-gui-beta}/bin/1password --quick-access'
         name='1pass-quick-access'
 
         [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4]
