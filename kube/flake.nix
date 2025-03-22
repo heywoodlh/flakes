@@ -476,16 +476,11 @@
           httpd_image = "docker.io/httpd:2.4.63";
           replicas = 1;
         };
-        ollama-lb = mkKubeDrv "ollama-lb" {
-          src = ./templates/ollama-lb.yaml;
-          namespace = "machine-learning";
-          image = "docker.io/heywoodlh/ollama_load_balancer:1.0.3";
-          replicas = 1;
-        };
         open-webui = mkKubeDrv "open-webui" {
           src = ./templates/open-webui.yaml;
           namespace = "machine-learning";
           webui_image = "ghcr.io/open-webui/open-webui:0.5.20";
+          ollama_image = "docker.io/ollama/ollama:0.6.2";
         };
         # Ensure to deploy prometheus-blackbox-exporter first
         prometheus = (kubelib.buildHelmChart {
