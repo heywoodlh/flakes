@@ -13,7 +13,7 @@ collections:
   - name: ansible.posix
     version: "2.0.0"
   - name: community.general
-    version: "10.4.0"
+    version: "10.5.0"
   - name: ansible.windows
     version: "2.8.0"
   - name: prometheus.prometheus
