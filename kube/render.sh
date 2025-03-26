@@ -25,6 +25,7 @@ applications=(
   "protonmail-bridge"
   "rsshub"
   "rustdesk"
+  "rustdesk-web"
 )
 
 echo "" > ${root_dir}/manifests/apps.yaml
