@@ -401,7 +401,7 @@
           src = ./templates/lancache.yaml;
           namespace = "default";
           dns_image = "docker.io/heywoodlh/lancache-dns:latest";
-          dns_upstream = "100.100.100.100";
+          dns_upstream = "10.43.9.152"; # use coredns, which will work with tailscale and kubernetes
           dns_ip = "100.65.18.5";
           cache_ip = "100.65.18.10";
           cache_disk_size = "1000g";
