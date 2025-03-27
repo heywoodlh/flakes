@@ -30,7 +30,7 @@ spec:
             - name: CACHE_ROOT
               value: "/lancache/cache"
             - name: DNS_BIND_IP
-              value: "100.65.18.5"
+              value: "0.0.0.0"
             - name: LANCACHE_IP
               value: "100.65.18.10"
             - name: TZ
