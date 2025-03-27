@@ -6,6 +6,7 @@ metadata:
   labels:
     io.kubernetes.service: lancache-dns
   name: lancache-dns
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -52,6 +53,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: lancache-dns
+  namespace: default
   annotations:
     tailscale.com/tailnet-ip: "100.65.18.5"
     tailscale.com/expose: "true"
@@ -74,10 +76,11 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: lancache
+  namespace: default
   annotations: {}
   labels:
     io.kubernetes.service: lancache
-  name: lancache
 spec:
   replicas: 1
   selector:
@@ -140,6 +143,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: lancache
+  namespace: default
   annotations:
     tailscale.com/tailnet-ip: "100.65.18.10"
     tailscale.com/expose: "true"
