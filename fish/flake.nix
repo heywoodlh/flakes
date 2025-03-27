@@ -284,8 +284,9 @@
         macos-window-shadow = false
         # https://github.com/ghostty-org/ghostty/pull/3742
         # quick-terminal-size = 80%
-        # quick-terminal-position = center # center is too small to start, wait for quick-terminal-size to be implemented
-        quick-terminal-space-behavior = remain # stay on workspace originally opened on
+        # center is too small to start, wait for quick-terminal-size to be implemented
+        # quick-terminal-position = center
+        quick-terminal-space-behavior = remain
 
         # don't open a window when starting Ghostty
         initial-window = false
