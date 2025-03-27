@@ -395,6 +395,25 @@
           src = ./templates/kubevirt.yaml;
           version = "v1.4.0";
         };
+        # For whatever reason, Tailscale's 'tailscale.com/tailnet-ip' doesn't seem to work
+        # Manually set the IPs in the Tailscale admin UI
+        lancache = mkKubeDrv "lancache" {
+          src = ./templates/lancache.yaml;
+          namespace = "default";
+          dns_image = "docker.io/heywoodlh/lancache-dns:latest";
+          dns_upstream = "100.100.100.100";
+          dns_ip = "100.65.18.5";
+          cache_ip = "100.65.18.10";
+          cache_disk_size = "1000g";
+          cache_index_size = "500m";
+          cache_max_age = "3650d";
+          cache_hostDir = "/media/data-ssd/lancache/";
+          cache_image = "docker.io/lancachenet/monolithic:latest";
+          cache_generic = "true";
+          timezone = "America/Denver";
+          replicas = 1;
+          nodename = "nix-nvidia";
+        };
         longhorn = mkKubeDrv "longhorn" {
           src = ./templates/longhorn.yaml;
           namespace = "longhorn-system";

@@ -17,6 +17,7 @@ applications=(
   "http-files"
   "iperf"
   "kubevirt"
+  "lancache"
   "miniflux"
   "ntfy"
   "nuclei"
