@@ -20,6 +20,7 @@ spec:
     spec:
       containers:
         - name: lancache-dns
+          tty: true
           env:
             - name: CACHE_DISK_SIZE
               value: "@cache_disk_size@"
