@@ -499,7 +499,7 @@
           src = ./templates/open-webui.yaml;
           namespace = "machine-learning";
           webui_image = "ghcr.io/open-webui/open-webui:0.5.20";
-          ollama_image = "docker.io/ollama/ollama:0.6.2";
+          ollama_image = "docker.io/ollama/ollama:0.6.3";
         };
         # Ensure to deploy prometheus-blackbox-exporter first
         prometheus = (kubelib.buildHelmChart {
