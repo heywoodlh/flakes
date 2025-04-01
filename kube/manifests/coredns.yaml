@@ -123,7 +123,7 @@ spec:
       serviceAccountName: default
       containers:
       - name: "coredns"
-        image: "docker.io/coredns/coredns:1.12.0"
+        image: "docker.io/coredns/coredns:1.12.1"
         imagePullPolicy: IfNotPresent
         args: [ "-conf", "/etc/coredns/Corefile" ]
         volumeMounts:
