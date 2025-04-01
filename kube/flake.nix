@@ -287,7 +287,7 @@
         coredns = mkKubeDrv "coredns" {
           src = ./templates/coredns.yaml;
           namespace = "coredns";
-          image = "docker.io/coredns/coredns:1.12.0";
+          image = "docker.io/coredns/coredns:1.12.1";
           replicas = "1";
         };
         "crossplane" = (kubelib.buildHelmChart {
