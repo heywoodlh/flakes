@@ -2,7 +2,7 @@
   description = "heywoodlh kubernetes flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     cloudflared-helm = {
       url = "github:cloudflare/helm-charts";
@@ -620,12 +620,15 @@
           image = "docker.io/syncthing/syncthing:1.29.3";
           replicas = 1;
         };
-        tailscale-operator = mkKubeDrv "tailscale-operator" {
-          src = ./templates/tailscale-operator.yaml;
-          operator_image = "docker.io/tailscale/k8s-operator:v1.80.3";
-          proxy_image = "docker.io/tailscale/tailscale:v1.80.3";
-          replicas = 1;
-        };
+        # Update nixhelm input for updates
+        # Setup secret with this command:
+        # nix run .#1password-item -- --name operator-oauth --namespace tailscale --itemPath "vaults/Kubernetes/items/bwmt642lsbd5drsjcrxxnljkku" | kubectl apply -f -
+        "tailscale-operator" = (kubelib.buildHelmChart {
+          name = "tailscale-operator";
+          chart = (nixhelm.charts { inherit pkgs; })."tailscale".tailscale-operator;
+          namespace = "tailscale";
+          values = {};
+        });
         tor-socks-proxy = mkKubeDrv "tor-socks-proxy" {
           src = ./templates/tor-socks-proxy.yaml;
           namespace = "default";
