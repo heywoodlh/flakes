@@ -6,92 +6,92 @@
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
     flake-utils.url = "github:numtide/flake-utils";
     fish-flake = {
-      url = "./fish";
+      url = "path:./fish";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     vim-flake = {
-      url = "./vim";
+      url = "path:./vim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     helix-flake = {
-      url = "./helix";
+      url = "path:./helix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     git-flake = {
-      url = "./git";
+      url = "path:./git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     jujutsu-flake = {
-      url = "./jj";
+      url = "path:./jj";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     vscode-flake = {
-      url = "./vscode";
+      url = "path:./vscode";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.fish-flake.follows = "fish-flake";
     };
     nushell-flake = {
-      url = "./nushell";
+      url = "path:./nushell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     st-flake = {
-      url = "./st";
+      url = "path:./st";
       inputs.fish-flake.follows = "fish-flake";
     };
     wezterm-flake = {
-      url = "./wezterm";
+      url = "path:./wezterm";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.fish-flake.follows = "fish-flake";
     };
     jetporch-flake = {
-      url = "./jetporch";
+      url = "path:./jetporch";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     ansible-flake = {
-      url = "./ansible";
+      url = "path:./ansible";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     vimb-flake = {
-      url = "./vimb";
+      url = "path:./vimb";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     op-flake = {
-      url = "./1password";
+      url = "path:./1password";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     lima-flake = {
-      url = "./nixos-lima";
+      url = "path:./nixos-lima";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     chromium-widevine-flake = {
-      url = "./chromium-widevine";
+      url = "path:./chromium-widevine";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     gnome-flake = {
-      url = "./gnome";
+      url = "path:./gnome";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.nixpkgs-stable.follows = "nixpkgs-stable";
       inputs.fish-flake.follows = "fish-flake";
       inputs.vim-flake.follows = "vim-flake";
     };
     qutebrowser-flake = {
-      url = "./qutebrowser";
+      url = "path:./qutebrowser";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     zen-browser-flake = {
-      url = "./zen-browser";
+      url = "path:./zen-browser";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     tabby-flake = {
-      url = "./tabby";
+      url = "path:./tabby";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     kube-flake = {
-      url = "./kube";
+      url = "path:./kube";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     ttyd-flake = {
-      url = "./ttyd-nerd";
+      url = "path:./ttyd-nerd";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
