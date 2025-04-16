@@ -96,6 +96,13 @@
                 mkdir -p $HOME/.ssh
                 rm -f $HOME/.ssh/agent.sock &> /dev/null
                 eval (${pkgs.openssh}/bin/ssh-agent -t 4h -c -a "$HOME/.ssh/agent.sock") &> /dev/null || true
+            else
+                # Start ssh-agent if old process exists but socket file is gone
+                if not test -e $HOME/.ssh/agent.sock
+                  # Kill old ssh-agent process
+                  ${pkgs.procps}/bin/pkill -9 ssh-agent &> /dev/null || true
+                  eval (${pkgs.openssh}/bin/ssh-agent -t 4h -c -a "$HOME/.ssh/agent.sock") &> /dev/null || true
+                end
             end
             export SSH_AUTH_SOCK="$HOME/.ssh/agent.sock"
         end
