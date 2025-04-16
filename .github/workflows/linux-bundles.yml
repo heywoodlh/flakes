@@ -30,12 +30,16 @@ jobs:
           tags: tag:ci
 
       - name: Install Nix
-        uses: cachix/install-nix-action@v31
+        uses: DeterminateSystems/nix-installer-action@main
         with:
-          nix_path: nixpkgs=channel:nixpkgs-unstable
-          extra_nix_config: |
-            extra-substituters = http://attic/nixos
-            extra-trusted-public-keys = nixos:uRCswSsap/ho6e2Vp4HXpH9SMdN4rW62N8Uq3r+mQ5E=
+          determinate: true
+
+      - name: Set up binary cache
+        run: |
+          sudo tee -a /etc/nix/nix.conf > /dev/null <<EOF
+          extra-substituters = http://attic/nixos
+          extra-trusted-public-keys = nixos:uRCswSsap/ho6e2Vp4HXpH9SMdN4rW62N8Uq3r+mQ5E=
+          EOF
 
       - name: Build ${{ matrix.flake }} flake bundles
         run: |
@@ -94,12 +98,16 @@ jobs:
           tags: tag:ci
 
       - name: Install Nix
-        uses: cachix/install-nix-action@v31
+        uses: DeterminateSystems/nix-installer-action@main
         with:
-          nix_path: nixpkgs=channel:nixpkgs-unstable
-          extra_nix_config: |
-            extra-substituters = http://attic/nixos
-            extra-trusted-public-keys = nixos:uRCswSsap/ho6e2Vp4HXpH9SMdN4rW62N8Uq3r+mQ5E=
+          determinate: true
+
+      - name: Set up binary cache
+        run: |
+          sudo tee -a /etc/nix/nix.conf > /dev/null <<EOF
+          extra-substituters = http://attic/nixos
+          extra-trusted-public-keys = nixos:uRCswSsap/ho6e2Vp4HXpH9SMdN4rW62N8Uq3r+mQ5E=
+          EOF
 
       - name: Build ${{ matrix.flake }} flake bundles
         run: |
@@ -135,12 +143,16 @@ jobs:
           tags: tag:ci
 
       - name: Install Nix
-        uses: cachix/install-nix-action@v31
+        uses: DeterminateSystems/nix-installer-action@main
         with:
-          nix_path: nixpkgs=channel:nixpkgs-unstable
-          extra_nix_config: |
-            extra-substituters = http://attic/nixos
-            extra-trusted-public-keys = nixos:uRCswSsap/ho6e2Vp4HXpH9SMdN4rW62N8Uq3r+mQ5E=
+          determinate: true
+
+      - name: Set up binary cache
+        run: |
+          sudo tee -a /etc/nix/nix.conf > /dev/null <<EOF
+          extra-substituters = http://attic/nixos
+          extra-trusted-public-keys = nixos:uRCswSsap/ho6e2Vp4HXpH9SMdN4rW62N8Uq3r+mQ5E=
+          EOF
 
       - name: Download bundles
         uses: actions/download-artifact@v4
