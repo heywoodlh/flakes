@@ -1,9 +1,14 @@
 ---
 apiVersion: v1
+kind: Namespace
+metadata:
+  name: open-webui
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: open-webui-data
-  namespace: machine-learning
+  namespace: open-webui
 spec:
   accessModes:
     - ReadWriteOnce
@@ -16,7 +21,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: open-webui
-  namespace: machine-learning
+  namespace: open-webui
   annotations:
     tailscale.com/expose: "true"
     tailscale.com/hostname: "open-webui"
@@ -34,7 +39,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: open-webui-deployment
-  namespace: machine-learning
+  namespace: open-webui
 spec:
   replicas: 1
   selector:
@@ -73,7 +78,7 @@ spec:
 #kind: Service
 #metadata:
 #  name: ollama
-#  namespace: machine-learning
+#  namespace: open-webui
 #  labels:
 #    app.kubernetes.io/name: ollama
 #    app.kubernetes.io/instance: ollama
@@ -96,7 +101,7 @@ spec:
 #kind: Deployment
 #metadata:
 #  name: ollama
-#  namespace: machine-learning
+#  namespace: open-webui
 #  labels:
 #    app.kubernetes.io/name: ollama
 #    app.kubernetes.io/instance: ollama

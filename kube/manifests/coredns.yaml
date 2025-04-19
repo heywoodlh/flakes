@@ -1,5 +1,11 @@
 ---
 apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: null
+  name: coredns
+---
+apiVersion: v1
 kind: ConfigMap
 metadata:
   name: coredns
