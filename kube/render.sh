@@ -11,7 +11,6 @@ applications=(
   "crossplane"
   "drawio"
   "fleetdm"
-  "gomuks"
   "grafana"
   "healthchecks"
   "http-files"
