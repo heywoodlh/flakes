@@ -26,6 +26,7 @@ applications=(
   "rsshub"
   "rustdesk"
   "rustdesk-web"
+  "syncthing"
 )
 
 echo "" > ${root_dir}/manifests/apps.yaml
