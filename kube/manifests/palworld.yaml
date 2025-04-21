@@ -67,10 +67,7 @@ spec:
             - name: SERVER_NAME
               value: heywood-server
             - name: SERVER_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: palworld
-                  key: password
+              value: ""
             - name: TZ
               value: "America/Denver"
           image: docker.io/thijsvanloef/palworld-server-docker:v1.3.0
