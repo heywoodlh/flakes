@@ -21,6 +21,7 @@ applications=(
   "ntfy"
   "nuclei"
   "open-webui"
+  "palworld"
   "prometheus"
   "protonmail-bridge"
   "rsshub"

@@ -508,6 +508,12 @@
           webui_image = "ghcr.io/open-webui/open-webui:0.5.20";
           ollama_image = "docker.io/ollama/ollama:0.6.3";
         };
+        palworld = mkKubeDrv "palworld" {
+          src = ./templates/palworld.yaml;
+          namespace = "palworld";
+          image = "docker.io/thijsvanloef/palworld-server-docker:v1.3.0";
+          hostfolder = "/opt/palworld";
+        };
         # Ensure to deploy prometheus-blackbox-exporter first
         prometheus = (kubelib.buildHelmChart {
           name = "prometheus";
