@@ -607,7 +607,7 @@
         rustdesk-web = mkKubeDrv "rustdesk-web" {
           src = ./templates/rustdesk-web.yaml;
           namespace = "default";
-          image = "docker.io/heywoodlh/rustdesk-web:1.3.8";
+          image = "docker.io/heywoodlh/rustdesk-web:1.3.9";
           replicas = 1;
         };
         squid = mkKubeDrv "squid" {
