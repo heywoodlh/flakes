@@ -5,19 +5,6 @@ metadata:
   name: @namespace@
 ---
 apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: open-webui-data
-  namespace: @namespace@
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: local-path
-  resources:
-    requests:
-      storage: 50Gi
----
-apiVersion: v1
 kind: Service
 metadata:
   name: open-webui
@@ -66,13 +53,14 @@ spec:
         - name: open-webui-data
           mountPath: /app/backend/data
         env:
-        - name: OLLAMA_API_BASE_URL
-          value: "http://nix-nvidia.barn-banana.ts.net:11434/api"
+        - name: OLLAMA_BASE_URL
+          value: "http://nix-nvidia.barn-banana.ts.net:11434"
         tty: true
       volumes:
       - name: open-webui-data
-        persistentVolumeClaim:
-          claimName: open-webui-data
+        hostPath:
+          path: @hostfolder@/data
+          type: Directory
 #---
 #apiVersion: v1
 #kind: Service

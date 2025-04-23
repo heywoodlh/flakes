@@ -5,19 +5,6 @@ metadata:
   name: open-webui
 ---
 apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: open-webui-data
-  namespace: open-webui
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: local-path
-  resources:
-    requests:
-      storage: 50Gi
----
-apiVersion: v1
 kind: Service
 metadata:
   name: open-webui
@@ -52,7 +39,7 @@ spec:
     spec:
       containers:
       - name: open-webui
-        image: ghcr.io/open-webui/open-webui:0.5.20
+        image: ghcr.io/open-webui/open-webui:0.6.5
         ports:
         - containerPort: 8080
         resources:
@@ -66,13 +53,14 @@ spec:
         - name: open-webui-data
           mountPath: /app/backend/data
         env:
-        - name: OLLAMA_API_BASE_URL
-          value: "http://nix-nvidia.barn-banana.ts.net:11434/api"
+        - name: OLLAMA_BASE_URL
+          value: "http://nix-nvidia.barn-banana.ts.net:11434"
         tty: true
       volumes:
       - name: open-webui-data
-        persistentVolumeClaim:
-          claimName: open-webui-data
+        hostPath:
+          path: /opt/open-webui/data
+          type: Directory
 #---
 #apiVersion: v1
 #kind: Service
@@ -123,7 +111,7 @@ spec:
 #        - name: ollama
 #          securityContext:
 #            {}
-#          image: "docker.io/ollama/ollama:0.6.3"
+#          image: "docker.io/ollama/ollama:0.6.6"
 #          imagePullPolicy: IfNotPresent
 #          ports:
 #            - name: ollama
