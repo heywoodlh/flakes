@@ -293,9 +293,14 @@
         };
         coredns = mkKubeDrv "coredns" {
           src = ./templates/coredns.yaml;
+          tailnet = "barn-banana.ts.net";
           namespace = "coredns";
           image = "docker.io/coredns/coredns:1.12.1";
           replicas = "1";
+        };
+        coredns-kube-system = mkKubeDrv "coredns-kube-system" {
+          src = ./templates/kube-system-coredns.yaml;
+          tailnet = "barn-banana.ts.net";
         };
         "crossplane" = (kubelib.buildHelmChart {
           name = "crossplane";

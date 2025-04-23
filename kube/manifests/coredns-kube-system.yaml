@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns-custom # has to be named this
+  namespace: kube-system
+data:
+  barn-banana.ts.net.server: |
+    barn-banana.ts.net {
+      forward . 100.100.100.100
+    }

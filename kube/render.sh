@@ -8,6 +8,7 @@ applications=(
   "argo"
   "cloudflared"
   "coredns"
+  "coredns-kube-system"
   "crossplane"
   "drawio"
   "fleetdm"
