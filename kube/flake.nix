@@ -506,7 +506,7 @@
           src = ./templates/open-webui.yaml;
           namespace = "open-webui";
           webui_image = "ghcr.io/open-webui/open-webui:0.5.20";
-          ollama_image = "docker.io/ollama/ollama:0.6.3";
+          ollama_image = "docker.io/ollama/ollama:0.6.6";
         };
         palworld = mkKubeDrv "palworld" {
           src = ./templates/palworld.yaml;
