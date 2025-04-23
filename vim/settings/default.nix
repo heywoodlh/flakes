@@ -7,7 +7,6 @@ let
     ./base16-vim.nix
     ./betterwhitespace.nix
     ./colorizer.nix
-    ./copilot.nix
     ./cursor.nix
     ./fugitive.nix
     ./git.nix

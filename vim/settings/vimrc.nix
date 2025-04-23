@@ -61,5 +61,9 @@
     autocmd FileType markdown setlocal spell spelllang=en_us
     " Disable copilot
     autocmd FileType markdown Copilot disable
+
+    if filereadable(expand("~/.config/vim/vimrc"))
+      source ~/.config/vim/vimrc
+    endif
   '';
 }
