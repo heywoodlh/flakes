@@ -19,6 +19,7 @@ applications=(
   "kubevirt"
   "lancache"
   "miniflux"
+  "nfcapd"
   "ntfy"
   "nuclei"
   "open-webui"

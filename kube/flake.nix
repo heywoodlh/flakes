@@ -467,6 +467,12 @@
           port = 80;
           nodename = "nix-nvidia";
         };
+        nfcapd = mkKubeDrv "nfcapd" {
+          src = ./templates/nfcapd.yaml;
+          namespace = "monitoring";
+          image = "docker.io/heywoodlh/nfcapd:1.7.4";
+          hostfolder = "/media/data-ssd/flows";
+        };
         nfs-kube = (kubelib.buildHelmChart {
           name = "nfs-kube";
           chart = "${nfs-helm}/charts/nfs-subdir-external-provisioner";

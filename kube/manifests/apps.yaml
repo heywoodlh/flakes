@@ -339,6 +339,27 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
+  name: nfcapd
+  namespace: argo
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argo
+  source:
+    repoURL: https://github.com/heywoodlh/flakes.git
+    targetRevision: HEAD
+    path: kube/manifests
+    directory:
+      include: "nfcapd.yaml"
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
   name: ntfy
   namespace: argo
 spec:
