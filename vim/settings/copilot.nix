@@ -9,6 +9,7 @@
     lua << EOF
       require("CopilotChat").setup {
         chat_autocomplete = false,
+        model = 'gpt-4o',
       }
     EOF
   '';
