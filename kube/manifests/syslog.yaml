@@ -143,8 +143,8 @@ metadata:
   namespace: monitoring
 data:
   config.sh: |-
-    export linux_log_target="/logs/linux/*.log"
-    export unifi_log_target="/logs/unifi/*.log"
+    export linux_log_target="/logs/linux/*/*.log"
+    export unifi_log_target="/logs/unifi/*/*.log"
     # Uncomment default_find_mime_time if you want logbash to default to only search for files modified within a certain time:
     export default_find_mime_time='-1' ## Defaults to one day
     # Uncomment for minor performance improvements in grep
