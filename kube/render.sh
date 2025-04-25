@@ -30,11 +30,20 @@ applications=(
   "rustdesk"
   "rustdesk-web"
   "syncthing"
+  "syslog"
 )
 
-echo "" > ${root_dir}/manifests/apps.yaml
 
 set -ex
+
+gen_list=true
+if [[ -n "${1}" ]]
+then
+    applications=("${1}")
+    gen_list=false
+else
+    echo "" > ${root_dir}/manifests/apps.yaml
+fi
 
 for app in "${applications[@]}"
 do
@@ -42,6 +51,8 @@ do
     cp ./result "${root_dir}/manifests/${app}.yaml" # Copy file instead of using symlink
     chmod 644 "${root_dir}/manifests/${app}.yaml"
 
+    if [[ "${gen_list}" == true ]]
+    then
 cat >> ${root_dir}/manifests/apps.yaml << EOL
 ---
 apiVersion: argoproj.io/v1alpha1
@@ -65,4 +76,5 @@ spec:
       prune: true
       selfHeal: true
 EOL
+    fi
 done

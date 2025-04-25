@@ -25,13 +25,6 @@ spec:
         volumeMounts:
           - mountPath: /flows
             name: flows
-      - name: nfdump
-        image: @image@
-        command: [ "/bin/ash", "-c", "--" ]
-        args: [ "while true; do sleep 30; done;" ]
-        volumeMounts:
-        - mountPath: /flows
-          name: flows
       volumes:
         - name: flows
           hostPath:

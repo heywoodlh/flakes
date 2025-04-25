@@ -638,6 +638,14 @@
           image = "docker.io/syncthing/syncthing:1.29.3";
           replicas = 1;
         };
+        syslog = mkKubeDrv "syslog" {
+          src = ./templates/syslog.yaml;
+          namespace = "monitoring";
+          hostfolder = "/media/data-ssd/syslog";
+          image = "docker.io/linuxserver/syslog-ng:4.8.1";
+          logbash_image = "docker.io/heywoodlh/logbash:578c00e";
+          replicas = 1;
+        };
         # Update nixhelm input for updates
         # Setup secret with this command:
         # nix run .#1password-item -- --name operator-oauth --namespace tailscale --itemPath "vaults/Kubernetes/items/bwmt642lsbd5drsjcrxxnljkku" | kubectl apply -f -
