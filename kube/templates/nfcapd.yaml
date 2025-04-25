@@ -18,6 +18,9 @@ spec:
       containers:
       - name: nfcapd
         image: @image@
+        command: ["nfcapd"]
+        args:
+          [ "-w", "/flows", "-p", "9995", "-S", "2" ]
         ports:
         - name: nfcapd
           containerPort: 9995

@@ -470,7 +470,7 @@
         nfcapd = mkKubeDrv "nfcapd" {
           src = ./templates/nfcapd.yaml;
           namespace = "monitoring";
-          image = "docker.io/heywoodlh/nfcapd:1.7.4";
+          image = "docker.io/heywoodlh/nfdump:1.7.6";
           hostfolder = "/media/data-ssd/flows";
         };
         nfs-kube = (kubelib.buildHelmChart {

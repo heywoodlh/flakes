@@ -17,7 +17,10 @@ spec:
       hostname: nfcapd
       containers:
       - name: nfcapd
-        image: docker.io/heywoodlh/nfcapd:1.7.4
+        image: docker.io/heywoodlh/nfdump:1.7.6
+        command: ["nfcapd"]
+        args:
+          [ "-w", "/flows", "-p", "9995", "-S", "2" ]
         ports:
         - name: nfcapd
           containerPort: 9995
