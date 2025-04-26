@@ -16,7 +16,7 @@ data:
     };
     destination linux_log {
       file(
-        "/logs/linux/${HOST}/${YEAR}_${MONTH}_${DAY}.log"
+        "/logs/linux/${YEAR}_${MONTH}_${DAY}.log"
         create-dirs(yes)
       );
     };
@@ -31,7 +31,7 @@ data:
     };
     destination unifi_log {
       file(
-        "/logs/unifi/${HOST}/${YEAR}_${MONTH}_${DAY}.log"
+        "/logs/unifi/${YEAR}_${MONTH}_${DAY}.log"
         create-dirs(yes)
       );
     };
@@ -139,12 +139,12 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: logbash-conf
+  name: logbash
   namespace: monitoring
 data:
   config.sh: |-
-    export linux_log_target="/logs/linux/*/*.log"
-    export unifi_log_target="/logs/unifi/*/*.log"
+    export linux_log_target="/logs/linux/*.log"
+    export unifi_log_target="/logs/unifi/*.log"
     # Uncomment default_find_mime_time if you want logbash to default to only search for files modified within a certain time:
     export default_find_mime_time='-1' ## Defaults to one day
     # Uncomment for minor performance improvements in grep
@@ -168,13 +168,19 @@ spec:
       hostname: logbash
       containers:
       - name: logbash
-        image: docker.io/heywoodlh/logbash:578c00e
-        command: [ "/bin/bash", "-c", "--" ]
-        args: [ "while true; do sleep 30; done;" ]
+        image: docker.io/heywoodlh/logbash:e1d594e
+        command: [ "bash", "-c" ]
+        args: [ "cp /config.sh /app/config.sh; sleep infinity" ]
+        env:
+          - name: LOGBASH_CONFIG
+            value: "/app/config.sh"
         volumeMounts:
           - mountPath: /logs
             name: logs
           - name: logbash-conf
+            mountPath: /config.sh
+            subPath: config.sh
+          - name: logbash-src
             mountPath: /app
       volumes:
         - name: logs
@@ -183,10 +189,14 @@ spec:
             type: Directory
         - name: logbash-conf
           configMap:
-            name: logbash-conf
+            name: logbash
             items:
             - key: config.sh
               path: config.sh
+        - name: logbash-src
+          hostPath:
+            path: /home/heywoodlh/opt/logbash
+            type: Directory
 ---
 apiVersion: v1
 kind: Service

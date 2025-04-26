@@ -643,7 +643,7 @@
           namespace = "monitoring";
           hostfolder = "/media/data-ssd/syslog";
           image = "docker.io/linuxserver/syslog-ng:4.8.1";
-          logbash_image = "docker.io/heywoodlh/logbash:578c00e";
+          logbash_image = "docker.io/heywoodlh/logbash:e1d594e";
           replicas = 1;
         };
         # Update nixhelm input for updates
