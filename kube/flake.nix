@@ -41,7 +41,7 @@
       flake = false;
     };
     elastic-cloud = {
-      url = "github:elastic/cloud-on-k8s/2.15";
+      url = "github:elastic/cloud-on-k8s/v3.0.0";
       flake = false;
     };
     krew2nix = {
@@ -319,15 +319,17 @@
           name = "elastic-cloud-operator";
           chart = "${elastic-cloud}/deploy/eck-operator";
           namespace = "monitoring";
-          values.image.tag = "2.15.0-bc4";
+          values.image.tag = "3.0.0";
         });
         elastic-cloud-elastic-stack = mkKubeDrv "elastic-stack" {
           src = ./templates/elastic-stack.yaml;
           namespace = "monitoring";
-          version = "8.15.3";
+          version = "8.17.5";
           elasticsearch_nodecount = 1;
           kibana_nodecount = 1;
-          storage = "100Gi";
+          logstash_nodecount = 1;
+          hostfolder = "/media/data-ssd/elastic";
+          nodename = "nix-nvidia";
         };
         fleetdm = mkKubeDrv "fleetdm" {
           src = ./templates/fleetdm.yaml;

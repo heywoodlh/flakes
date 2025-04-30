@@ -18,9 +18,10 @@ spec:
       containers:
       - name: nfcapd
         image: docker.io/heywoodlh/nfdump:1.7.6
+        imagePullPolicy: Always
         command: ["nfcapd"]
         args:
-          [ "-w", "/flows", "-p", "9995", "-S", "2" ]
+          [ "-w", "/flows", "-p", "9995", "-S", "2", "-B", "1024000" ]
         ports:
         - name: nfcapd
           containerPort: 9995
@@ -28,6 +29,11 @@ spec:
         volumeMounts:
           - mountPath: /flows
             name: flows
+        securityContext:
+          capabilities:
+            add:
+              - NET_ADMIN
+              - NET_RAW
       volumes:
         - name: flows
           hostPath:

@@ -3,22 +3,22 @@ apiVersion: elasticsearch.k8s.elastic.co/v1
 kind: Elasticsearch
 metadata:
   name: elasticsearch
-  namespace: @namespace@
+  namespace: monitoring
 spec:
-  version: @version@
+  version: 8.17.5
   nodeSets:
   - name: default
-    count: @elasticsearch_nodecount@
+    count: 1
     podTemplate:
       spec:
         volumes:
           - name: elasticsearch-data
             hostPath:
-              path: @hostfolder@/elasticsearch/data
+              path: /media/data-ssd/elastic/elasticsearch/data
               type: DirectoryOrCreate
           - name: elasticsearch-logs
             hostPath:
-              path: @hostfolder@/elasticsearch/logs
+              path: /media/data-ssd/elastic/elasticsearch/logs
               type: DirectoryOrCreate
     config:
       node.store.allow_mmap: false
@@ -37,10 +37,10 @@ apiVersion: kibana.k8s.elastic.co/v1
 kind: Kibana
 metadata:
   name: kibana
-  namespace: @namespace@
+  namespace: monitoring
 spec:
-  version: @version@
-  count: @kibana_nodecount@
+  version: 8.17.5
+  count: 1
   http:
     tls:
       selfSignedCertificate:
@@ -58,13 +58,13 @@ apiVersion: logstash.k8s.elastic.co/v1alpha1
 kind: Logstash
 metadata:
   name: logstash
-  namespace: @namespace@
+  namespace: monitoring
 spec:
-  count: @logstash_nodecount@
+  count: 1
   elasticsearchRefs:
     - name: elasticsearch
       clusterName: elasticsearch
-  version: @version@
+  version: 8.17.5
   pipelines:
     - pipeline.id: main
       config.string: |
@@ -75,7 +75,7 @@ spec:
         }
         output {
           elasticsearch {
-            hosts => [ "elasticsearch.@namespace@.svc.cluster.local" ]
+            hosts => [ "elasticsearch.monitoring.svc.cluster.local" ]
           }
         }
   services:
@@ -98,10 +98,10 @@ apiVersion: beat.k8s.elastic.co/v1beta1
 kind: Beat
 metadata:
   name: filebeat-k8s
-  namespace: @namespace@
+  namespace: monitoring
 spec:
   type: filebeat
-  version: @version@
+  version: 8.17.5
   elasticsearchRef:
     name: elasticsearch
   kibanaRef:
@@ -162,10 +162,10 @@ apiVersion: beat.k8s.elastic.co/v1beta1
 kind: Beat
 metadata:
   name: filebeat-netflow
-  namespace: @namespace@
+  namespace: monitoring
 spec:
   type: filebeat
-  version: @version@
+  version: 8.17.5
   elasticsearchRef:
     name: elasticsearch
   kibanaRef:
@@ -179,7 +179,7 @@ spec:
             netflow_host: 0.0.0.0
             netflow_port: 9995
     output.elasticsearch:
-      hosts: ["elasticsearch.@namespace@.svc.cluster.local:9200"]
+      hosts: ["elasticsearch.monitoring.svc.cluster.local:9200"]
       index: "netflow-%{[agent.version]}-%{+yyyy.MM.dd}"
     setup.template:
       name: 'netflow'
@@ -198,7 +198,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: filebeat-netflow
-  namespace: @namespace@
+  namespace: monitoring
   labels:
     beat.k8s.elastic.co/name: filebeat-netflow
   annotations:
@@ -219,7 +219,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: filebeat
-  namespace: @namespace@
+  namespace: monitoring
 rules:
 - apiGroups: [""] # "" indicates the core API group
   resources:
@@ -249,13 +249,13 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: filebeat
-  namespace: @namespace@
+  namespace: monitoring
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: filebeat
-  namespace: @namespace@
+  namespace: monitoring
 subjects:
 - kind: ServiceAccount
   name: filebeat

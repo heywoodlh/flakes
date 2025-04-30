@@ -62,8 +62,13 @@ data:
     #!/usr/bin/env ash
     kubectl get configmaps/samplicator-conf -n @namespace@ -o "jsonpath={.data['samplicator\.conf']}" > /etc/samplicator.conf || true
     rm -f /etc/samplicator.conf.new || true
-    printf "127.0.0.1/255.255.255.255: $(dig +short nfcapd.monitoring.svc.cluster.local)/9995" | tee -a /etc/samplicator.conf.new
+    # Lookup for nfcapd service
+    printf "127.0.0.1/255.255.255.255: $(dig +short nfcapd.monitoring.svc.cluster.local)/9995\n" | tee -a /etc/samplicator.conf.new
     grep "$(dig +short nfcapd.monitoring.svc.cluster.local)/9995" -q /etc/samplicator.conf || touch /updated
+    # Lookup for filebeat service
+    printf "127.0.0.1/255.255.255.255: $(dig +short filebeat-netflow.monitoring.svc.cluster.local)/9995\n" | tee -a /etc/samplicator.conf.new
+    grep "$(dig +short filebeat-netflow.monitoring.svc.cluster.local)/9995" -q /etc/samplicator.conf || touch /updated
+    # End lookup services
     test -e /updated && kubectl create configmap samplicator-conf --from-file=samplicator.conf=/etc/samplicator.conf.new -n @namespace@ -o yaml --dry-run | kubectl apply -f -
     test -e /updated && kubectl rollout restart deployment samplicator -n @namespace@
     exit 0
