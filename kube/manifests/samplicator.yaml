@@ -24,7 +24,7 @@ rules:
   verbs: ["get", "update", "patch"]
 - apiGroups: ["batch"]
   resources: ["cronjobs", "jobs"]
-  verbs: ["get", "create"]
+  verbs: ["get", "create", "delete"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -62,7 +62,7 @@ data:
     #!/usr/bin/env ash
     kubectl get configmaps/samplicator-conf -n monitoring -o "jsonpath={.data['samplicator\.conf']}" > /etc/samplicator.conf || true
     rm -f /etc/samplicator.conf.new || true
-    printf "127.0.0.1/32: $(dig +short nfcapd.monitoring.svc.cluster.local)/9995" | tee -a /etc/samplicator.conf.new
+    printf "127.0.0.1/255.255.255.255: $(dig +short nfcapd.monitoring.svc.cluster.local)/9995" | tee -a /etc/samplicator.conf.new
     grep "$(dig +short nfcapd.monitoring.svc.cluster.local)/9995" -q /etc/samplicator.conf || touch /updated
     test -e /updated && kubectl create configmap samplicator-conf --from-file=samplicator.conf=/etc/samplicator.conf.new -n monitoring -o yaml --dry-run | kubectl apply -f -
     test -e /updated && kubectl rollout restart deployment samplicator -n monitoring
@@ -86,7 +86,7 @@ spec:
               imagePullPolicy: IfNotPresent
               command: [ "/bin/ash", "-c" ]
               args: [
-                ""
+                "/update.sh || true"
               ]
               volumeMounts:
                 - name: samplicator-dns-lookup
@@ -98,6 +98,23 @@ spec:
               configMap:
                 name: samplicator-dns-lookup
                 defaultMode: 0777
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: samplicator-init
+  namespace: monitoring
+data:
+  init.sh: |-
+    #!/usr/bin/env ash
+    kubectl delete job samplicator-conf-init -n monitoring || true
+    kubectl create job --from=cronjob/samplicator-conf-updater samplicator-conf-init -n monitoring
+    until kubectl get configmaps/samplicator-conf -n monitoring -o "jsonpath={.data['samplicator\.conf']}" | grep -q '127.0.0.1'
+    do
+      sleep 5
+    done
+    kubectl delete job samplicator-conf-init -n monitoring
+    exit 0
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -126,16 +143,18 @@ spec:
         - name: conf-init
           image: docker.io/heywoodlh/kubectl:v1.32.2
           command: [ "/bin/ash", "-c" ]
-          args: [ "kubectl create job --from=cronjob/samplicator-conf-updater samplicator-conf-init -n monitoring" ]
+          args: [
+            "/init.sh || true"
+          ]
           volumeMounts:
-            - name: samplicator-dns-lookup
-              mountPath: /update.sh
-              subPath: update.sh
+            - name: samplicator-init
+              mountPath: /init.sh
+              subPath: init.sh
       containers:
         - name: samplicator
           image: "docker.io/heywoodlh/samplicator:ceeb1d2-2025_04"
           command: [ "/usr/local/bin/samplicate" ]
-          args: [ "-p", "9995", "-c", "/etc/samplicator.conf", "-S", "-d", "0" ]
+          args: [ "-p", "9995", "-c", "/etc/samplicator.conf", "-S", "-d", "1" ]
           imagePullPolicy: IfNotPresent
           ports:
             - name: netflow
@@ -148,9 +167,9 @@ spec:
               mountPath: /etc/samplicator.conf
               subPath: samplicator.conf
       volumes:
-        - name: samplicator-dns-lookup
+        - name: samplicator-init
           configMap:
-            name: samplicator-dns-lookup
+            name: samplicator-init
             defaultMode: 0777
         - name: samplicator-conf
           configMap:
