@@ -29,6 +29,7 @@ applications=(
   "rsshub"
   "rustdesk"
   "rustdesk-web"
+  "samplicator"
   "syncthing"
   "syslog"
 )

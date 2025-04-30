@@ -622,6 +622,13 @@
           image = "docker.io/heywoodlh/rustdesk-web:1.3.9";
           replicas = 1;
         };
+        samplicator = mkKubeDrv "samplicator" {
+          src = ./templates/samplicator.yaml;
+          namespace = "monitoring";
+          image = "docker.io/heywoodlh/samplicator:ceeb1d2-2025_04";
+          kubectl_image = "docker.io/heywoodlh/kubectl:v1.32.2";
+          replicas = 1;
+        };
         squid = mkKubeDrv "squid" {
           src = ./templates/squid.yaml;
           namespace = "default";
