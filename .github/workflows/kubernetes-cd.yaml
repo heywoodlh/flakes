@@ -16,6 +16,9 @@ jobs:
   render-manifests:
     name: Check and apply all deployments
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -53,24 +56,6 @@ jobs:
           commit_message: "GitHub Action automated Kubernetes update"
           file_pattern: 'kube/manifests/*.yaml'
 
-  apply-manifests:
-    name: Check and apply all deployments
-    runs-on: ubuntu-latest
-    needs: render-manifests
-    defaults:
-      run:
-        shell: bash
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Login to Tailnet
-        uses: tailscale/github-action@v3
-        with:
-          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          tags: tag:ci
-
       - name: Install kubectl
         if: github.ref == 'refs/heads/main'
         uses: azure/setup-kubectl@v4
@@ -84,4 +69,4 @@ jobs:
           mkdir -p -m 700 $HOME/.kube
           echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > $HOME/.kube/config
           chmod 600 $HOME/.kube/config
-          for file in ./flakes/kube/manifests/*.yaml; do echo "file: ${file}" && kubectl apply -f ${file}; done
+          for file in $(ls ./kube/manifests/ | grep yaml); do kubectl apply -f ./kube/manifests/${file}; done
