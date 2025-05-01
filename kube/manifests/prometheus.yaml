@@ -423,7 +423,6 @@ data:
       static_configs:
       - targets:
         - nix-nvidia.barn-banana.ts.net:9100
-        - nix-drive.barn-banana.ts.net:9100
     
     alerting:
       alertmanagers:
@@ -1066,7 +1065,7 @@ spec:
             - --storage.tsdb.path=/data
             - --web.console.libraries=/etc/prometheus/console_libraries
             - --web.console.templates=/etc/prometheus/consoles
-            - --web.enable-lifecycle
+            - --storage.tsdb.wal-compression
           ports:
             - containerPort: 9090
           readinessProbe:
@@ -1089,6 +1088,13 @@ spec:
             timeoutSeconds: 10
             failureThreshold: 3
             successThreshold: 1
+          resources:
+            limits:
+              cpu: "2"
+              memory: 4092Mi
+            requests:
+              cpu: 500m
+              memory: 1024Mi
           volumeMounts:
             - name: config-volume
               mountPath: /etc/config
