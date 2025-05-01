@@ -11,6 +11,14 @@ spec:
     count: @elasticsearch_nodecount@
     podTemplate:
       spec:
+        containers:
+        - name: elasticsearch
+          resources:
+            requests:
+              memory: 2Gi
+              cpu: 4
+            limits:
+              memory: 2Gi
         volumes:
           - name: elasticsearch-data
             hostPath:
