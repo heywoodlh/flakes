@@ -534,9 +534,24 @@
           chart = (nixhelm.charts { inherit pkgs; }).prometheus-community.prometheus;
           namespace = "monitoring";
           values = {
-            server.image = {
-              repository = "quay.io/prometheus/prometheus";
-              tag = "v3.2.1";
+            server = {
+              image = {
+                repository = "quay.io/prometheus/prometheus";
+                tag = "v3.2.1";
+              };
+              extraFlags = [
+                "storage.tsdb.wal-compression"
+              ];
+              resources = {
+                limits = {
+                  cpu = "2";
+                  memory = "4092Mi";
+                };
+                requests = {
+                  cpu = "500m";
+                  memory = "1024Mi";
+                };
+              };
             };
             prometheus-node-exporter.enabled = false;
             extraScrapeConfigs = ''
@@ -553,7 +568,6 @@
                 static_configs:
                 - targets:
                   - nix-nvidia.barn-banana.ts.net:9100
-                  - nix-drive.barn-banana.ts.net:9100
             '';
           };
         });
