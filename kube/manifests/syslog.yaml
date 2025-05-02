@@ -198,6 +198,39 @@ spec:
             path: /home/heywoodlh/opt/logbash
             type: Directory
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lnav
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lnav
+  template:
+    metadata:
+      labels:
+        app: lnav
+    spec:
+      hostname: logs
+      containers:
+      - name: lnav
+        image: docker.io/heywoodlh/lnav:35c17f9
+        command: [ "bash", "-c" ]
+        args: [ "sleep infinity" ]
+        env:
+          - name: TERM
+            value: "xterm-256color"
+        volumeMounts:
+          - name: logs
+            mountPath: /logs
+      volumes:
+        - name: logs
+          hostPath:
+            path: /media/data-ssd/syslog
+            type: Directory
+---
 apiVersion: v1
 kind: Service
 metadata:

@@ -667,6 +667,7 @@
           hostfolder = "/media/data-ssd/syslog";
           image = "docker.io/linuxserver/syslog-ng:4.8.1";
           logbash_image = "docker.io/heywoodlh/logbash:e1d594e";
+          lnav_image = "docker.io/heywoodlh/lnav:35c17f9";
           replicas = 1;
         };
         # Update nixhelm input for updates
