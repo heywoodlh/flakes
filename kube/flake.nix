@@ -256,7 +256,7 @@
           src = ./templates/atuin.yaml;
           namespace = "default";
           replicas = 1;
-          image = "ghcr.io/atuinsh/atuin:v18.4.0";
+          image = "ghcr.io/atuinsh/atuin:v18.6.0";
           postgres_image = "docker.io/postgres:14";
         };
         dev = mkKubeDrv "dev" {
