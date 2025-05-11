@@ -71,6 +71,7 @@ spec:
             - name: TZ
               value: "America/Denver"
           image: @image@
+          imagePullPolicy: Always
           name: palworld-server
           ports:
             - containerPort: 8211

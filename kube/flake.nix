@@ -525,7 +525,7 @@
         palworld = mkKubeDrv "palworld" {
           src = ./templates/palworld.yaml;
           namespace = "palworld";
-          image = "docker.io/thijsvanloef/palworld-server-docker:v1.3.0";
+          image = "docker.io/thijsvanloef/palworld-server-docker:dev";
           hostfolder = "/opt/palworld";
         };
         # Ensure to deploy prometheus-blackbox-exporter first

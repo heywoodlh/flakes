@@ -70,7 +70,8 @@ spec:
               value: ""
             - name: TZ
               value: "America/Denver"
-          image: docker.io/thijsvanloef/palworld-server-docker:v1.3.0
+          image: docker.io/thijsvanloef/palworld-server-docker:dev
+          imagePullPolicy: Always
           name: palworld-server
           ports:
             - containerPort: 8211
