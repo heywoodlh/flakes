@@ -10,6 +10,29 @@ data:
     @version: 4.2
     @include "/config/conf.d/*.conf"
 
+  security.conf: |
+    destination ntfy {
+      http(
+        url("http://ntfy.default.svc.cluster.local/security-notifications")
+        method("POST")
+        user-agent("syslog-ng User Agent")
+        headers("Title: syslog-ng alert ${HOST}")
+        body("${ISODATE} ${MESSAGE}")
+      );
+    };
+
+    # All noteworthy ssh events
+    filter ssh_events {
+      message("(Failed password|Invalid verification code|Invalid user|Accepted publickey|Accepted password|Accepted keyboard-interactive|Failed keyboard-interactive).*");
+    };
+
+    # unifi ssh notifications
+    log {
+      source(unifi_remote);
+      filter(ssh_events);
+      destination(ntfy);
+    };
+
   linux.conf: |
     source linux_remote {
       tcp(ip(0.0.0.0) port(1514));
@@ -108,6 +131,8 @@ spec:
                 path: linux.conf
               - key: unifi.conf
                 path: unifi.conf
+              - key: security.conf
+                path: security.conf
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -126,7 +151,8 @@ spec:
               imagePullPolicy: IfNotPresent
               command: ["/bin/sh", "-c"]
               args:
-                - find /logs -type f -mtime +30 -exec rm -f {} \; ;
+                - find /logs/linux -type f -mtime +7 -exec rm -f {} \; ;
+                - find /logs/unifi -type f -mtime +30 -exec rm -f {} \; ;
               volumeMounts:
                 - name: logs
                   mountPath: "/logs"
