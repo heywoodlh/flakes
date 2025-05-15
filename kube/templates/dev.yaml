@@ -252,6 +252,7 @@ spec:
         app.kubernetes.io/name: dev
         app.kubernetes.io/instance: dev
     spec:
+      hostname: dev
       securityContext:
         {}
       containers:
