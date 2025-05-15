@@ -37,7 +37,7 @@ data:
   keys.sh: |-
     #!/usr/bin/env bash
     mkdir -p -m 700 /home/heywoodlh/.ssh
-    curl -L --silent https://github.com/heywoodlh.keys -o /home/heywoodlh/.ssh/authorized_keys
+    [[ -e /home/heywoodlh/.ssh/authorized_keys ]] || curl -L --silent https://github.com/heywoodlh.keys -o /home/heywoodlh/.ssh/authorized_keys
     chmod 600 /home/heywoodlh/.ssh/authorized_keys
     chown -R heywoodlh:heywoodlh /home/heywoodlh/.ssh
 ---
