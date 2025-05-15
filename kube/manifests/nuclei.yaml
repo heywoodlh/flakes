@@ -88,6 +88,9 @@ kind: ConfigMap
 metadata:
   name: nuclei-target-list
   namespace: nuclei
+  annotations:
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
+    argocd.argoproj.io/sync-options: Prune=false
 #---
 #apiVersion: v1
 #kind: Pod
