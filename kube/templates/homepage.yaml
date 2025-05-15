@@ -73,7 +73,8 @@ data:
         memory: true
         network: default
     - search:
-        provider: duckduckgo
+        provider: custom
+        url: https://chat.heywoodlh.io/?models=llama3:8b&q=
         target: _blank
   docker.yaml: ""
 ---
