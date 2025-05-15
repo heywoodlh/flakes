@@ -15,6 +15,7 @@ applications=(
   "fleetdm"
   "grafana"
   "healthchecks"
+  "homepage"
   "http-files"
   "iperf"
   "lancache"

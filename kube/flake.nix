@@ -379,6 +379,11 @@
           replicas = 1;
           nodename = "nix-nvidia";
         };
+        homepage = mkKubeDrv "homepage" {
+          src = ./templates/homepage.yaml;
+          image = "ghcr.io/gethomepage/homepage:v1.2.0";
+          namespace = "default";
+        };
         http-files = mkKubeDrv "http-files" {
           src = ./templates/http-files.yaml;
           namespace = "default";
