@@ -331,6 +331,14 @@
           hostfolder = "/media/data-ssd/elastic";
           nodename = "nix-nvidia";
         };
+        flan-scan = mkKubeDrv "flan-scan" {
+          src = ./templates/flan-scan.yaml;
+          namespace = "monitoring";
+          image = "docker.io/heywoodlh/flan-scan:2025_05";
+          http_image = "docker.io/heywoodlh/http-files:v2.10.0";
+          hostfolder = "/media/data-ssd/flan-scan";
+          replicas = 1;
+        };
         fleetdm = mkKubeDrv "fleetdm" {
           src = ./templates/fleetdm.yaml;
           namespace = "monitoring";

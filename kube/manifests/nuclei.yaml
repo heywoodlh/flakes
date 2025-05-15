@@ -162,7 +162,7 @@ spec:
               command: ["/bin/bash", "-c"]
               env:
               - name: EXTRA_TARGETS
-                value: "100.64.0.0/10,192.168.50.0/24,10.0.50.0/24"
+                value: "100.64.0.0/10,192.168.1.0/24"
               args: [
                 "/entrypoint | sort -u | tee /targets/list.txt"
               ]

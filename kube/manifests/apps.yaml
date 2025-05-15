@@ -171,7 +171,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: elastic-cloud-operator
+  name: flan-scan
   namespace: argo
 spec:
   destination:
@@ -182,28 +182,7 @@ spec:
     targetRevision: HEAD
     path: kube/manifests
     directory:
-      include: "elastic-cloud-operator.yaml"
-  project: default
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: elastic-cloud-elastic-stack
-  namespace: argo
-spec:
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: argo
-  source:
-    repoURL: https://github.com/heywoodlh/flakes.git
-    targetRevision: HEAD
-    path: kube/manifests
-    directory:
-      include: "elastic-cloud-elastic-stack.yaml"
+      include: "flan-scan.yaml"
   project: default
   syncPolicy:
     automated:
