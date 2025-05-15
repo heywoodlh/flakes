@@ -22,14 +22,6 @@ rules:
 - apiGroups: [""]
   resources: ["services","namespaces"]
   verbs: ["get", "watch", "list"]
-- apiGroups: [""]
-  resources: ["configmaps"]
-  resourceNames: ["nuclei-target-list"]
-  verbs: ["create", "update", "get", "patch"]
-- apiGroups: [""]
-  resources: ["pods"]
-  resourceNames: ["nuclei-target-updater-init"]
-  verbs: ["get", "update", "patch", "delete"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -53,7 +45,7 @@ metadata:
 data:
   nuclei.conf: |-
     interactsh-server: http://nuclei-interactsh # should match the name of interactsh.service.name
-    list: /config/target-list.txt
+    list: /targets/list.txt
     # Headers to include with all HTTP request
     #header:
     #  - 'X-BugBounty-Hacker: h1/geekboy'
@@ -82,56 +74,6 @@ data:
     #rate-limit: 500
     #bulk-size: 50
     #concurrency: 50
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: nuclei-target-list
-  namespace: @namespace@
-  annotations:
-    argocd.argoproj.io/compare-options: IgnoreExtraneous
-    argocd.argoproj.io/sync-options: Prune=false
-#---
-#apiVersion: v1
-#kind: Pod
-#metadata:
-#  name: nuclei-target-updater-init
-#  namespace: @namespace@
-#spec:
-#  serviceAccountName: nuclei
-#  containers:
-#    - name: nuclei-target-updater
-#      image: "docker.io/heywoodlh/k8s-service-scanner:latest"
-#      imagePullPolicy: IfNotPresent
-#      command: ["/bin/bash", "-c"]
-#      args: [
-#        "/entrypoint | sort -u | tee /out/target-list.txt && kubectl create configmap -n @namespace@ nuclei-target-list --from-file=/out/target-list.txt --dry-run=client -o yaml | kubectl apply -f - && kubectl delete pod nuclei-target-updater-init -n @namespace@"
-#      ]
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: nuclei-target-updater
-  namespace: @namespace@
-spec:
-  schedule: "*/5 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          serviceAccountName: nuclei
-          containers:
-          - name: nuclei-target-updater
-            image: "docker.io/heywoodlh/k8s-service-scanner:0.1.1"
-            imagePullPolicy: IfNotPresent
-            command: ["/bin/bash", "-c"]
-            env:
-            - name: EXTRA_TARGETS
-              value: "100.64.0.0/10,192.168.50.0/24,10.0.50.0/24"
-            args: [
-              "/entrypoint | sort -u | tee /out/target-list.txt && kubectl create configmap -n @namespace@ nuclei-target-list --from-file=/out/target-list.txt --dry-run=client -o yaml | kubectl apply -f -"
-            ]
-          restartPolicy: OnFailure
 ---
 apiVersion: v1
 kind: Service
@@ -213,32 +155,45 @@ spec:
     spec:
       template:
         spec:
+          initContainers:
+            - name: nuclei-target-updater
+              image: "docker.io/heywoodlh/k8s-service-scanner:0.1.1"
+              imagePullPolicy: IfNotPresent
+              command: ["/bin/bash", "-c"]
+              env:
+              - name: EXTRA_TARGETS
+                value: "100.64.0.0/10,192.168.50.0/24,10.0.50.0/24"
+              args: [
+                "/entrypoint | sort -u | tee /targets/list.txt"
+              ]
+              volumeMounts:
+                - name: nuclei-target-dir
+                  mountPath: /targets
           containers:
-          - name: nuclei
-            image: "@image@"
-            imagePullPolicy: IfNotPresent
-            command: ["/bin/ash", "-c"]
-            args: [
-              "nuclei -config=/config/nuclei.conf -iserver 'http://nuclei-interactsh' -auth=$(NUCLEI_API_KEY) -cloud-upload"
-            ]
-            env:
-              - name: NUCLEI_API_KEY
-                valueFrom:
-                  secretKeyRef:
-                    name: nuclei-api-key
-                    key: api_key
-            volumeMounts:
-              - name: nuclei-conf
-                mountPath: /config/nuclei.conf
-                subPath: nuclei.conf
-              - name: nuclei-target-list
-                mountPath: /config/target-list.txt
-                subPath: target-list.txt
+            - name: nuclei
+              image: "@image@"
+              imagePullPolicy: IfNotPresent
+              command: ["/bin/ash", "-c"]
+              args: [
+                "nuclei -config=/config/nuclei.conf -iserver 'http://nuclei-interactsh' -auth=$(NUCLEI_API_KEY) -cloud-upload"
+              ]
+              env:
+                - name: NUCLEI_API_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: nuclei-api-key
+                      key: api_key
+              volumeMounts:
+                - name: nuclei-conf
+                  mountPath: /config/nuclei.conf
+                  subPath: nuclei.conf
+                - name: nuclei-target-dir
+                  mountPath: /targets
           restartPolicy: OnFailure
           volumes:
             - name: nuclei-conf
               configMap:
                 name: nuclei-conf
-            - name: nuclei-target-list
-              configMap:
-                name: nuclei-target-list
+            - name: nuclei-target-dir
+              emptyDir:
+                sizeLimit: 1Gi
