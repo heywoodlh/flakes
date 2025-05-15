@@ -170,25 +170,25 @@ spec:
                 - name: nuclei-target-dir
                   mountPath: /targets
           containers:
-          - name: nuclei
-            image: "docker.io/heywoodlh/nuclei:v3.4.4"
-            imagePullPolicy: IfNotPresent
-            command: ["/bin/ash", "-c"]
-            args: [
-              "nuclei -config=/config/nuclei.conf -iserver 'http://nuclei-interactsh' -auth=$(NUCLEI_API_KEY) -cloud-upload"
-            ]
-            env:
-              - name: NUCLEI_API_KEY
-                valueFrom:
-                  secretKeyRef:
-                    name: nuclei-api-key
-                    key: api_key
-            volumeMounts:
-              - name: nuclei-conf
-                mountPath: /config/nuclei.conf
-                subPath: nuclei.conf
-              - name: nuclei-target-dir
-                mountPath: /targets
+            - name: nuclei
+              image: "docker.io/heywoodlh/nuclei:v3.4.4"
+              imagePullPolicy: IfNotPresent
+              command: ["/bin/ash", "-c"]
+              args: [
+                "nuclei -config=/config/nuclei.conf -iserver 'http://nuclei-interactsh' -auth=$(NUCLEI_API_KEY) -cloud-upload"
+              ]
+              env:
+                - name: NUCLEI_API_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: nuclei-api-key
+                      key: api_key
+              volumeMounts:
+                - name: nuclei-conf
+                  mountPath: /config/nuclei.conf
+                  subPath: nuclei.conf
+                - name: nuclei-target-dir
+                  mountPath: /targets
           restartPolicy: OnFailure
           volumes:
             - name: nuclei-conf
