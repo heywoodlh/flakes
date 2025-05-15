@@ -95,6 +95,8 @@ data:
       op-unlock
       $HOME/.nix-profile/bin/kubectl $argv
     end
+
+    tmux set -g status on &> /dev/null
 ---
 apiVersion: v1
 kind: ConfigMap
