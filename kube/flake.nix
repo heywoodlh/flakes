@@ -510,7 +510,7 @@
         nuclei = mkKubeDrv "nuclei" {
           src = ./templates/nuclei.yaml;
           namespace = "nuclei";
-          image = "docker.io/heywoodlh/nuclei:v3.3.0-dev";
+          image = "docker.io/heywoodlh/nuclei:v3.4.4";
           interactsh_image = "docker.io/projectdiscovery/interactsh-server:v1.2.4";
           httpd_image = "docker.io/httpd:2.4.63";
           replicas = 1;

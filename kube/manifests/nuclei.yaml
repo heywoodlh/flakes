@@ -212,7 +212,7 @@ spec:
         spec:
           containers:
           - name: nuclei
-            image: "docker.io/heywoodlh/nuclei:v3.3.0-dev"
+            image: "docker.io/heywoodlh/nuclei:v3.4.4"
             imagePullPolicy: IfNotPresent
             command: ["/bin/ash", "-c"]
             args: [
