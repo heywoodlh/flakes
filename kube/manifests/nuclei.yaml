@@ -155,6 +155,7 @@ spec:
     spec:
       template:
         spec:
+          serviceAccountName: nuclei
           initContainers:
             - name: nuclei-target-updater
               image: "docker.io/heywoodlh/k8s-service-scanner:0.1.1"
