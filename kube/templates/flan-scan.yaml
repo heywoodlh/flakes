@@ -7,6 +7,7 @@ metadata:
 data:
   ips.txt: |-
     192.168.1.0/24
+    10.43.0.0/16
 ---
 apiVersion: v1
 kind: Service
@@ -29,6 +30,34 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
+  name: flan-cleanup
+  namespace: @namespace@
+spec:
+  schedule: "0 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: flan-cleanup
+              image: docker.io/ubuntu:24.04
+              imagePullPolicy: IfNotPresent
+              command: ["/bin/sh", "-c"]
+              args:
+                - find /shared/reports -type f -mtime +365 -exec rm -f {} \; ;
+              volumeMounts:
+                - mountPath: /shared/reports
+                  name: flan-scan-reports
+          restartPolicy: OnFailure
+          volumes:
+            - name: flan-scan-reports
+              hostPath:
+                path: @hostfolder@
+                type: Directory
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
   name: flan-scan
   namespace: @namespace@
 spec:
@@ -37,6 +66,7 @@ spec:
     spec:
       template:
         spec:
+          hostNetwork: true
           containers:
             - name: flan-scan
               image: "@image@"
@@ -48,6 +78,8 @@ spec:
                 - name: flan-ips
                   mountPath: /shared/ips.txt
                   subPath: ips.txt
+                - mountPath: /shared/reports
+                  name: flan-scan-reports
           restartPolicy: OnFailure
           volumes:
             - name: flan-scan-reports
