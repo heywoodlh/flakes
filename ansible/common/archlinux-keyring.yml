@@ -26,3 +26,4 @@
     - name: populate archlinux keyring
       ansible.builtin.shell: archlinux-keyring-wkd-sync
       when: mirrorlist_perms.changed # only populate archlinux-keyring on first run of ansible playbooks
+      ignore_errors: true # ignore errors about specific keys not being found
