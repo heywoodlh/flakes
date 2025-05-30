@@ -455,6 +455,25 @@
           namespace = "longhorn-system";
           version = "1.5.5";
         };
+        media = mkKubeDrv "media" {
+          src = ./templates/media.yaml;
+          namespace = "media";
+          replicas = 1;
+          radarr_image = "docker.io/linuxserver/radarr:5.26.0-nightly";
+          radarr_hostfolder = "/media/config/services/radarr";
+          sonarr_image = "docker.io/linuxserver/sonarr:4.0.14-develop";
+          sonarr_hostfolder = "/media/config/services/sonarr";
+          lidarr_image = "docker.io/linuxserver/lidarr:2.12.1-develop";
+          lidarr_hostfolder = "/media/config/services/lidarr";
+          readarr_image = "docker.io/linuxserver/readarr:0.4.17-nightly";
+          readarr_hostfolder = "/media/config/services/readarr";
+          sabnzbd_image = "docker.io/linuxserver/sabnzbd:4.5.1";
+          sabnzbd_hostfolder = "/media/config/services/sabnzbd";
+          tautulli_image = "docker.io/linuxserver/tautulli:2.15.2";
+          tautulli_hostfolder = "/media/config/services/tautulli/config";
+          media_hostfolder = "/media/home-media";
+          nodename = "nix-nvidia";
+        };
         metrics-server = mkKubeDrv "metrics-server" {
           src = ./templates/metrics-server.yaml;
           image = "registry.k8s.io/metrics-server/metrics-server:v0.7.2";

@@ -1,0 +1,421 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: @namespace@
+# Radarr
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: radarr
+  name: radarr
+  namespace: @namespace@
+spec:
+  replicas: @replicas@
+  selector:
+    matchLabels:
+      app: radarr
+  template:
+    metadata:
+      labels:
+        app: radarr
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: @nodename@
+      containers:
+      - image: @radarr_image@
+        name: radarr
+        ports:
+        - name: http
+          containerPort: 7878
+        volumeMounts:
+        - name: radarr-config
+          mountPath: /config
+        - name: media
+          mountPath: /media/home-media
+        env:
+          - name: PUID
+            value: "995"
+          - name: PGID
+            value: "995"
+      volumes:
+      - name: radarr-config
+        hostPath:
+          path: @radarr_hostfolder@
+          type: Directory
+      - name: media
+        hostPath:
+          path: @media_hostfolder@
+          type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: radarr
+  name: radarr
+  namespace: @namespace@
+  annotations:
+    tailscale.com/expose: "true"
+    tailscale.com/hostname: "radarr"
+    tailscale.com/tags: "tag:http"
+spec:
+  ports:
+  - name: web-ui
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app: radarr
+  type: ClusterIP
+# Sonarr
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: sonarr
+  name: sonarr
+  namespace: @namespace@
+spec:
+  replicas: @replicas@
+  selector:
+    matchLabels:
+      app: sonarr
+  template:
+    metadata:
+      labels:
+        app: sonarr
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: @nodename@
+      containers:
+      - image: @sonarr_image@
+        name: sonarr
+        ports:
+        - name: http
+          containerPort: 8989
+        volumeMounts:
+        - name: sonarr-config
+          mountPath: /config
+        - name: media
+          mountPath: /media/home-media
+        env:
+          - name: PUID
+            value: "995"
+          - name: PGID
+            value: "995"
+      volumes:
+      - name: sonarr-config
+        hostPath:
+          path: @sonarr_hostfolder@
+          type: Directory
+      - name: media
+        hostPath:
+          path: @media_hostfolder@
+          type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: sonarr
+  name: sonarr
+  namespace: @namespace@
+  annotations:
+    tailscale.com/expose: "true"
+    tailscale.com/hostname: "sonarr"
+    tailscale.com/tags: "tag:http"
+spec:
+  ports:
+  - name: web-ui
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app: sonarr
+  type: ClusterIP
+
+# sabnzbd
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: sabnzbd
+  name: sabnzbd
+  namespace: @namespace@
+spec:
+  replicas: @replicas@
+  selector:
+    matchLabels:
+      app: sabnzbd
+  template:
+    metadata:
+      labels:
+        app: sabnzbd
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: @nodename@
+      containers:
+      - image: @sabnzbd_image@
+        name: sabnzbd
+        ports:
+        - name: http
+          containerPort: 8080
+        volumeMounts:
+        - name: sabnzbd-config
+          mountPath: /config
+        - name: media
+          mountPath: /media/home-media
+        env:
+          - name: PUID
+            value: "995"
+          - name: PGID
+            value: "995"
+      volumes:
+      - name: sabnzbd-config
+        hostPath:
+          path: @sabnzbd_hostfolder@
+          type: Directory
+      - name: media
+        hostPath:
+          path: @media_hostfolder@
+          type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: sabnzbd
+  name: sabnzbd
+  namespace: @namespace@
+  annotations:
+    tailscale.com/expose: "true"
+    tailscale.com/hostname: "sabnzbd"
+    tailscale.com/tags: "tag:http"
+spec:
+  ports:
+  - name: web-ui
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app: sabnzbd
+  type: ClusterIP
+# readarr
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: readarr
+  name: readarr
+  namespace: @namespace@
+spec:
+  replicas: @replicas@
+  selector:
+    matchLabels:
+      app: readarr
+  template:
+    metadata:
+      labels:
+        app: readarr
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: @nodename@
+      containers:
+      - image: @readarr_image@
+        name: readarr
+        ports:
+        - name: http
+          containerPort: 8787
+        volumeMounts:
+        - name: readarr-config
+          mountPath: /config
+        - name: media
+          mountPath: /media/home-media
+        env:
+          - name: PUID
+            value: "995"
+          - name: PGID
+            value: "995"
+      volumes:
+      - name: readarr-config
+        hostPath:
+          path: @readarr_hostfolder@
+          type: Directory
+      - name: media
+        hostPath:
+          path: @media_hostfolder@
+          type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: readarr
+  name: readarr
+  namespace: @namespace@
+  annotations:
+    tailscale.com/expose: "true"
+    tailscale.com/hostname: "readarr"
+    tailscale.com/tags: "tag:http"
+spec:
+  ports:
+  - name: web-ui
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app: readarr
+  type: ClusterIP
+# lidarr
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: lidarr
+  name: lidarr
+  namespace: @namespace@
+spec:
+  replicas: @replicas@
+  selector:
+    matchLabels:
+      app: lidarr
+  template:
+    metadata:
+      labels:
+        app: lidarr
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: @nodename@
+      containers:
+      - image: @lidarr_image@
+        name: lidarr
+        ports:
+        - name: http
+          containerPort: 8686
+        volumeMounts:
+        - name: lidarr-config
+          mountPath: /config
+        - name: media
+          mountPath: /media/home-media
+        env:
+          - name: PUID
+            value: "995"
+          - name: PGID
+            value: "995"
+      volumes:
+      - name: lidarr-config
+        hostPath:
+          path: @lidarr_hostfolder@
+          type: Directory
+      - name: media
+        hostPath:
+          path: @media_hostfolder@
+          type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: lidarr
+  name: lidarr
+  namespace: @namespace@
+  annotations:
+    tailscale.com/expose: "true"
+    tailscale.com/hostname: "lidarr"
+    tailscale.com/tags: "tag:http"
+spec:
+  ports:
+  - name: web-ui
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app: lidarr
+  type: ClusterIP
+# Tautulli
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ntfy
+  namespace: @namespace@
+data:
+  ntfy.sh: |-
+    #!/usr/bin/env bash
+    ntfy_uri="http://ntfy.default.svc.cluster.local/plex-notifications"
+    message="$1"
+    if [ -z ${message} ] || echo $@ | grep -Eq '\-h|\-\-help'
+    then
+            echo "usage: $0 message"
+            exit 0
+    fi
+    curl -d "${message}" ${ntfy_uri}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: tautulli
+  name: tautulli
+  namespace: @namespace@
+spec:
+  replicas: @replicas@
+  selector:
+    matchLabels:
+      app: tautulli
+  template:
+    metadata:
+      labels:
+        app: tautulli
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: @nodename@
+      containers:
+      - image: @tautulli_image@
+        name: tautulli
+        ports:
+        - name: http
+          containerPort: 8181
+        volumeMounts:
+        - name: tautulli-config
+          mountPath: /config
+        - name: ntfy
+          mountPath: /scripts/ntfy.sh
+          subPath: ntfy.sh
+      volumes:
+      - name: tautulli-config
+        hostPath:
+          path: @tautulli_hostfolder@
+          type: Directory
+      - name: ntfy
+        configMap:
+          name: ntfy
+          defaultMode: 0777
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: tautulli
+  name: tautulli
+  namespace: @namespace@
+  annotations:
+    tailscale.com/expose: "true"
+    tailscale.com/hostname: "tautulli"
+    tailscale.com/tags: "tag:http"
+spec:
+  ports:
+  - name: web-ui
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app: tautulli
+  type: ClusterIP

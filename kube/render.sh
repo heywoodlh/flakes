@@ -19,6 +19,7 @@ applications=(
   "http-files"
   "iperf"
   "lancache"
+  "media"
   "miniflux"
   "nfcapd"
   "ntfy"
