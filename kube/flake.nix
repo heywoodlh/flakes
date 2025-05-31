@@ -699,7 +699,7 @@
           namespace = "syncthing";
           nodename = "nix-nvidia";
           hostfolder = "/opt/syncthing";
-          image = "docker.io/syncthing/syncthing:1.29.3";
+          image = "docker.io/syncthing/syncthing:1.29.6";
           replicas = 1;
         };
         syslog = mkKubeDrv "syslog" {
