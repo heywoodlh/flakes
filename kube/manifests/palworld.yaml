@@ -70,6 +70,8 @@ spec:
               value: ""
             - name: TZ
               value: "America/Denver"
+            - name: DEATH_PENALTY
+              value: "None"
           image: docker.io/thijsvanloef/palworld-server-docker:dev
           imagePullPolicy: Always
           name: palworld-server

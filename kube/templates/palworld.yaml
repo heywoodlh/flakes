@@ -70,6 +70,8 @@ spec:
               value: ""
             - name: TZ
               value: "America/Denver"
+            - name: DEATH_PENALTY
+              value: "None"
           image: @image@
           imagePullPolicy: Always
           name: palworld-server
