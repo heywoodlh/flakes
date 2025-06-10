@@ -510,6 +510,9 @@
           port = 80;
           nodename = "nix-nvidia";
         };
+        namespaces = mkKubeDrv "namespaces" {
+          src = ./templates/namespaces.yaml;
+        };
         nfcapd = mkKubeDrv "nfcapd" {
           src = ./templates/nfcapd.yaml;
           namespace = "monitoring";
@@ -684,6 +687,13 @@
           namespace = "monitoring";
           image = "docker.io/heywoodlh/samplicator:ceeb1d2-2025_04";
           kubectl_image = "docker.io/heywoodlh/kubectl:v1.32.2";
+          replicas = 1;
+        };
+        silverbullet = mkKubeDrv "silverbullet" {
+          src = ./templates/silverbullet.yaml;
+          namespace = "docs";
+          nodename = "nix-nvidia";
+          image = "ghcr.io/silverbulletmd/silverbullet:v2";
           replicas = 1;
         };
         squid = mkKubeDrv "squid" {

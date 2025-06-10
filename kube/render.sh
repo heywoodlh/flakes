@@ -21,6 +21,7 @@ applications=(
   "lancache"
   "media"
   "miniflux"
+  "namespaces"
   "nfcapd"
   "ntfy"
   "nuclei"
