@@ -122,7 +122,7 @@ jobs:
           cp "./${{ matrix.os }}-${{ matrix.out }}-appimage" "./appimage/${{ matrix.out }}-amd64.appimage"
           nix bundle -o "./${{ matrix.os }}-${{ matrix.out }}-deb" --bundler github:nixos/bundlers#toDEB "${{ matrix.flake }}"
           cp "./${{ matrix.os }}-${{ matrix.out }}-deb"/*.deb "./deb/${{ matrix.out }}-amd64.deb"
-          nix bundle -o "./${{ matrix.os }}-${{ matrix.out }}-rpm" --bundler github:nixos/bundlers#toRPM "${{ matrix.flake }}"
+          nix bundle -o "./${{ matrix.os }}-${{ matrix.out }}-rpm" --bundler github:nixos/bundlers#toRPM "${{ matrix.flake }}" || true # optional, I'm not super attached to Fedora
           cp "./${{ matrix.os }}-${{ matrix.out }}-rpm"/*.rpm "./rpm/${{ matrix.out }}-amd64.rpm"
           nix run nixpkgs#tree
 
