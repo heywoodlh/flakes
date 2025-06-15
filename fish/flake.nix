@@ -79,32 +79,42 @@
         # Direnv
         eval (${pkgs.direnv}/bin/direnv hook fish)
 
+        function start-ssh-agent
+            if not echo $SSH_AUTH_SOCK | ${pkgs.gnugrep}/bin/grep -q 1password
+                # Check if ssh-agent running with ~/.ssh/agent.sock socket
+                if not ${pkgs.ps}/bin/ps -fjH -u $USER | ${pkgs.gnugrep}/bin/grep ssh-agent | ${pkgs.gnugrep}/bin/grep -q "$HOME/.ssh/agent.sock" &> /dev/null
+                    mkdir -p $HOME/.ssh
+                    rm -f $HOME/.ssh/agent.sock &> /dev/null
+                    eval (${pkgs.openssh}/bin/ssh-agent -t 4h -c -a "$HOME/.ssh/agent.sock") &> /dev/null || true
+                else
+                    # Start ssh-agent if old process exists but socket file is gone
+                    if not test -e $HOME/.ssh/agent.sock
+                      # Kill old ssh-agent process
+                      ${pkgs.procps}/bin/pkill -9 ssh-agent &> /dev/null || true
+                      eval (${pkgs.openssh}/bin/ssh-agent -t 4h -c -a "$HOME/.ssh/agent.sock") &> /dev/null || true
+                    end
+                end
+                export SSH_AUTH_SOCK="$HOME/.ssh/agent.sock"
+            end
+        end
+
         # Use 1password SSH agent if it exists (not over SSH/headless environment)
         if test -z $SSH_CONNECTION
+            # if not over SSH
             if test -e $HOME/.1password/agent.sock
                 set -gx SSH_AUTH_SOCK "$HOME/.1password/agent.sock"
             end
             if test -e "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
                 set -gx SSH_AUTH_SOCK "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
             end
-        end
-
-        # Start ssh-agent if not using 1password
-        if not echo $SSH_AUTH_SOCK | ${pkgs.gnugrep}/bin/grep -q 1password
-            # Check if ssh-agent running with ~/.ssh/agent.sock socket
-            if not ${pkgs.ps}/bin/ps -fjH -u $USER | ${pkgs.gnugrep}/bin/grep ssh-agent | ${pkgs.gnugrep}/bin/grep -q "$HOME/.ssh/agent.sock" &> /dev/null
-                mkdir -p $HOME/.ssh
-                rm -f $HOME/.ssh/agent.sock &> /dev/null
-                eval (${pkgs.openssh}/bin/ssh-agent -t 4h -c -a "$HOME/.ssh/agent.sock") &> /dev/null || true
-            else
-                # Start ssh-agent if old process exists but socket file is gone
-                if not test -e $HOME/.ssh/agent.sock
-                  # Kill old ssh-agent process
-                  ${pkgs.procps}/bin/pkill -9 ssh-agent &> /dev/null || true
-                  eval (${pkgs.openssh}/bin/ssh-agent -t 4h -c -a "$HOME/.ssh/agent.sock") &> /dev/null || true
-                end
+            # Start ssh-agent if not running
+            start-ssh-agent
+        else
+            # if over SSH
+            if test -z $SSH_AUTH_SOCK
+                # ssh-agent not being forwarded
+                start-ssh-agent
             end
-            export SSH_AUTH_SOCK="$HOME/.ssh/agent.sock"
         end
 
         # Add ~/bin to $PATH (ALWAYS)
