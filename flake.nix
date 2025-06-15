@@ -86,10 +86,6 @@
       url = "./tabby";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    kube-flake = {
-      url = "./kube";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     ttyd-flake = {
       url = "./ttyd-nerd";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -120,7 +116,6 @@
     qutebrowser-flake,
     zen-browser-flake,
     tabby-flake,
-    kube-flake,
     ttyd-flake,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
@@ -160,7 +155,6 @@
         zen-browser = zen-browser-flake.packages.${system}.default;
         tabby = tabby-flake.packages.${system}.tabby-wrapper;
         zellij = fish-flake.packages.${system}.zellij;
-        kubectl = kube-flake.packages.${system}.kubectl;
         ttyd = ttyd-flake.packages.${system}.ttyd;
       };
       formatter = pkgs.alejandra;
