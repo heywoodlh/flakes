@@ -268,6 +268,13 @@
           image = "ghcr.io/atuinsh/atuin:v18.4.0";
           postgres_image = "docker.io/postgres:14";
         };
+        beeper-bridges = mkKubeDrv "beeper-bridges" {
+          src = ./templates/beeper-bridges.yaml;
+          namespace = "messaging";
+          replicas = 1;
+          image = "ghcr.io/beeper/bridge-manager:8a57420fb80b495979ce049de57d60b0e0985fb0";
+          hostfolder = "/media/data-ssd/beeper";
+        };
         dev = mkKubeDrv "dev" {
           src = ./templates/dev.yaml;
           namespace = "default";
