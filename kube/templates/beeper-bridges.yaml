@@ -75,27 +75,27 @@ spec:
                 secretKeyRef:
                   name: beeper-key
                   key: password
-        - name: beeper-irc
-          securityContext:
-            {}
-          image: "@image@"
-          command:
-            - "/bin/ash"
-            - "-c"
-          volumeMounts:
-            - name: irc-config
-              mountPath: /data
-          args:
-            - /usr/local/bin/run-bridge.sh sh-irc-000
-          imagePullPolicy: IfNotPresent
-          resources:
-            {}
-          env:
-            - name: MATRIX_ACCESS_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: beeper-key
-                  key: password
+        #- name: beeper-irc
+        #  securityContext:
+        #    {}
+        #  image: "@image@"
+        #  command:
+        #    - "/bin/ash"
+        #    - "-c"
+        #  volumeMounts:
+        #    - name: irc-config
+        #      mountPath: /data
+        #  args:
+        #    - /usr/local/bin/run-bridge.sh sh-irc-000
+        #  imagePullPolicy: IfNotPresent
+        #  resources:
+        #    {}
+        #  env:
+        #    - name: MATRIX_ACCESS_TOKEN
+        #      valueFrom:
+        #        secretKeyRef:
+        #          name: beeper-key
+        #          key: password
       volumes:
       - name: signal-config
         hostPath:
