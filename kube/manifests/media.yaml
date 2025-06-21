@@ -92,7 +92,7 @@ spec:
       nodeSelector:
         kubernetes.io/hostname: nix-nvidia
       containers:
-      - image: docker.io/linuxserver/sonarr:4.0.14-develop
+      - image: docker.io/linuxserver/sonarr:4.0.15-develop
         name: sonarr
         ports:
         - name: http
