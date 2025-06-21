@@ -25,7 +25,7 @@ spec:
       nodeSelector:
         kubernetes.io/hostname: nix-nvidia
       containers:
-      - image: docker.io/linuxserver/radarr:5.26.0-nightly
+      - image: docker.io/linuxserver/radarr:5.27.1-nightly
         name: radarr
         ports:
         - name: http
