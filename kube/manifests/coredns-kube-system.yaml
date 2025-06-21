@@ -21,21 +21,21 @@ data:
         reload
         loadbalance
     }
-    import /etc/coredns/custom/*.server
+    #import /etc/coredns/custom/*.server
   NodeHosts: |
     192.168.1.22 nix-nvidia
 kind: ConfigMap
 metadata:
   name: coredns
   namespace: kube-system
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: coredns-custom # has to be named this
-  namespace: kube-system
-data:
-  barn-banana.ts.net.server: |
-    barn-banana.ts.net {
-      forward . 100.100.100.100
-    }
+#---
+#apiVersion: v1
+#kind: ConfigMap
+#metadata:
+#  name: coredns-custom # has to be named this
+#  namespace: kube-system
+#data:
+#  barn-banana.ts.net.server: |
+#    barn-banana.ts.net {
+#      forward . 100.100.100.100
+#    }

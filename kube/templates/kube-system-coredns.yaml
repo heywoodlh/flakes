@@ -28,14 +28,14 @@ kind: ConfigMap
 metadata:
   name: coredns
   namespace: kube-system
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: coredns-custom # has to be named this
-  namespace: kube-system
-data:
-  @tailnet@.server: |
-    @tailnet@ {
-      forward . 100.100.100.100
-    }
+#---
+#apiVersion: v1
+#kind: ConfigMap
+#metadata:
+#  name: coredns-custom # has to be named this
+#  namespace: kube-system
+#data:
+#  @tailnet@.server: |
+#    @tailnet@ {
+#      forward . 100.100.100.100
+#    }
