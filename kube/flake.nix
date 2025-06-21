@@ -466,7 +466,7 @@
           src = ./templates/media.yaml;
           namespace = "media";
           replicas = 1;
-          radarr_image = "docker.io/linuxserver/radarr:5.26.0-nightly";
+          radarr_image = "docker.io/linuxserver/radarr:5.27.1-nightly";
           radarr_hostfolder = "/media/config/services/radarr";
           sonarr_image = "docker.io/linuxserver/sonarr:4.0.14-develop";
           sonarr_hostfolder = "/media/config/services/sonarr";
