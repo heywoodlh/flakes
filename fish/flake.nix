@@ -311,6 +311,7 @@
         # quake mode; on MacOS give Ghostty accessibility permissions
         keybind = global:ctrl+grave_accent=toggle_quick_terminal
         quick-terminal-animation-duration = 0.1
+        quick-terminal-autohide = false
       '' else ''
         # linux ghostty config
         font-size = 14
