@@ -47,10 +47,6 @@
       url = "./jetporch";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    ansible-flake = {
-      url = "./ansible";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     vimb-flake = {
       url = "./vimb";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -107,7 +103,6 @@
     st-flake,
     wezterm-flake,
     jetporch-flake,
-    ansible-flake,
     vimb-flake,
     op-flake,
     lima-flake,
@@ -139,8 +134,6 @@
         st = st-flake.packages.${system}.st;
         wezterm = wezterm-flake.packages.${system}.wezterm;
         wezterm-gl = wezterm-flake.packages.${system}.wezterm-gl;
-        workstation = ansible-flake.packages.${system}.workstation;
-        server = ansible-flake.packages.${system}.server;
         vimb = vimb-flake.packages.${system}.vimb;
         vimb-gl = vimb-flake.packages.${system}.vimb-gl;
         op = op-flake.packages.${system}.op;
