@@ -362,6 +362,7 @@
           mysql_image = "docker.io/mysql:8.4.4";
           redis_image = "docker.io/redis:8.0-M02-alpine3.21";
           replicas = 1;
+          logs_hostfolder = "/media/data-ssd/syslog/fleet";
         };
         gomuks = mkKubeDrv "gomuks" {
           src = ./templates/gomuks.yaml;

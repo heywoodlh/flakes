@@ -76,6 +76,8 @@ spec:
         volumeMounts:
         - name: fleet-certs
           mountPath: /opt/fleet/certs
+        - name: logs
+          mountPath: /logs
         env:
         - name: FLEET_SERVER_ADDRESS
           value: "0.0.0.0:9080"
@@ -94,6 +96,20 @@ spec:
             secretKeyRef:
               name: fleetdm
               key: MYSQL_PASSWORD
+        - name: FLEET_FILESYSTEM_MAX_SIZE
+          value: "4096" # 4GB
+        - name: FLEET_FILESYSTEM_ENABLE_LOG_COMPRESSION
+          value: "true"
+        - name: FLEET_FILESYSTEM_ENABLE_LOG_ROTATION
+          value: "true"
+        - name: FLEET_OSQUERY_RESULT_LOG_PLUGIN
+          value: "filesystem"
+        - name: FLEET_FILESYSTEM_RESULT_LOG_FILE
+          value: "/logs/result.log"
+        - name: FLEET_FILESYSTEM_AUDIT_LOG_FILE
+          value: "/logs/audit.log"
+        - name: FLEET_FILESYSTEM_STATUS_LOG_FILE
+          value: "/logs/status.log"
         #- name: FLEET_MDM_APPLE_APNS_CERT
         #  value: /opt/fleet/certs/fleet-mdm-apns.pem
         #- name: FLEET_MDM_APPLE_APNS_KEY
@@ -111,6 +127,9 @@ spec:
       - name: fleet-certs
         hostPath:
           path: /opt/fleet/certs
+      - name: logs
+        hostPath:
+          path: @logs_hostfolder@
 ---
 apiVersion: apps/v1
 kind: Deployment
