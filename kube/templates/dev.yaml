@@ -5,7 +5,7 @@ metadata:
   name: "dev-password"
   namespace: "@namespace@"
 spec:
-  itemPath: "vaults/Kubernetes/items/boofeqmvt6vmcdqsyzczhiwqre"
+  itemPath: "vaults/Kubernetes/items/boofeqmvt7vmcdqsyzczhiwqre"
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -144,6 +144,19 @@ data:
     else
         /usr/bin/ttyd -W -t fontSize=16 -t fontFamily="JetBrains Mono Regular" -p 80 --uid 1000 --gid 1000 -w /home/heywoodlh --writable ${TTYD_ARGS} ${COMMAND}
     fi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dev-nix-conf
+  namespace: @namespace@
+data:
+  nix.custom.conf: |-
+    # Managed via Kubernetes
+    sandbox = false
+    filter-syscalls = false
+    extra-substituters = http://attic.default.svc.cluster.local/nixos
+    extra-trusted-public-keys = nixos:uRCswSsap/ho6e2Vp4HXpH9SMdN4rW62N8Uq3r+mQ5E=
 ---
 apiVersion: v1
 kind: Service
@@ -323,6 +336,9 @@ spec:
             - name: dev-timezone
               mountPath: /timezone.sh
               subPath: timezone.sh
+            - name: dev-nix-conf
+              mountPath: /etc/nix/nix.custom.conf
+              subPath: nix.custom.conf
           env:
             - name: DOCKER_TLS_CERTDIR
               value: '/certs'
@@ -391,5 +407,6 @@ spec:
           hostPath:
             path: /opt/syncthing
             type: Directory
-
-
+        - name: dev-nix-conf
+          configMap:
+            name: dev-nix-conf
