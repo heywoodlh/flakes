@@ -27,6 +27,29 @@ ENV ANSIBLE_REMOTE_TMP="/tmp/ansible"
 
 ENTRYPOINT [ "/docker-entrypoint.sh", "/bin/bash", "/ansible/entrypoint.sh" ]
 
+# "Unifi" target
+FROM docker.io/heywoodlh/systemd:debian AS unifi-test
+
+RUN apt update \
+    && apt install -y pipx \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN pipx ensurepath && pipx install --include-deps ansible
+
+COPY . /ansible
+
+# Configure things we need to emulate that are provided in UDM
+RUN apt update \
+    && apt install -y syslog-ng \
+    && rm -rf /var/lib/apt/lists/* \
+    && touch /usr/bin/udr-ui
+
+COPY server/files/etc/syslog-ng/docker.conf /etc/syslog-ng/conf.d/docker.conf
+
+ENV ANSIBLE_REMOTE_TMP="/tmp/ansible"
+
+ENTRYPOINT [ "/docker-entrypoint.sh", "/bin/bash", "/ansible/entrypoint.sh" ]
+
 # Arch Linux target
 FROM docker.io/heywoodlh/systemd:archlinux AS archlinux-test
 

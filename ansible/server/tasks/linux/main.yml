@@ -13,6 +13,17 @@
       ansible.builtin.include_tasks: proxmox.yml
       when: pve_check.stat.exists
 
+- name: unifi tasks
+  block:
+    - name: check if /usr/bin/udr-ui file exists
+      ansible.builtin.stat:
+        path: /usr/bin/udr-ui
+      register: udm_check
+
+    - name: include unifi tasks
+      ansible.builtin.include_tasks: unifi.yml
+      when: udm_check.stat.exists
+
 - name: standard tasks
   when: >
     (ansible_os_family == "Debian") or

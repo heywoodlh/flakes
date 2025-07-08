@@ -65,7 +65,13 @@
     state: restarted
   when: sshd_configure_root.changed
 
+- name: check if /usr/bin/udr-ui file exists
+  ansible.builtin.stat:
+    path: /usr/bin/udr-ui
+  register: udm_check
+
 - name: enable ufw with default rules
+  when: not udm_check.stat.exists
   block:
     - name: enable iptables on arch
       ansible.builtin.service:
@@ -96,40 +102,40 @@
   register: tailscale_check
   ignore_errors: true
 
-- name: install wazuh agent
-  when:
-    - tailscale_check is succeeded
-    - ansible_os_family == 'Debian'
-    - ansible_hostname != 'wazuh'
-  block:
-    - ansible.builtin.apt:
-        deb: "https://packages.wazuh.com/4.x/apt/pool/main/w/wazuh-agent/wazuh-agent_{{ wazuh_version }}_{{ wazuh_arch }}.deb"
-      environment:
-        WAZUH_MANAGER: "wazuh.barn-banana.ts.net"
-      vars:
-        wazuh_arch: "{{ 'amd64' if ansible_architecture == 'x86_64' else 'arm64' }}"
-        wazuh_version: "4.9.0-1"
-
-    - name: enable wazuh service
-      ansible.builtin.systemd_service:
-        state: started
-        daemon_reload: true
-        enabled: true
-        name: wazuh-agent
+#- name: install wazuh agent
+#  when:
+#    - tailscale_check is succeeded
+#    - ansible_os_family == 'Debian'
+#    - ansible_hostname != 'wazuh'
+#  block:
+#    - ansible.builtin.apt:
+#        deb: "https://packages.wazuh.com/4.x/apt/pool/main/w/wazuh-agent/wazuh-agent_{{ wazuh_version }}_{{ wazuh_arch }}.deb"
+#      environment:
+#        WAZUH_MANAGER: "wazuh.barn-banana.ts.net"
+#      vars:
+#        wazuh_arch: "{{ 'amd64' if ansible_architecture == 'x86_64' else 'arm64' }}"
+#        wazuh_version: "4.9.0-1"
+#
+#    - name: enable wazuh service
+#      ansible.builtin.systemd_service:
+#        state: started
+#        daemon_reload: true
+#        enabled: true
+#        name: wazuh-agent
 
 - name: install fleet agent
   when:
     - tailscale_check is succeeded
     - ansible_os_family == 'Debian'
-    - ansible_architecture == 'x86_64'
   block:
     - name: gather package facts
       ansible.builtin.package_facts:
         manager: "apt"
 
     - ansible.builtin.apt:
-        deb: "http://files.barn-banana.ts.net/fleet/fleet-osquery.deb"
+        deb: "http://files.barn-banana.ts.net/fleet/fleet-osquery_1.44.0_{{ fleet_arch }}.deb"
       when:
         - "'fleet-osquery' not in ansible_facts.packages"
       ignore_errors: true
-
+      vars:
+        fleet_arch: "{{ 'amd64' if ansible_architecture == 'x86_64' else 'arm64' }}"

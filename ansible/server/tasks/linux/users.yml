@@ -82,26 +82,17 @@
         mode: '0600'
         owner: heywoodlh
 
-    - name: install flakes
-      include_tasks: ./include/flake.yml
-      loop:
-      - tmux
-      - vim
-      - git
-      - helix
+    #- name: install flakes
+    #  include_tasks: ./include/flake.yml
+    #  loop:
+    #  - tmux
+    #  - vim
+    #  - git
 
     - name: check if tmux flake installed
       ansible.builtin.command: "ls -l {{ user_home.stdout }}/.nix-profile/bin/tmux"
       register: tmux_check
       ignore_errors: true
-
-    - name: launch zellij with bash
-      ansible.builtin.lineinfile:
-        path: "{{ user_home.stdout }}/.bashrc"
-        create: true
-        state: absent
-        line: "[ -z ${ZELLIJ} ] && { {{ user_home.stdout }}/.nix-profile/bin/zellij && exit;}"
-        owner: heywoodlh
 
     - name: launch tmux with bash
       ansible.builtin.lineinfile:

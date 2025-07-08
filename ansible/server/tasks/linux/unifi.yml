@@ -1,0 +1,21 @@
+---
+- name: create syslog-ng configuration
+  ansible.builtin.file:
+    path: "/etc/syslog-ng/conf.d/"
+    state: directory
+
+- name: copy syslog-ng configuration
+  ansible.builtin.copy:
+    src: "etc/syslog-ng/{{ item }}"
+    dest: "/etc/syslog-ng/conf.d/{{ item }}"
+    force: true
+  register: syslog_config
+  with_items:
+    - "unifi-threat.conf"
+
+- name: restart syslog-ng
+  ansible.builtin.systemd:
+    name: syslog-ng.service
+    state: restarted
+  when:
+    - syslog_config.changed

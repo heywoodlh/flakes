@@ -46,13 +46,11 @@ jobs:
 
       - name: Build ${{ matrix.flake }} flake bundles
         run: |
-          mkdir -p appimage deb rpm
+          mkdir -p appimage deb
           nix bundle -o "./${{ matrix.os }}-${{ matrix.out }}-appimage" --bundler github:ralismark/nix-appimage "./${{ matrix.flake }}"
           cp "./${{ matrix.os }}-${{ matrix.out }}-appimage" "./appimage/${{ matrix.flake }}-amd64.appimage"
           nix bundle -o "./${{ matrix.os }}-${{ matrix.flake }}-deb" --bundler github:nixos/bundlers#toDEB "./${{ matrix.flake }}"
           cp "./${{ matrix.os }}-${{ matrix.flake }}-deb"/*.deb "./deb/${{ matrix.flake }}-amd64.deb"
-          nix bundle -o "./${{ matrix.os }}-${{ matrix.flake }}-rpm" --bundler github:nixos/bundlers#toRPM "./${{ matrix.flake }}"
-          cp "./${{ matrix.os }}-${{ matrix.flake }}-rpm"/*.rpm "./rpm/${{ matrix.flake }}-amd64.rpm"
           nix run nixpkgs#tree
 
       - uses: actions/upload-artifact@v4
@@ -60,7 +58,6 @@ jobs:
           name: ${{ matrix.os }}-${{ matrix.flake }}
           path: |
             ./appimage/*.appimage
-            ./rpm/*.rpm
             ./deb/*.deb
 
   build-custom-bundles:
@@ -117,13 +114,11 @@ jobs:
 
       - name: Build ${{ matrix.flake }} flake bundles
         run: |
-          mkdir -p appimage deb rpm
+          mkdir -p appimage deb
           nix bundle -o "./${{ matrix.os }}-${{ matrix.out }}-appimage" --bundler github:ralismark/nix-appimage "${{ matrix.flake }}"
           cp "./${{ matrix.os }}-${{ matrix.out }}-appimage" "./appimage/${{ matrix.out }}-amd64.appimage"
           nix bundle -o "./${{ matrix.os }}-${{ matrix.out }}-deb" --bundler github:nixos/bundlers#toDEB "${{ matrix.flake }}"
           cp "./${{ matrix.os }}-${{ matrix.out }}-deb"/*.deb "./deb/${{ matrix.out }}-amd64.deb"
-          nix bundle -o "./${{ matrix.os }}-${{ matrix.out }}-rpm" --bundler github:nixos/bundlers#toRPM "${{ matrix.flake }}" || true # optional, I'm not super attached to Fedora
-          cp "./${{ matrix.os }}-${{ matrix.out }}-rpm"/*.rpm "./rpm/${{ matrix.out }}-amd64.rpm"
           nix run nixpkgs#tree
 
       - uses: actions/upload-artifact@v4
@@ -131,7 +126,6 @@ jobs:
           name: ${{ matrix.os }}-${{ matrix.out }}
           path: |
             ./appimage/*.appimage
-            ./rpm/*.rpm
             ./deb/*.deb
 
   push-releases:
@@ -178,10 +172,10 @@ jobs:
           allowUpdates: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create deb/rpm release with flake executables
+      - name: Create deb release with flake executables
         uses: ncipollo/release-action@v1.16.0
         with:
-          artifacts: "./*/deb/*.deb,./*/rpm/*.rpm"
+          artifacts: "./*/deb/*.deb"
           tag: "packages"
           allowUpdates: true
           token: ${{ secrets.GITHUB_TOKEN }}

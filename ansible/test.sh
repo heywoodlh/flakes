@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 export LC_ALL="C.UTF-8"
 dir=$(dirname -- "$( readlink -f -- "$0"; )";)
-operating_systems=("ubuntu" "debian" "alpine")
+operating_systems=("ubuntu" "debian" "unifi" "alpine")
 # If AMD64, also test Arch Linux
 [[ $(arch) == "x86_64" ]] && operating_systems+=("archlinux")
 
@@ -33,7 +33,13 @@ do
   mkdir -p /tmp/ansible
   for target in "${targets[@]}"
   do
-    echo "Testing: ${target}"
-    docker run -it --rm -v /tmp/.ansible:/root/.ansible --privileged ansible-${os}-test ${target}
+    # Skip specific combinations
+    if [[ "${os}" == "unifi" && "${target}" == "workstation" ]]
+    then
+      echo "Skipping unifi+workstation"
+    else
+      echo "Testing: ${target}"
+      docker run -it --rm -v /tmp/.ansible:/root/.ansible --privileged ansible-${os}-test ${target}
+    fi
   done
 done
