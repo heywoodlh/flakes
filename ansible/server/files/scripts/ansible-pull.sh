@@ -3,6 +3,9 @@
 # Source nix
 [ -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ] && . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 
+# Add to path for pipx
+export PATH="$HOME/.local/bin:$PATH"
+
 if command -v nix &>/dev/null
 then
   nix run "github:heywoodlh/flakes/$(git ls-remote https://github.com/heywoodlh/flakes | head -1 | awk '{print $1}')?dir=ansible#server"

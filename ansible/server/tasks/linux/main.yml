@@ -15,7 +15,7 @@
 
 - name: unifi tasks
   block:
-    - name: check if /usr/bin/ubios-udapi-server file exists
+    - name: check if running on Unifi Dream Machine
       ansible.builtin.stat:
         path: /usr/bin/ubios-udapi-server
       register: udm_check

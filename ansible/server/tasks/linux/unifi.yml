@@ -20,8 +20,79 @@
     - "unifi-threat.conf"
 
 - name: restart syslog-ng
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: syslog-ng.service
     state: restarted
   when:
     - syslog_config.changed
+
+- name: check if connected to tailscale
+  ansible.builtin.uri:
+    url: http://files.barn-banana.ts.net
+  register: tailscale_server_check
+  ignore_errors: true
+
+- name: copy tailscale-dependent syslog-ng configuration
+  ansible.builtin.copy:
+    src: "etc/syslog-ng/{{ item }}"
+    dest: "/etc/syslog-ng/conf.d/{{ item }}"
+    force: true
+  register: syslog_config
+  with_items:
+    - "d_ntfy.conf"
+
+- name: restart syslog-ng
+  ansible.builtin.systemd_service:
+    name: syslog-ng.service
+    state: restarted
+  when:
+    - syslog_config.changed
+
+- name: install osquery agent
+  when: tailscale_server_check.status == 200
+  block:
+    - name: uninstall fleet package if installed
+      ansible.builtin.apt:
+        name: fleet-osquery
+        state: absent
+
+    - name: install osquery package
+      ansible.builtin.apt:
+        deb: "https://pkg.osquery.io/deb/osquery_5.17.0-1.linux_arm64.deb"
+
+    - name: mask journald audit socket (to reduce performance issues)
+      ansible.builtin.systemd_service:
+        name: systemd-journald-audit.socket
+        masked: true
+
+    - name: create osquery directory
+      ansible.builtin.file:
+        path: /etc/osquery
+        state: directory
+
+    - name: download osquery flagfile
+      ansible.builtin.copy:
+        src: etc/osquery/osquery.flags
+        dest: "/etc/osquery/osquery.flags"
+      register: osquery_flagfile
+
+    - name: download osquery certs
+      ansible.builtin.uri:
+        url: "http://files.barn-banana.ts.net/fleet/{{ item }}"
+        dest: "/etc/osquery/{{ item }}"
+      ignore_errors: true
+      with_items:
+        - "fleet.pem"
+        - "secret.txt"
+
+    - name: enable osquery service
+      ansible.builtin.systemd_service:
+        name: osqueryd.service
+        enabled: true
+        state: started
+
+    - name: restart osquery service
+      ansible.builtin.systemd_service:
+        name: osqueryd.service
+        state: restarted
+      when: osquery_flagfile.changed

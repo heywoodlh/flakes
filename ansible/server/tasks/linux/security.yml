@@ -122,10 +122,16 @@
 #        enabled: true
 #        name: wazuh-agent
 
+- name: check if running on Unifi Dream Machine
+  ansible.builtin.stat:
+    path: /usr/bin/ubios-udapi-server
+  register: udm_check
+
 - name: install fleet agent
   when:
     - tailscale_server_check.status == 200
     - ansible_os_family == 'Debian'
+    - not udm_check.stat.exists
   block:
     - name: gather package facts
       ansible.builtin.package_facts:
