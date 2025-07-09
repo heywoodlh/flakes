@@ -687,7 +687,7 @@
         rustdesk-web = mkKubeDrv "rustdesk-web" {
           src = ./templates/rustdesk-web.yaml;
           namespace = "default";
-          image = "docker.io/heywoodlh/rustdesk-web:1.3.9";
+          image = "docker.io/heywoodlh/rustdesk-web:1.4.0";
           replicas = 1;
         };
         samplicator = mkKubeDrv "samplicator" {
