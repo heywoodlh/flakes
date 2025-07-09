@@ -42,7 +42,7 @@ COPY . /ansible
 RUN apt update \
     && apt install -y syslog-ng \
     && rm -rf /var/lib/apt/lists/* \
-    && touch /usr/bin/udr-ui
+    && touch /usr/bin/ubios-udapi-server
 
 COPY server/files/etc/syslog-ng/docker.conf /etc/syslog-ng/conf.d/docker.conf
 

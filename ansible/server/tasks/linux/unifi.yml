@@ -1,4 +1,10 @@
 ---
+- name: upgrade syslog-ng
+  ansible.builtin.apt:
+    name: syslog-ng
+    state: latest
+    dpkg_options: "force-confdef,force-confold,force-overwrite"
+
 - name: create syslog-ng configuration
   ansible.builtin.file:
     path: "/etc/syslog-ng/conf.d/"

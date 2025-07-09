@@ -15,9 +15,9 @@
 
 - name: unifi tasks
   block:
-    - name: check if /usr/bin/udr-ui file exists
+    - name: check if /usr/bin/ubios-udapi-server file exists
       ansible.builtin.stat:
-        path: /usr/bin/udr-ui
+        path: /usr/bin/ubios-udapi-server
       register: udm_check
 
     - name: include unifi tasks
@@ -35,6 +35,7 @@
 
     - name: include nix tasks
       ansible.builtin.include_tasks: ../../../common/nix.yml
+      when: not udm_check.stat.exists
 
     - name: include config tasks
       ansible.builtin.include_tasks: config.yml
@@ -46,7 +47,9 @@
       ansible.builtin.include_tasks: users.yml
 
     - name: install node_exporter
-      when: ansible_os_family != "Alpine"
+      when:
+        - ansible_os_family != "Alpine"
+        - not udm_check.stat.exists
       ansible.builtin.include_role:
         name: prometheus.prometheus.node_exporter
 

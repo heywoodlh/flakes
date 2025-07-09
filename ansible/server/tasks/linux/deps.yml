@@ -49,7 +49,6 @@
     - name: install debian packages
       ansible.builtin.apt:
         update_cache: yes
-        lock_timeout: 600
         pkg:
           - autoconf
           - bc

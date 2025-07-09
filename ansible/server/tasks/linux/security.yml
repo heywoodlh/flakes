@@ -65,9 +65,9 @@
     state: restarted
   when: sshd_configure_root.changed
 
-- name: check if /usr/bin/udr-ui file exists
+- name: check if on UDM
   ansible.builtin.stat:
-    path: /usr/bin/udr-ui
+    path: /usr/bin/ubios-udapi-server
   register: udm_check
 
 - name: enable ufw with default rules
@@ -96,10 +96,9 @@
       ignore_errors: true # archlinux container doesn't like this
 
 - name: check if connected to tailscale
-  ansible.netcommon.net_ping:
-    dest: 100.100.100.100
-    count: 1
-  register: tailscale_check
+  ansible.builtin.uri:
+    url: http://files.barn-banana.ts.net
+  register: tailscale_server_check
   ignore_errors: true
 
 #- name: install wazuh agent
@@ -125,7 +124,7 @@
 
 - name: install fleet agent
   when:
-    - tailscale_check is succeeded
+    - tailscale_server_check.status == 200
     - ansible_os_family == 'Debian'
   block:
     - name: gather package facts
