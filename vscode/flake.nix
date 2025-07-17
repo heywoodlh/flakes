@@ -26,6 +26,7 @@
         vscodeExtensions = with allExtensions.vscode-marketplace; [
           arcticicestudio.nord-visual-studio-code
           coder.coder-remote
+          continue.continue
           eamodio.gitlens
           github.codespaces
           github.copilot
