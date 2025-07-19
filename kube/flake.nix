@@ -169,7 +169,7 @@
           src = ./templates/actual.yaml;
           namespace = "default";
           replicas = 1;
-          image = "docker.io/actualbudget/actual-server:25.3.1-alpine";
+          image = "docker.io/actualbudget/actual-server:25.7.1-alpine";
         };
         # After applying this, run the following: `kubectl apply -f ./kubectl/argo-nix-configmap.yaml`
         argo = (kubelib.buildHelmChart {
