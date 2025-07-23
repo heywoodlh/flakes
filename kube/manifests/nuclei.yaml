@@ -150,7 +150,7 @@ metadata:
   name: nuclei
   namespace: nuclei
 spec:
-  schedule: "15 0 * * Mon"
+  schedule: "0 15 * * Tue"
   jobTemplate:
     spec:
       template:
