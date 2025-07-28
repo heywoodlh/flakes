@@ -13,7 +13,7 @@
 }:
 
 let
-  myZenVersion = "1.14.8b";
+  myZenVersion = "1.14.9b";
   x86_64-darwin-hash = "";
   aarch64-darwin-hash = "";
   x86_64-linux-hash = "";
