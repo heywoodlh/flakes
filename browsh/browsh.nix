@@ -1,11 +1,11 @@
-{ lib, buildGoModule, fetchurl, fetchFromGitHub, buildNpmPackage, nodePackages, zip, stdenv, }:
+{ lib, buildGoModule, fetchurl, fetchFromGitHub, buildNpmPackage, nodePackages, zip, stdenv, firefox, }:
 
 let
   src = fetchFromGitHub {
     owner = "browsh-org";
     repo = "browsh";
     rev = "vim-mode-2022";
-    hash = "sha256-77fHkhhLdftVvj7OMveVHLB4n6PjPX2eggRvXwVYpGs=";  
+    hash = "sha256-77fHkhhLdftVvj7OMveVHLB4n6PjPX2eggRvXwVYpGs=";
   };
 
   webext = buildNpmPackage rec {
@@ -13,6 +13,7 @@ let
     inherit src;
 
     nativeBuildInputs = [nodePackages.webpack-cli zip];
+    buildInputs = [ firefox ];
     dontNpmBuild = true;
 
     installPhase = ''
