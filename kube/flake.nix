@@ -704,6 +704,12 @@
           image = "ghcr.io/silverbulletmd/silverbullet:v2";
           replicas = 1;
         };
+        sons-of-the-forest = mkKubeDrv "sons-of-the-forest" {
+          src = ./templates/sons-of-the-forest.yaml;
+          namespace = "theforest";
+          image = "docker.io/jammsen/sons-of-the-forest-dedicated-server:latest";
+          hostfolder = "/media/data-ssd/theforest";
+        };
         squid = mkKubeDrv "squid" {
           src = ./templates/squid.yaml;
           namespace = "default";
