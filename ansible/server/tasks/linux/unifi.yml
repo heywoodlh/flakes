@@ -1,4 +1,15 @@
 ---
+- name: remove broken apt repository reference
+  ansible.builtin.lineinfile:
+    path: /etc/apt/sources.list
+    line: "deb https://deb.debian.org/debian/ bullseye-backports main"
+    state: absent
+
+- name: add neovim
+  ansible.builtin.apt:
+    name: neovim
+    state: latest
+
 - name: upgrade syslog-ng
   ansible.builtin.apt:
     name: syslog-ng

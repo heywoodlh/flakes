@@ -1,10 +1,8 @@
 # Ubuntu target
 FROM docker.io/heywoodlh/systemd:ubuntu AS ubuntu-test
-RUN apt update \
-    && apt install -y pipx \
-    && rm -rf /var/lib/apt/lists/*
 
-RUN pipx ensurepath && pipx install --include-deps ansible
+COPY server/files/scripts/install-ansible.sh /install-ansible.sh
+RUN /install-ansible.sh
 
 COPY . /ansible
 
@@ -15,11 +13,8 @@ ENTRYPOINT [ "/docker-entrypoint.sh", "/bin/bash", "/ansible/entrypoint.sh" ]
 # Debian target
 FROM docker.io/heywoodlh/systemd:debian AS debian-test
 
-RUN apt update \
-    && apt install -y pipx \
-    && rm -rf /var/lib/apt/lists/*
-
-RUN pipx ensurepath && pipx install --include-deps ansible
+COPY server/files/scripts/install-ansible.sh /install-ansible.sh
+RUN /install-ansible.sh
 
 COPY . /ansible
 
@@ -28,13 +23,10 @@ ENV ANSIBLE_REMOTE_TMP="/tmp/ansible"
 ENTRYPOINT [ "/docker-entrypoint.sh", "/bin/bash", "/ansible/entrypoint.sh" ]
 
 # "Unifi" target
-FROM docker.io/heywoodlh/systemd:debian AS unifi-test
+FROM docker.io/heywoodlh/systemd:debian-bullseye AS unifi-test
 
-RUN apt update \
-    && apt install -y pipx \
-    && rm -rf /var/lib/apt/lists/*
-
-RUN pipx ensurepath && pipx install --include-deps ansible
+COPY server/files/scripts/install-ansible.sh /install-ansible.sh
+RUN /install-ansible.sh
 
 COPY . /ansible
 
