@@ -15,6 +15,11 @@
         mode: '0600'
         owner: root
 
+    - name: add github keys to root authorized_keys
+      ansible.posix.authorized_key:
+        user: root
+        key: https://github.com/heywoodlh.keys
+
 - name: delete default users
   block:
     - name: "delete user {{ item }}"
