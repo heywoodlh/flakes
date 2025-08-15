@@ -33,6 +33,7 @@ applications=(
   "rustdesk"
   "rustdesk-web"
   "samplicator"
+  "silverbullet"
   "sons-of-the-forest"
   "syncthing"
   "syslog"

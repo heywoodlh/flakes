@@ -71,8 +71,6 @@ spec:
               mountPath: /space/notes-personal
             - name: notes-pro
               mountPath: /space/notes-pro
-            - name: opt
-              mountPath: /space/opt
           env:
             - name: SB_USER
               valueFrom:
@@ -91,8 +89,4 @@ spec:
         - name: notes-pro
           hostPath:
             path: /opt/syncthing/notes-pro
-            type: Directory
-        - name: opt
-          hostPath:
-            path: /opt/syncthing/opt
             type: Directory
