@@ -6,6 +6,7 @@ applications=(
   "actual"
   "attic"
   "argo"
+  "beeper-bridges"
   "cloudflared"
   "coredns"
   "coredns-kube-system"

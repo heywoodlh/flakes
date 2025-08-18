@@ -272,7 +272,7 @@
           src = ./templates/beeper-bridges.yaml;
           namespace = "messaging";
           replicas = 1;
-          image = "ghcr.io/beeper/bridge-manager:8a57420fb80b495979ce049de57d60b0e0985fb0";
+          image = "ghcr.io/beeper/bridge-manager:5d5ce6adf5f7d0bfa399e2855506ba717a48d534";
           hostfolder = "/media/data-ssd/beeper";
         };
         dev = mkKubeDrv "dev" {
