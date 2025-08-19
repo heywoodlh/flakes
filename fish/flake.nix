@@ -53,6 +53,10 @@
           complete -x -c asp -d "AWS profiles" -n "_get_aws_profiles" -a "$(_get_aws_profiles)"
         end
       '';
+      # nixpkgs provided `ps` produces error on MacOS: "ps: time: requires entitlement", so just use MacOS' ps when on Darwin
+      # Additional, pkgs.ps on MacOS expects different arguments than Linux
+      ps = if pkgs.stdenv.isDarwin then "/bin/ps" else "${pkgs.ps}/bin/ps";
+      psFlags = if pkgs.stdenv.isDarwin then "-U $USER" else "-fjH -u $USER";
       fish_config = pkgs.writeText "profile.fish" ''
         # Function to add a directory to $PATH
         # Only if exists
@@ -82,7 +86,7 @@
         function start-ssh-agent
             if not echo $SSH_AUTH_SOCK | ${pkgs.gnugrep}/bin/grep -q 1password
                 # Check if ssh-agent running with ~/.ssh/agent.sock socket
-                if not ${pkgs.ps}/bin/ps -fjH -u $USER | ${pkgs.gnugrep}/bin/grep ssh-agent | ${pkgs.gnugrep}/bin/grep -q "$HOME/.ssh/agent.sock" &> /dev/null
+                if not ${ps} ${psFlags} | ${pkgs.gnugrep}/bin/grep ssh-agent | ${pkgs.gnugrep}/bin/grep -q "$HOME/.ssh/agent.sock" &> /dev/null
                     mkdir -p $HOME/.ssh
                     rm -f $HOME/.ssh/agent.sock &> /dev/null
                     eval (${pkgs.openssh}/bin/ssh-agent -t 4h -c -a "$HOME/.ssh/agent.sock") &> /dev/null || true
@@ -115,6 +119,12 @@
                 # ssh-agent not being forwarded
                 start-ssh-agent
             end
+        end
+
+        # For testing, force ssh-agent to start if FORCE_SSH_AGENT is set
+        if test -n "$FORCE_SSH_AGENT"
+            set -e SSH_AUTH_SOCK
+            start-ssh-agent
         end
 
         # Add ~/bin to $PATH (ALWAYS)
