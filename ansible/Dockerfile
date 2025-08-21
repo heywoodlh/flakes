@@ -45,7 +45,8 @@ ENTRYPOINT [ "/docker-entrypoint.sh", "/bin/bash", "/ansible/entrypoint.sh" ]
 # Arch Linux target
 FROM docker.io/heywoodlh/systemd:archlinux AS archlinux-test
 
-RUN pacman -Sy --noconfirm ansible python bash grep
+COPY server/files/scripts/install-ansible.sh /install-ansible.sh
+RUN pacman -Sy --noconfirm python bash grep && /install-ansible.sh
 
 COPY . /ansible
 
