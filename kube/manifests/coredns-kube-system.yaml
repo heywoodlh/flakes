@@ -1,3 +1,8 @@
+---
+kind: ConfigMap
+metadata:
+  name: coredns
+  namespace: kube-system
 apiVersion: v1
 data:
   Corefile: |
@@ -21,13 +26,24 @@ data:
         reload
         loadbalance
     }
-    import /etc/coredns/custom/*.server
+    barn-banana.ts.net:53 {
+        forward . 100.100.100.100
+    }
   NodeHosts: |
     192.168.1.22 nix-nvidia
-kind: ConfigMap
+---
+# Service to expose Tailnet DNS IP to cluster
+# Enabled by tailscale operator
+apiVersion: v1
+kind: Service
 metadata:
-  name: coredns
+  annotations:
+    tailscale.com/tailnet-ip: 100.100.100.100
+  name: tailnet-dns
   namespace: kube-system
+spec:
+  externalName: placeholder   # any value - will be overwritten by operator
+  type: ExternalName
 #---
 #apiVersion: v1
 #kind: ConfigMap

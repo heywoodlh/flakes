@@ -123,6 +123,13 @@ spec:
               protocol: UDP
             - containerPort: 9700
               protocol: UDP
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+            requests:
+              cpu: 500m
+              memory: 500Mi
           volumeMounts:
             - mountPath: /sonsoftheforest
               name: theforest-claim0

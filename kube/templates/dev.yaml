@@ -80,6 +80,7 @@ data:
     export DOCKER_CERT_PATH='/certs'
     export DOCKER_HOST="tcp://localhost:2376"
     export DOCKER_TLS_VERIFY="1"
+    export KUBECONFIG="/kubeconfig"
 
     function ssh-unlock
       op-unlock
@@ -260,6 +261,32 @@ metadata:
   name: k8s-dev
   namespace: @namespace@
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dev-kubeconfig
+  namespace: @namespace@
+data:
+  kubeconfig: |-
+    apiVersion: v1
+    clusters:
+    - cluster:
+        server: https://kubernetes.default.svc.cluster.local:443
+        certificate-authority: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      name: local
+    contexts:
+    - context:
+        cluster: local
+        user: default-user
+      name: local
+    current-context: local
+    kind: Config
+    preferences: {}
+    users:
+    - name: default-user
+      user:
+        tokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -353,6 +380,9 @@ spec:
             - name: dev-nix-conf
               mountPath: /etc/nix/nix.custom.conf
               subPath: nix.custom.conf
+            - name: dev-kubeconfig
+              mountPath: /kubeconfig
+              subPath: kubeconfig
           env:
             - name: DOCKER_TLS_CERTDIR
               value: '/certs'
@@ -372,6 +402,8 @@ spec:
                 secretKeyRef:
                   name: dev-password
                   key: password
+            - name: KUBECONFIG
+              value: "/kubeconfig"
       volumes:
         - name: dev-dind-certs
           persistentVolumeClaim:
@@ -424,3 +456,6 @@ spec:
         - name: dev-nix-conf
           configMap:
             name: dev-nix-conf
+        - name: dev-kubeconfig
+          configMap:
+            name: dev-kubeconfig

@@ -72,6 +72,8 @@ spec:
               value: "America/Denver"
             - name: DEATH_PENALTY
               value: "None"
+            - name: AUTO_PAUSE_ENABLED
+              value: "true"
           image: docker.io/thijsvanloef/palworld-server-docker:dev
           imagePullPolicy: Always
           name: palworld-server
@@ -82,6 +84,13 @@ spec:
               protocol: UDP
             - containerPort: 25575
               protocol: TCP
+          resources:
+            limits:
+              cpu: 2000m
+              memory: 4Gi
+            requests:
+              cpu: 500m
+              memory: 500Mi
           volumeMounts:
             - mountPath: /palworld
               name: palworld-claim0
