@@ -23,6 +23,8 @@ then
   fi
 fi
 
+docker_run_args=""
+
 echo "Operating systems that will be tested: ${operating_systems[@]}"
 echo "Targets that will be tested: ${targets[@]}"
 for os in "${operating_systems[@]}"
@@ -39,7 +41,12 @@ do
       echo "Skipping unifi+workstation"
     else
       echo "Testing: ${target}"
-      docker run -it --rm -v /tmp/.ansible:/root/.ansible --privileged ansible-${os}-test ${target}
+      if [[ "${os}" == "unifi" ]]
+      then
+        docker run -it --hostname=spencer-router --rm -v /tmp/.ansible:/root/.ansible --privileged ansible-${os}-test ${target}
+      else
+        docker run -it --rm -v /tmp/.ansible:/root/.ansible --privileged ansible-${os}-test ${target}
+      fi
     fi
   done
 done
