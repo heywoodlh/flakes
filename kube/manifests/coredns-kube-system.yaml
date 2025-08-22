@@ -42,6 +42,7 @@ metadata:
   name: tailnet-dns
   namespace: kube-system
 spec:
+  clusterIP: 10.96.0.10
   externalName: placeholder   # any value - will be overwritten by operator
   type: ExternalName
 #---
