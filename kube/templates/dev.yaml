@@ -86,16 +86,6 @@ data:
       op read 'op://Personal/rlt3q545cf5a4r4arhnb4h5qmi/private_key' | ssh-add -t 4h -
     end
 
-    function k9s
-      op-unlock
-      $HOME/.nix-profile/bin/k9s $argv
-    end
-
-    function kubectl
-      op-unlock
-      $HOME/.nix-profile/bin/kubectl $argv
-    end
-
     tmux set -g status on &> /dev/null
 ---
 apiVersion: v1
@@ -215,6 +205,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: dev-dind-storage
+  namespace: @namespace@
 spec:
   accessModes:
     - ReadWriteOnce
@@ -227,6 +218,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: dev-dind-certs
+  namespace: @namespace@
 spec:
   accessModes:
     - ReadWriteOnce
@@ -239,6 +231,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: dev-host-keys
+  namespace: @namespace@
 spec:
   accessModes:
     - ReadWriteOnce
@@ -246,6 +239,26 @@ spec:
   resources:
     requests:
       storage: 100Mi
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: k8s-dev
+  namespace: @namespace@
+subjects:
+- kind: ServiceAccount
+  name: k8s-dev
+  namespace: @namespace@
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: k8s-dev
+  namespace: @namespace@
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -267,6 +280,7 @@ spec:
         app.kubernetes.io/name: dev
         app.kubernetes.io/instance: dev
     spec:
+      serviceAccountName: k8s-dev
       hostname: dev
       securityContext:
         {}
