@@ -172,6 +172,10 @@ spec:
       targetPort: sshd
       protocol: TCP
       name: sshd
+    - port: 60000
+      targetPort: 60000
+      protocol: UDP
+      name: udp
   selector:
     app.kubernetes.io/name: dev
     app.kubernetes.io/instance: dev
