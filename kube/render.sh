@@ -37,6 +37,7 @@ applications=(
   "silverbullet"
   "syncthing"
   "syslog"
+  "tailscale-dns-bridge"
 )
 
 

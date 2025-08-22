@@ -27,24 +27,10 @@ data:
         loadbalance
     }
     barn-banana.ts.net:53 {
-        forward . 100.100.100.100
+        forward . 10.43.0.15
     }
   NodeHosts: |
     192.168.1.22 nix-nvidia
----
-# Service to expose Tailnet DNS IP to cluster
-# Enabled by tailscale operator
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
-    tailscale.com/tailnet-ip: 100.100.100.100
-  name: tailnet-dns
-  namespace: kube-system
-spec:
-  clusterIP: 10.96.0.10
-  externalName: placeholder   # any value - will be overwritten by operator
-  type: ExternalName
 #---
 #apiVersion: v1
 #kind: ConfigMap

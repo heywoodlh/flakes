@@ -744,6 +744,14 @@
           namespace = "tailscale";
           values = {};
         });
+        tailscale-dns-bridge = mkKubeDrv "tailscale-dns-bridge" {
+          src = ./templates/tailscale-dns-bridge.yaml;
+          namespace = "default";
+          image = "docker.io/heywoodlh/tailscale-dns-bridge:1.86.5";
+          replicas = 1;
+          hostfolder = "/opt/tailscale-dns-bridge";
+          nodename = "nix-nvidia";
+        };
         tor-socks-proxy = mkKubeDrv "tor-socks-proxy" {
           src = ./templates/tor-socks-proxy.yaml;
           namespace = "default";
