@@ -59,6 +59,10 @@
   when:
     - syslog_config.changed
 
+- name: install wakeonlan
+  ansible.builtin.apt:
+    name: wakeonlan
+
 - name: install osquery agent
   when: tailscale_server_check.status == 200
   block:

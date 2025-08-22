@@ -1,0 +1,15 @@
+---
+- name: Create /opt/public directory
+  ansible.builtin.file:
+    state: directory
+    path: "/opt/public"
+    mode: "0755"
+
+- name: Copy wakeonlan scripts
+  ansible.builtin.copy:
+    src: "files/scripts/{{ item }}"
+    dest: "/opt/public/{{ item }}"
+    mode: "0755"
+  loop:
+    - "wake-spencer-gaming.sh"
+    - "wake-sarah-gaming.sh"
