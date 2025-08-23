@@ -473,7 +473,7 @@
           sonarr_hostfolder = "/media/config/services/sonarr";
           lidarr_image = "docker.io/linuxserver/lidarr:2.12.1-develop";
           lidarr_hostfolder = "/media/config/services/lidarr";
-          readarr_image = "docker.io/linuxserver/readarr:0.4.17-nightly";
+          readarr_image = "docker.io/linuxserver/readarr:0.4.19-nightly";
           readarr_hostfolder = "/media/config/services/readarr";
           sabnzbd_image = "docker.io/linuxserver/sabnzbd:4.5.1";
           sabnzbd_hostfolder = "/media/config/services/sabnzbd";
