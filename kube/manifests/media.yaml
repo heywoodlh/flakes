@@ -227,7 +227,7 @@ spec:
       nodeSelector:
         kubernetes.io/hostname: nix-nvidia
       containers:
-      - image: docker.io/linuxserver/readarr:0.4.17-nightly
+      - image: docker.io/linuxserver/readarr:0.4.19-nightly
         name: readarr
         ports:
         - name: http
