@@ -112,6 +112,7 @@
     op-flake,
     lima-flake,
     chromium-widevine-flake,
+    vicinae-nix,
     gnome-flake,
     qutebrowser-flake,
     zen-browser-flake,
