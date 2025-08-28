@@ -63,12 +63,17 @@
       url = "./chromium-widevine";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    vicinae-nix = {
+      url = "github:heywoodlh/vicinae-nix/arm64-caching";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     gnome-flake = {
       url = "./gnome";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.nixpkgs-stable.follows = "nixpkgs-stable";
       inputs.fish-flake.follows = "fish-flake";
       inputs.vim-flake.follows = "vim-flake";
+      inputs.vicinae-nix.follows = "vicinae-nix";
     };
     qutebrowser-flake = {
       url = "./qutebrowser";

@@ -21,6 +21,10 @@
       flake = false;
       url = "https://github.com/EliverLara/Nordic/releases/download/v2.2.0/Nordic.tar.xz";
     };
+    vicinae-nix = {
+      url = "github:heywoodlh/vicinae-nix/arm64-caching";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = inputs @ {
     self,
@@ -31,6 +35,7 @@
     vim-flake,
     vim-ime,
     nordic,
+    vicinae-nix,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs {
@@ -110,6 +115,7 @@
           '';
         };
       };
+      vicinaePkg = vicinae-nix.packages.${system}.default;
       dconf-ini = pkgs.writeText "dconf.ini" ''
         [apps/guake/general]
         ${guakeConf.general}
@@ -211,7 +217,7 @@
         workspaces-only-on-primary=false
 
         [org/gnome/settings-daemon/plugins/media-keys]
-        custom-keybindings=@as ['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/']
+        custom-keybindings=@as ['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom9/']
         logout=@as ['<Shift><Super>e']
         play=@as ['<Shift><Control>space']
         terminal='disabled'
@@ -256,10 +262,15 @@
         command='${datepop}'
         name='datepop'
 
+        [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom9]
+        binding='<Super>space'
+        command='${vicinaePkg}/bin/vicinae'
+        name='launcher'
+
         [org/gnome/shell]
         disable-user-extensions=false
         disabled-extensions=@as ['disabled','ubuntu-dock@ubuntu.com','ding@rastersoft.com','nightthemeswitcher@romainvigier.fr', 'openbar@neuromorph', 'pop-shell@system76.com', 'switcher@landau.fi', 'paperwm@paperwm.github.com']
-        enabled-extensions=@as ['caffeine@patapon.info','gsconnect@andyholmes.github.io','just-perfection-desktop@just-perfection','native-window-placement@gnome-shell-extensions.gcampax.github.com','user-theme@gnome-shell-extensions.gcampax.github.com','gnomebedtime@ionutbortis.gmail.com','forge@jmmaranan.com','hide-cursor@elcste.com', 'search-light@icedman.github.com', 'space-bar@luchrioh']
+        enabled-extensions=@as ['caffeine@patapon.info','gsconnect@andyholmes.github.io','just-perfection-desktop@just-perfection','native-window-placement@gnome-shell-extensions.gcampax.github.com','user-theme@gnome-shell-extensions.gcampax.github.com','gnomebedtime@ionutbortis.gmail.com','forge@jmmaranan.com','hide-cursor@elcste.com', 'space-bar@luchrioh']
         favorite-apps=@as ['firefox.desktop','wezterm.desktop']
         had-bluetooth-devices-setup=true
         remember-mount-password=false
@@ -324,31 +335,10 @@
         switch-right=@as ['<Super>bracketright']
         toggle-maximize-width=@as ['<Super>Up']
 
-        [org/gnome/shell/extensions/pop-shell]
-        activate-launcher=@as ['disabled']
-        focus-right=@as ['disabled']
-        tile-by-default=true
-        tile-enter=@as ['disabled']
-
         [org/gnome/shell/extensions/switcher]
         font-size=uint32 24
         max-width-percentage=uint32 48
         show-switcher=['<Super>space']
-
-        [org/gnome/shell/extensions/search-light]
-        background-color=(0.27058824896812439, 0.27450981736183167, 0.29019609093666077, 0.25)
-        blur-background=false
-        blur-brightness=0.59999999999999998
-        blur-sigma=30.0
-        border-radius=5.76171875
-        entry-font-size=1
-        monitor-count=1
-        preferred-monitor=0
-        scale-height=0.10000000000000001
-        scale-width=0.10000000000000001
-        shortcut-search=['<Super>space']
-        window-effect=0
-        window-effect-color=(0.27058824896812439, 0.27450981736183167, 0.29019609093666077, 1.0)
 
         [org/gnome/shell/extensions/openbar]
         accent-color=['0', '0.75', '0.75']
@@ -697,7 +687,6 @@
                                "forge@jmmaranan.com"
                                "hide-cursor@elcste.com"
                                "user-theme@gnome-shell-extensions.gcampax.github.com"
-                               "search-light@icedman.github.com"
                                "space-bar@luchrioh")
 
         for extension in "''${extensions[@]}"
