@@ -699,7 +699,7 @@
         [org/gnome/tweaks]
         show-extensions-notice=false
       '';
-      gnome-install-extensions = pkgs.writeShellScript "gnome-ext-install" ''
+      gnome-extensions-script = pkgs.writeShellScriptBin "gnome-ext-install" ''
         declare -a extensions=("caffeine@patapon.info"
                                "gnomebedtime@ionutbortis.gmail.com"
                                "gsconnect@andyholmes.github.io"
@@ -731,6 +731,7 @@
         apply = pkgs.writeShellScriptBin "apply-dconf" ''
           ${pkgs.dconf}/bin/dconf load / < ${dconf-ini};
         '';
+        gnome-install-extensions = gnome-extensions-script;
         gnome-desktop-setup = pkgs.writeShellScriptBin "gnome-desktop-setup" ''
           ## Install JetBrains nerd font
           mkdir -p ~/.local/share/fonts/ttf
@@ -751,7 +752,7 @@
           fi
 
           ## Install extensions
-          ${gnome-install-extensions}
+          ${gnome-extensions-script}/bin/gnome-ext-install
 
           ## Apply dconf
           if [[ -v DBUS_SESSION_BUS_ADDRESS ]]; then

@@ -149,6 +149,7 @@
         chromium-widevine = chromium-widevine-flake.packages.aarch64-linux.chromium-widevine;
         gnome = gnome-flake.packages.${system}.gnome-desktop-setup;
         gnome-dconf = gnome-flake.packages.${system}.dconf;
+        gnome-install-extensions = gnome-flake.packages.${system}.gnome-install-extensions;
         qutebrowser = qutebrowser-flake.packages.${system}.qutebrowser;
         qutebrowser-config = qutebrowser-flake.packages.${system}.qutebrowser-config;
         zen-browser = zen-browser-flake.packages.${system}.default;
