@@ -339,6 +339,7 @@
         [org/gnome/shell/extensions/paperwm]
         show-window-position-bar=false
         use-default-background=true
+        winprops=['{"spaceIndex":0,"wm_class":"Firefox"}', '{"preferredWidth":"100%","wm_class":"com.mitchellh.ghostty"}', '{"scratch_layer":true,"wm_class":"1Password"}', '{"scratch_layer":true,"wm_class":"guake"}']
 
         [org/gnome/shell/extensions/paperwm/keybindings]
         move-left=@as ['<Shift><Super>braceleft']
