@@ -116,6 +116,22 @@
         };
       };
       vicinaePkg = vicinae-nix.packages.${system}.default;
+      vicinae-sh = pkgs.writeShellScriptBin "vicinae" ''
+        if ! ${pkgs.ps}/bin/ps aux | ${pkgs.gnugrep}/bin/grep -q "[v]icinae server"
+        then
+          id=$(notify-send "Starting Vicinae server..." -p)
+          ${pkgs.coreutils}/bin/nohup ${vicinaePkg}/bin/vicinae server &
+          sleep 2
+          if ${pkgs.ps}/bin/ps aux | ${pkgs.gnugrep}/bin/grep -q "[v]icinae server"
+          then
+            ${pkgs.libnotify}/bin/notify-send --replace-id="$id" "Vicinae server started!"
+          else
+            ${pkgs.libnotify}/bin/notify-send --replace-id="$id" "Failed to start Vicinae server!"
+          fi
+        fi
+        disown &>/dev/null
+        ${vicinaePkg}/bin/vicinae $@
+      '';
       dconf-ini = pkgs.writeText "dconf.ini" ''
         [apps/guake/general]
         ${guakeConf.general}
@@ -264,7 +280,7 @@
 
         [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom9]
         binding='<Super>space'
-        command='${vicinaePkg}/bin/vicinae'
+        command='${vicinae-sh}/bin/vicinae'
         name='launcher'
 
         [org/gnome/shell]
