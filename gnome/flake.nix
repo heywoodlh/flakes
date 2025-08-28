@@ -290,9 +290,9 @@
 
         [org/gnome/shell]
         disable-user-extensions=false
-        disabled-extensions=@as ['disabled','ubuntu-dock@ubuntu.com','ding@rastersoft.com','nightthemeswitcher@romainvigier.fr', 'openbar@neuromorph', 'pop-shell@system76.com', 'switcher@landau.fi', 'paperwm@paperwm.github.com']
-        enabled-extensions=@as ['caffeine@patapon.info','gsconnect@andyholmes.github.io','just-perfection-desktop@just-perfection','native-window-placement@gnome-shell-extensions.gcampax.github.com','user-theme@gnome-shell-extensions.gcampax.github.com','gnomebedtime@ionutbortis.gmail.com','forge@jmmaranan.com','hide-cursor@elcste.com', 'space-bar@luchrioh']
-        favorite-apps=@as ['firefox.desktop','wezterm.desktop']
+        disabled-extensions=@as ['disabled','ubuntu-dock@ubuntu.com']
+        enabled-extensions=@as ['caffeine@patapon.info','gsconnect@andyholmes.github.io','just-perfection-desktop@just-perfection','native-window-placement@gnome-shell-extensions.gcampax.github.com','user-theme@gnome-shell-extensions.gcampax.github.com','gnomebedtime@ionutbortis.gmail.com','hide-cursor@elcste.com','space-bar@luchrioh']
+        favorite-apps=@as ['firefox.desktop']
         had-bluetooth-devices-setup=true
         remember-mount-password=false
         welcome-dialog-last-shown-version='42.4'
@@ -300,15 +300,6 @@
         [org/gnome/shell/extensions/bedtime-mode]
         bedtime-mode-active=false
         color-tone-factor=80
-
-        [org/gnome/shell/extensions/forge]
-        css-last-update=uint32 37
-
-        [org/gnome/shell/extensions/forge/keybindings]
-        window-snap-two-third-left=['<Control><Alt>e']
-        window-snap-two-third-right=@as []
-        window-swap-last-active=@as []
-        window-toggle-float=['<Super>y']
 
         [org/gnome/shell/extensions/just-perfection]
         accessibility-menu=true
@@ -355,11 +346,6 @@
         switch-left=@as ['<Super>bracketleft']
         switch-right=@as ['<Super>bracketright']
         toggle-maximize-width=@as ['<Super>Up']
-
-        [org/gnome/shell/extensions/switcher]
-        font-size=uint32 24
-        max-width-percentage=uint32 48
-        show-switcher=['<Super>space']
 
         [org/gnome/shell/extensions/openbar]
         accent-color=['0', '0.75', '0.75']
@@ -705,10 +691,10 @@
                                "gsconnect@andyholmes.github.io"
                                "just-perfection-desktop@just-perfection"
                                "native-window-placement@gnome-shell-extensions.gcampax.github.com"
-                               "forge@jmmaranan.com"
                                "hide-cursor@elcste.com"
                                "user-theme@gnome-shell-extensions.gcampax.github.com"
-                               "space-bar@luchrioh")
+                               "space-bar@luchrioh"
+                               "paperwm@paperwm.github.com")
 
         for extension in "''${extensions[@]}"
         do
