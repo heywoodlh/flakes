@@ -22,7 +22,7 @@
       url = "https://github.com/EliverLara/Nordic/releases/download/v2.2.0/Nordic.tar.xz";
     };
     vicinae-nix = {
-      url = "github:heywoodlh/vicinae-nix/arm64-caching";
+      url = "github:TomRomeo/vicinae-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

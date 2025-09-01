@@ -64,7 +64,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     vicinae-nix = {
-      url = "github:heywoodlh/vicinae-nix/arm64-caching";
+      url = "github:TomRomeo/vicinae-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     gnome-flake = {

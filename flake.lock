@@ -2797,16 +2797,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1756402219,
-        "narHash": "sha256-KHeyZEH3Nnk02BWKUh3VnB+kEwwkx7OUzormLy0xBR0=",
-        "owner": "heywoodlh",
+        "lastModified": 1756547894,
+        "narHash": "sha256-iu0pzPv3ArB8m9H4rH7bFMjRspA5thRV6kp9fVLagZc=",
+        "owner": "TomRomeo",
         "repo": "vicinae-nix",
-        "rev": "2dba62d10b525e961aa8ec654d0f33da5e96a18b",
+        "rev": "5eea3c1f5d10abc074b27c65a38b1ca3b9a8adeb",
         "type": "github"
       },
       "original": {
-        "owner": "heywoodlh",
-        "ref": "arm64-caching",
+        "owner": "TomRomeo",
         "repo": "vicinae-nix",
         "type": "github"
       }
