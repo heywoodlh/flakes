@@ -59,9 +59,23 @@
   when:
     - syslog_config.changed
 
-- name: install wakeonlan
+- name: install deps
   ansible.builtin.apt:
-    name: wakeonlan
+    pkg:
+      - wakeonlan
+      - cron
+
+- name: set cron timezone to America/Denver time
+  ansible.builtin.cron:
+    name: CRON_TZ
+    env: yes
+    value: America/Denver
+
+- name: set cron shell to bash
+  ansible.builtin.cron:
+    name: SHELL
+    env: yes
+    value: /bin/bash
 
 - name: install osquery agent
   when: tailscale_server_check.status == 200

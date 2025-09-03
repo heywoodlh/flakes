@@ -14,6 +14,16 @@
     - "wake-spencer-gaming.sh"
     - "wake-sarah-gaming.sh"
 
+- name: Wake gaming machines during automatic update times
+  ansible.builtin.cron:
+    name: "check dirs"
+    minute: "*/5"
+    hour: "2-4"
+    job: "{{ item }}"
+  loop:
+    - "/opt/public/wake-spencer-gaming.sh"
+    - "/opt/public/wake-sarah-gaming.sh"
+
 - name: create unprivileged shortcuts user
   ansible.builtin.user:
     name: shortcuts
