@@ -33,6 +33,7 @@ do
   set -ex
   docker build -q -t ansible-${os}-test -f ${dir}/Dockerfile --target ${os}-test ${dir} || printf "Error occurred on operating system: ${os}"
   mkdir -p /tmp/ansible
+  echo "" > ${dir}/.ansible.log
   for target in "${targets[@]}"
   do
     # Skip specific combinations
@@ -44,8 +45,11 @@ do
       if [[ "${os}" == "unifi" ]]
       then
         docker run -it --hostname=spencer-router --rm -v /tmp/.ansible:/root/.ansible --privileged ansible-${os}-test ${target}
+      elif [[ "${os}" == "archlinux" ]]
+      then
+        docker run -it --hostname=cloud --rm -v "${dir}/.ansible.log:/ansible.log" -v /tmp/.ansible:/root/.ansible --privileged ansible-${os}-test ${target}
       else
-        docker run -it --rm -v /tmp/.ansible:/root/.ansible --privileged ansible-${os}-test ${target}
+          docker run -it --rm -v "${dir}/.ansible.log:/ansible.log" -v /tmp/.ansible:/root/.ansible --privileged ansible-${os}-test ${target}
       fi
     fi
   done

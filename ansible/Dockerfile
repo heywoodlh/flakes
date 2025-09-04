@@ -2,7 +2,9 @@
 FROM docker.io/heywoodlh/systemd:ubuntu AS ubuntu-test
 
 COPY server/files/scripts/install-ansible.sh /install-ansible.sh
-RUN /install-ansible.sh
+RUN /install-ansible.sh \
+    && mkdir -p /etc/ansible \
+    && printf "[defaults]\nlog_path: /ansible.log\n" > /etc/ansible/ansible.cfg
 
 COPY . /ansible
 
@@ -14,7 +16,9 @@ ENTRYPOINT [ "/docker-entrypoint.sh", "/bin/bash", "/ansible/entrypoint.sh" ]
 FROM docker.io/heywoodlh/systemd:debian AS debian-test
 
 COPY server/files/scripts/install-ansible.sh /install-ansible.sh
-RUN /install-ansible.sh
+RUN /install-ansible.sh \
+    && mkdir -p /etc/ansible \
+    && printf "[defaults]\nlog_path: /ansible.log\n" > /etc/ansible/ansible.cfg
 
 COPY . /ansible
 
@@ -26,7 +30,9 @@ ENTRYPOINT [ "/docker-entrypoint.sh", "/bin/bash", "/ansible/entrypoint.sh" ]
 FROM docker.io/heywoodlh/systemd:debian-bullseye AS unifi-test
 
 COPY server/files/scripts/install-ansible.sh /install-ansible.sh
-RUN /install-ansible.sh
+RUN /install-ansible.sh \
+    && mkdir -p /etc/ansible \
+    && printf "[defaults]\nlog_path: /ansible.log\n" > /etc/ansible/ansible.cfg
 
 COPY . /ansible
 
@@ -46,7 +52,9 @@ ENTRYPOINT [ "/docker-entrypoint.sh", "/bin/bash", "/ansible/entrypoint.sh" ]
 FROM docker.io/heywoodlh/systemd:archlinux AS archlinux-test
 
 COPY server/files/scripts/install-ansible.sh /install-ansible.sh
-RUN pacman -Sy --noconfirm python bash grep && /install-ansible.sh
+RUN pacman -Sy --noconfirm python bash grep && /install-ansible.sh \
+    && mkdir -p /etc/ansible \
+    && printf "[defaults]\nlog_path: /ansible.log\n" > /etc/ansible/ansible.cfg
 
 COPY . /ansible
 
@@ -57,7 +65,9 @@ ENTRYPOINT [ "/docker-entrypoint.sh", "/bin/bash", "/ansible/entrypoint.sh" ]
 # Alpine target
 FROM docker.io/heywoodlh/openrc AS alpine-test
 
-RUN apk --no-cache add ansible python3 bash grep
+RUN apk --no-cache add ansible python3 bash grep \
+    && mkdir -p /etc/ansible \
+    && printf "[defaults]\nlog_path: /ansible.log\n" > /etc/ansible/ansible.cfg
 
 COPY . /ansible
 
@@ -68,7 +78,9 @@ ENTRYPOINT [ "/openrc.sh", "/bin/bash", "/ansible/entrypoint.sh" ]
 # Fedora target
 FROM docker.io/heywoodlh/systemd:fedora AS fedora-test
 
-RUN dnf install -y ansible python3 bash grep
+RUN dnf install -y ansible python3 bash grep \
+    && mkdir -p /etc/ansible \
+    && printf "[defaults]\nlog_path: /ansible.log\n" > /etc/ansible/ansible.cfg
 
 COPY . /ansible
 

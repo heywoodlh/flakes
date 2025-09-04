@@ -6,6 +6,7 @@
   when: ansible_os_family == 'Alpine'
 
 - name: install arch packages
+  when: ansible_os_family == 'Archlinux'
   block:
     - name: include archlinux-keyring
       ansible.builtin.include_tasks: ../../../common/archlinux-keyring.yml
@@ -19,7 +20,6 @@
           - sudo
           - tailscale
           - ufw
-  when: ansible_os_family == 'Archlinux'
 
 - name: install debian packages
   ansible.builtin.apt:

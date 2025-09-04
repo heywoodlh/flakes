@@ -10,3 +10,10 @@
   ignore_errors: true # archlinux container doesn't like this
   community.general.ufw:
     state: enabled
+
+- name: allow ssh
+  ignore_errors: true # archlinux container doesn't like this
+  community.general.ufw:
+    rule: allow
+    port: 22
+    proto: tcp
