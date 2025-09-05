@@ -12,6 +12,3 @@
     - name: import archlinux tasks
       include_tasks: ../common/tasks/archlinux.yml
       when: ansible_os_family == "Archlinux"
-    - name: import rdp tasks
-      include_tasks: ../common/tasks/rdp.yml
-      when: ansible_hostname == 'cloud'

@@ -48,3 +48,7 @@
       name: "nix-collect-garbage"
       special_time: weekly
       job: "/opt/scripts/nix-collect-garbage.sh &>/dev/null"
+
+  - name: import archlinux tasks
+    include_tasks: ../../../common/tasks/archlinux.yml
+    when: ansible_os_family == "Archlinux"
