@@ -45,7 +45,7 @@ do
       if [[ "${os}" == "unifi" ]]
       then
         docker run -it --hostname=spencer-router --rm -v /tmp/.ansible:/root/.ansible --privileged ansible-${os}-test ${target}
-      elif [[ "${os}" == "archlinux" ]]
+      elif [[ "${os}" == "ubuntu" ]]
       then
         docker run -it --hostname=cloud --rm -v "${dir}/.ansible.log:/ansible.log" -v /tmp/.ansible:/root/.ansible --privileged ansible-${os}-test ${target}
       else

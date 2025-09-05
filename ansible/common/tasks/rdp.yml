@@ -1,21 +1,21 @@
 ---
-- name: install gnome and gdm
+- name: install gnome
   ansible.builtin.apt:
     name:
-      - gdm3
       - gnome-control-center
       - gnome-shell
+      - gnome-session
       - network-manager
       - xrdp
     update_cache: yes
   when: ansible_os_family == 'Debian'
 
-- name: install gnome and gdm
+- name: install gnome
   community.general.pacman:
     name:
-      - gdm
       - gnome-control-center
       - gnome-shell
+      - gnome-session
       - gnome-terminal
       - firefox
       - networkmanager
