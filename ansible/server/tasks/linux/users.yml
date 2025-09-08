@@ -99,6 +99,13 @@
       register: tmux_check
       ignore_errors: true
 
+    - name: source .bashrc in .bash_profile
+      ansible.builtin.lineinfile:
+        path: "{{ user_home.stdout }}/.bash_profile"
+        create: true
+        line: "source {{ user_home.stdout }}/.bashrc"
+        owner: heywoodlh
+
     - name: launch tmux with bash
       ansible.builtin.lineinfile:
         path: "{{ user_home.stdout }}/.bashrc"
@@ -106,16 +113,6 @@
         line: "[ -z $TMUX ] && { {{ user_home.stdout }}/.nix-profile/bin/tmux new-session -A -s main && exit;}"
         owner: heywoodlh
       when: tmux_check is succeeded
-
-    - name: "remove former ansible-switch alias from {{ user_home.stdout }}/.config/fish/config.fish"
-      ansible.builtin.lineinfile:
-        path: "{{ user_home.stdout }}/.config/fish/config.fish"
-        owner: heywoodlh
-        line: "alias ansible-switch \"nix run 'github:heywoodlh/flakes/main?dir=ansible#server'\""
-        state: absent
-      when: tmux_check is succeeded
-      become_user: heywoodlh
-      become: true
 
     - name: "add {{ user_home.stdout }}/.config/fish"
       ansible.builtin.file:
