@@ -5,6 +5,8 @@ on:
   push:
     paths:
       - ansible/**
+    branches:
+      - main
 
 jobs:
   ansible-playbooks-test:
