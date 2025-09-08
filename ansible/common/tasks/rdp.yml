@@ -58,6 +58,24 @@
     mode: "0644"
     owner: "heywoodlh"
 
+- name: configure xrdp for gnome
+  ansible.builtin.blockinfile:
+    path: "/home/heywoodlh/.xsessionrc"
+    create: true
+    mode: "0644"
+    owner: "heywoodlh"
+    block: |
+      export XAUTHORITY=${HOME}/.Xauthority
+      export GNOME_SHELL_SESSION_MODE=ubuntu
+      export XDG_CONFIG_DIRS=/etc/xdg/xdg-ubuntu:/etc/xdg
+  register: xrdp_gnome_configured
+
+- name: restart xrdp if gnome config changed
+  ansible.builtin.systemd_service:
+    name: xrdp.service
+    state: restarted
+  when: xrdp_gnome_configured.changed
+
 - name: enable xrdp
   ansible.builtin.systemd_service:
     name: xrdp.service
