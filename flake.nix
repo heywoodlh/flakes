@@ -9,9 +9,14 @@
       url = "./fish";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    mcphub = {
+      url = "github:ravitemer/mcphub.nvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     vim-flake = {
       url = "./vim";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.mcphub.follows = "mcphub";
     };
     helix-flake = {
       url = "./helix";
@@ -113,6 +118,7 @@
     lima-flake,
     chromium-widevine-flake,
     vicinae-nix,
+    mcphub,
     gnome-flake,
     qutebrowser-flake,
     zen-browser-flake,

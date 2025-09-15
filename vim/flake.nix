@@ -1,25 +1,29 @@
 {
   description = "heywoodlh vim config";
-  inputs.flake-utils.url = "github:numtide/flake-utils";
-  outputs = { self, flake-utils, nixpkgs, }: flake-utils.lib.eachDefaultSystem (system:
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
+    mcphub = {
+      url = "github:ravitemer/mcphub.nvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+  outputs = { self, nixpkgs, flake-utils, mcphub, }: flake-utils.lib.eachDefaultSystem (system:
     let
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
       };
-      mods = pkgs.callPackage ./settings {};
+      mods = pkgs.callPackage ./settings {
+        inherit mcphub;
+      };
       myVim = pkgs.callPackage ./default.nix {
         inherit mods;
       };
     in {
       packages = rec {
-        # bulkier wrapper including languages
-        vimWrapper = pkgs.writeShellScriptBin "vim" ''
-          export PATH="${pkgs.go}/bin:${pkgs.python3}/bin:$PATH"
-          ${myVim}/bin/vim "$@"
-        '';
         vim = myVim;
-        default = vimWrapper;
+        default = vim;
       };
     }
   );

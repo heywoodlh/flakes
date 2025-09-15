@@ -196,6 +196,27 @@
         "type": "github"
       }
     },
+    "flake-parts": {
+      "inputs": {
+        "nixpkgs-lib": [
+          "mcphub",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1743550720,
+        "narHash": "sha256-hIshGgKZCgWh6AYJpJmRgFdR3WUbkY04o82X05xqQiY=",
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "rev": "c621e8422220273271f52058f618c94e405bb0f5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -1208,6 +1229,27 @@
       },
       "parent": []
     },
+    "mcphub": {
+      "inputs": {
+        "flake-parts": "flake-parts",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1757229710,
+        "narHash": "sha256-qmvkQTKJ4Qt2SL+d9pGtmLAPVmCYAFnflf0e0BX1wYM=",
+        "owner": "ravitemer",
+        "repo": "mcphub.nvim",
+        "rev": "5e39057c4405bc7b83ef9fd38a37d18c9330e403",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ravitemer",
+        "repo": "mcphub.nvim",
+        "type": "github"
+      }
+    },
     "myFlakes": {
       "inputs": {
         "fish-flake": "fish-flake_2",
@@ -1594,11 +1636,11 @@
     },
     "nixpkgs_12": {
       "locked": {
-        "lastModified": 1756266583,
-        "narHash": "sha256-cr748nSmpfvnhqSXPiCfUPxRz2FJnvf/RjJGvFfaCsM=",
+        "lastModified": 1757745802,
+        "narHash": "sha256-hLEO2TPj55KcUFUU1vgtHE9UEIOjRcH/4QbmfHNF820=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "8a6d5427d99ec71c64f0b93d45778c889005d9c2",
+        "rev": "c23193b943c6c689d70ee98ce3128239ed9e32d1",
         "type": "github"
       },
       "original": {
@@ -1956,6 +1998,7 @@
         "jetporch-flake": "jetporch-flake",
         "jujutsu-flake": "jujutsu-flake",
         "lima-flake": "lima-flake",
+        "mcphub": "mcphub",
         "nixpkgs": "nixpkgs_12",
         "nixpkgs-stable": "nixpkgs-stable",
         "nushell-flake": "nushell-flake_2",
@@ -2797,11 +2840,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1756547894,
-        "narHash": "sha256-iu0pzPv3ArB8m9H4rH7bFMjRspA5thRV6kp9fVLagZc=",
+        "lastModified": 1757940030,
+        "narHash": "sha256-H52kU7DoO2HdPLrg2b7gZXTPRRN+dIuHElRkIs8RpsM=",
         "owner": "TomRomeo",
         "repo": "vicinae-nix",
-        "rev": "5eea3c1f5d10abc074b27c65a38b1ca3b9a8adeb",
+        "rev": "fa3b391ff9561321d6bffb6c58e284345c5914d9",
         "type": "github"
       },
       "original": {
@@ -2840,6 +2883,9 @@
     "vim-flake_2": {
       "inputs": {
         "flake-utils": "flake-utils_34",
+        "mcphub": [
+          "mcphub"
+        ],
         "nixpkgs": [
           "nixpkgs"
         ]
