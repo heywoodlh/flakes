@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-24.04, ubuntu-24.04-arm]
-        flake: [vim, fish, git, jj, helix, browsh, 1password, ttyd-nerd]
+        flake: [vim, fish, git, ttyd-nerd]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout repository
@@ -71,18 +71,6 @@ jobs:
           - os: ubuntu-24.04-arm
             flake: "./fish#tmux"
             out: "tmux"
-          - os: ubuntu-24.04
-            flake: "./fish#zellij"
-            out: "zellij"
-          - os: ubuntu-24.04-arm
-            flake: "./fish#zellij"
-            out: "zellij"
-          - os: ubuntu-24.04
-            flake: "./fish#ghostty"
-            out: "ghostty"
-          - os: ubuntu-24.04-arm
-            flake: "./fish#ghostty"
-            out: "ghostty"
 
 
     runs-on: ${{ matrix.os }}
