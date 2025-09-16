@@ -199,7 +199,7 @@
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": [
-          "mcphub",
+          "mcphub-nvim",
           "nixpkgs"
         ]
       },
@@ -1230,6 +1230,22 @@
       "parent": []
     },
     "mcphub": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1755841689,
+        "narHash": "sha256-KakvXZf0vjdqzyT+LsAKHEr4GLICGXPmxl1hZ3tI7Yg=",
+        "owner": "ravitemer",
+        "repo": "mcp-hub",
+        "rev": "9c7670a4c341ed3cf738a6242c0fde1cea40bccf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ravitemer",
+        "repo": "mcp-hub",
+        "type": "github"
+      }
+    },
+    "mcphub-nvim": {
       "inputs": {
         "flake-parts": "flake-parts",
         "nixpkgs": [
@@ -1999,6 +2015,7 @@
         "jujutsu-flake": "jujutsu-flake",
         "lima-flake": "lima-flake",
         "mcphub": "mcphub",
+        "mcphub-nvim": "mcphub-nvim",
         "nixpkgs": "nixpkgs_12",
         "nixpkgs-stable": "nixpkgs-stable",
         "nushell-flake": "nushell-flake_2",
@@ -2885,6 +2902,9 @@
         "flake-utils": "flake-utils_34",
         "mcphub": [
           "mcphub"
+        ],
+        "mcphub-nvim": [
+          "mcphub-nvim"
         ],
         "nixpkgs": [
           "nixpkgs"

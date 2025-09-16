@@ -10,6 +10,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     mcphub = {
+      url = "github:ravitemer/mcp-hub";
+      flake = false;
+    };
+    mcphub-nvim = {
       url = "github:ravitemer/mcphub.nvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -17,6 +21,7 @@
       url = "./vim";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.mcphub.follows = "mcphub";
+      inputs.mcphub-nvim.follows = "mcphub-nvim";
     };
     helix-flake = {
       url = "./helix";
@@ -119,6 +124,7 @@
     chromium-widevine-flake,
     vicinae-nix,
     mcphub,
+    mcphub-nvim,
     gnome-flake,
     qutebrowser-flake,
     zen-browser-flake,
