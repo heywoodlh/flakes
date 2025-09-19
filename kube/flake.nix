@@ -580,6 +580,15 @@
           image = "docker.io/thijsvanloef/palworld-server-docker:dev";
           hostfolder = "/opt/palworld";
         };
+        pinchflat = mkKubeDrv "pinchflat" {
+          src = ./templates/pinchflat.yaml;
+          namespace = "media";
+          image = "keglin/pinchflat:latest";
+          replicas = 1;
+          hostfolder = "/media/data-ssd/pinchflat";
+          hostmediafolder = "/media/home-media/disk3/youtube";
+          nodename = "nix-nvidia";
+        };
         # Ensure to deploy prometheus-blackbox-exporter first
         prometheus = (kubelib.buildHelmChart {
           name = "prometheus";

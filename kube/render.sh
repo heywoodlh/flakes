@@ -28,6 +28,7 @@ applications=(
   "nuclei"
   "open-webui"
   "palworld"
+  "pinchflat"
   "prometheus"
   "protonmail-bridge"
   "rsshub"
