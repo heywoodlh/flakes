@@ -14,6 +14,7 @@ applications=(
   "drawio"
   "flan-scan"
   "fleetdm"
+  "ersatztv"
   "grafana"
   "healthchecks"
   "homepage"

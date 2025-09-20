@@ -347,6 +347,16 @@
           hostfolder = "/media/data-ssd/elastic";
           nodename = "nix-nvidia";
         };
+
+        ersatztv = mkKubeDrv "ersatztv" {
+          src = ./templates/ersatztv.yaml;
+          namespace = "media";
+          image = "ghcr.io/ersatztv/ersatztv:latest";
+          replicas = 1;
+          hostfolder = "/media/data-ssd/ersatztv";
+          hostmediafolder = "/media/home-media";
+          nodename = "nix-nvidia";
+        };
         flan-scan = mkKubeDrv "flan-scan" {
           src = ./templates/flan-scan.yaml;
           namespace = "monitoring";
