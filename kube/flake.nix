@@ -170,6 +170,7 @@
           namespace = "default";
           replicas = 1;
           image = "docker.io/actualbudget/actual-server:25.9.0-alpine";
+          hostfolder = "/media/data-ssd/actual";
         };
         # After applying this, run the following: `kubectl apply -f ./kubectl/argo-nix-configmap.yaml`
         argo = (kubelib.buildHelmChart {
@@ -578,6 +579,12 @@
           interactsh_image = "docker.io/projectdiscovery/interactsh-server:v1.2.4";
           httpd_image = "docker.io/httpd:2.4.63";
           replicas = 1;
+        };
+        ollama = mkKubeDrv "ollama" {
+          src = ./templates/ollama.yaml;
+          namespace = "default";
+          image = "docker.io/ollama/ollama:0.12.0";
+          hostfolder = "/media/data-ssd/ollama";
         };
         open-webui = mkKubeDrv "open-webui" {
           src = ./templates/open-webui.yaml;

@@ -5,7 +5,7 @@ metadata:
   name: gpu-test
   namespace: default
 spec:
-  runtimeClassName: nvidia
+  runtimeClassName: nvidia # <- THIS FOR GPU
   containers:
   - name: gpu-test
     image: nvidia/cuda:12.6.3-base-ubuntu22.04
@@ -16,7 +16,7 @@ spec:
         value: all
       - name: NVIDIA_DRIVER_CAPABILITIES
         value: all
-    resources:
+    resources: # <- THIS FOR GPU
       requests:
         nvidia.com/gpu-all: "1"
       limits:

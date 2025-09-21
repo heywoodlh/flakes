@@ -22,19 +22,6 @@ spec:
     app.kubernetes.io/name: actual
     app.kubernetes.io/instance: actual
 ---
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: actual-data
-  namespace: default
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: local-path
-  resources:
-    requests:
-      storage: 10Gi
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -65,6 +52,9 @@ spec:
             - name: http
               containerPort: 5006
               protocol: TCP
+          env:
+            - name: ACTUAL_PORT
+              value: "5006"
           resources:
             {}
           volumeMounts:
@@ -79,5 +69,6 @@ spec:
             periodSeconds: 20
       volumes:
         - name: datadir
-          persistentVolumeClaim:
-            claimName: actual-data
+          hostPath:
+            path: /media/data-ssd/actual
+

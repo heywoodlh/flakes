@@ -54,82 +54,10 @@ spec:
           mountPath: /app/backend/data
         env:
         - name: OLLAMA_BASE_URL
-          value: "http://nix-nvidia.barn-banana.ts.net:11434"
+          value: "http://ollama.default.svc.cluster.local:11434"
         tty: true
       volumes:
       - name: open-webui-data
         hostPath:
           path: /opt/open-webui/data
           type: Directory
-#---
-#apiVersion: v1
-#kind: Service
-#metadata:
-#  name: ollama
-#  namespace: open-webui
-#  labels:
-#    app.kubernetes.io/name: ollama
-#    app.kubernetes.io/instance: ollama
-#  annotations:
-#    tailscale.com/expose: "true"
-#    tailscale.com/hostname: "ollama"
-#    tailscale.com/tags: "tag:ollama"
-#spec:
-#  type: ClusterIP
-#  ports:
-#    - port: 11434
-#      targetPort: ollama
-#      protocol: TCP
-#      name: ollama
-#  selector:
-#    app.kubernetes.io/name: ollama
-#    app.kubernetes.io/instance: ollama
-#---
-#apiVersion: apps/v1
-#kind: Deployment
-#metadata:
-#  name: ollama
-#  namespace: open-webui
-#  labels:
-#    app.kubernetes.io/name: ollama
-#    app.kubernetes.io/instance: ollama
-#spec:
-#  replicas: 1
-#  selector:
-#    matchLabels:
-#      app.kubernetes.io/name: ollama
-#      app.kubernetes.io/instance: ollama
-#  template:
-#    metadata:
-#      labels:
-#        app.kubernetes.io/name: ollama
-#        app.kubernetes.io/instance: ollama
-#    spec:
-#      securityContext:
-#        {}
-#      containers:
-#        - name: ollama
-#          securityContext:
-#            {}
-#          image: "docker.io/ollama/ollama:0.6.6"
-#          imagePullPolicy: IfNotPresent
-#          ports:
-#            - name: ollama
-#              containerPort: 11434
-#              protocol: TCP
-#          volumeMounts:
-#            - name: ollama
-#              mountPath: /root/.ollama
-#          resources:
-#            limits:
-#              nvidia.com/gpu: 1
-#          env:
-#          - name: NVIDIA_VISIBLE_DEVICES
-#            value: all
-#          - name: NVIDIA_DRIVER_CAPABILITIES
-#            value: all
-#      volumes:
-#      - name: ollama
-#        hostPath:
-#          path: /media/data-ssd/ollama
-#          type: Directory

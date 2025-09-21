@@ -27,6 +27,7 @@ applications=(
   "nfcapd"
   "ntfy"
   "nuclei"
+  "ollama"
   "open-webui"
   "palworld"
   "pinchflat"
