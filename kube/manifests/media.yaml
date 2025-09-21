@@ -1,8 +1,93 @@
+# plex
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: plex
+  name: plex
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: plex
+  template:
+    metadata:
+      labels:
+        app: plex
+    spec:
+      # GPU acceleration
+      runtimeClassName: nvidia
+      nodeSelector:
+        kubernetes.io/hostname: nix-nvidia
+      initContainers:
+        - name: bundle-downloader
+          image: docker.io/alpine/git
+          command:
+            - "/bin/ash"
+            - "-c"
+          args:
+            - |
+              test -e "/config/Library/Application Support/Plex Media Server/Plug-ins/YouTube-Agent.bundle" || git clone https://github.com/ZeroQI/YouTube-Agent.bundle "/config/Library/Application Support/Plex Media Server/Plug-ins/YouTube-Agent.bundle"
+              test -e "/config/Library/Application Support/Plex Media Server/Plug-ins/AudNexus.bundle" || git clone https://github.com/djdembeck/AudNexus.bundle "/config/Library/Application Support/Plex Media Server/Plug-ins/AudNexus.bundle"
+              chown -R 995 "/config/Library/Application Support/Plex Media Server/Plug-ins"
+              exit 0
+          volumeMounts:
+            - name: plex-config
+              mountPath: /config
+      containers:
+      - image: docker.io/linuxserver/plex:1.42.1
+        name: plex
+        ports:
+        - name: plex
+          containerPort: 32400
+        volumeMounts:
+        - name: plex-config
+          mountPath: /config
+        - name: media
+          mountPath: /media/home-media
+        env:
+          - name: PUID
+            value: "995"
+          - name: PGID
+            value: "995"
+        # GPU acceleration
+        resources:
+          requests:
+            nvidia.com/gpu-all: "1"
+          limits:
+            nvidia.com/gpu-all: "1"
+      volumes:
+      - name: plex-config
+        hostPath:
+          path: /media/config/services/plex
+          type: Directory
+      - name: media
+        hostPath:
+          path: /media/home-media
+          type: Directory
 ---
 apiVersion: v1
-kind: Namespace
+kind: Service
 metadata:
-  name: media
+  labels:
+    app: plex
+  name: plex
+  namespace: media
+  annotations:
+    tailscale.com/expose: "true"
+    tailscale.com/hostname: "plex"
+    tailscale.com/tags: "tag:plex"
+spec:
+  ports:
+  - name: plex
+    port: 32400
+    protocol: TCP
+    targetPort: plex
+  selector:
+    app: plex
+  type: ClusterIP
 # Radarr
 ---
 apiVersion: apps/v1
