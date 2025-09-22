@@ -312,7 +312,7 @@
           src = ./templates/coredns.yaml;
           tailnet = "barn-banana.ts.net";
           namespace = "coredns";
-          image = "docker.io/coredns/coredns:1.12.1";
+          image = "docker.io/coredns/coredns:1.12.4";
           replicas = "1";
         };
         coredns-kube-system = mkKubeDrv "coredns-kube-system" {
