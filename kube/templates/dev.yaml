@@ -81,6 +81,7 @@ data:
     export DOCKER_HOST="tcp://localhost:2376"
     export DOCKER_TLS_VERIFY="1"
     export KUBECONFIG="/kubeconfig"
+    export OLLAMA_HOST="ollama.default.svc.cluster.local:11434"
 
     function ssh-unlock
       op-unlock
