@@ -153,7 +153,7 @@ jobs:
           nix run nixpkgs#tree
 
       - name: Create appimage release with flake executables
-        uses: ncipollo/release-action@v1.16.0
+        uses: ncipollo/release-action@v1.20.0
         with:
           artifacts: './*/appimage/*.appimage'
           tag: "appimages"
@@ -161,7 +161,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create deb release with flake executables
-        uses: ncipollo/release-action@v1.16.0
+        uses: ncipollo/release-action@v1.20.0
         with:
           artifacts: "./*/deb/*.deb"
           tag: "packages"

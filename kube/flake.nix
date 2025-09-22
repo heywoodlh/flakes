@@ -266,7 +266,7 @@
           src = ./templates/atuin.yaml;
           namespace = "default";
           replicas = 1;
-          image = "ghcr.io/atuinsh/atuin:v18.4.0";
+          image = "ghcr.io/atuinsh/atuin:v18.8.0";
           postgres_image = "docker.io/postgres:14";
         };
         beeper-bridges = mkKubeDrv "beeper-bridges" {
@@ -280,12 +280,12 @@
           src = ./templates/dev.yaml;
           namespace = "default";
           replicas = 1;
-          image = "docker.io/heywoodlh/dev:2025_07_snapshot";
+          image = "docker.io/heywoodlh/dev:2025_09_snapshot";
         };
         cloudflared = mkKubeDrv "cloudflared" {
           src = ./templates/cloudflared.yaml;
           namespace = "cloudflared";
-          image = "docker.io/cloudflare/cloudflared:2025.2.1";
+          image = "docker.io/cloudflare/cloudflared:2025.9.1";
           replicas = 2;
         };
         cloudtube = mkKubeDrv "cloudtube" {
@@ -299,7 +299,7 @@
           src = ./templates/coder.yaml;
           namespace = "coder";
           version = "2.8.3";
-          image = "ghcr.io/coder/coder:v2.20.2";
+          image = "ghcr.io/coder/coder:v2.26.0";
           access_url = "https://coder.heywoodlh.io";
           replicas = "1";
           port = "80";
@@ -312,7 +312,7 @@
           src = ./templates/coredns.yaml;
           tailnet = "barn-banana.ts.net";
           namespace = "coredns";
-          image = "docker.io/coredns/coredns:1.12.1";
+          image = "docker.io/coredns/coredns:1.12.4";
           replicas = "1";
         };
         coredns-kube-system = mkKubeDrv "coredns-kube-system" {
@@ -361,8 +361,8 @@
         flan-scan = mkKubeDrv "flan-scan" {
           src = ./templates/flan-scan.yaml;
           namespace = "monitoring";
-          image = "docker.io/heywoodlh/flan-scan:2025_05";
-          http_image = "docker.io/heywoodlh/http-files:v2.10.0";
+          image = "docker.io/heywoodlh/flan-scan:2025_09";
+          http_image = "docker.io/heywoodlh/http-files:v2.10.2";
           hostfolder = "/media/data-ssd/flan-scan";
           replicas = 1;
         };
@@ -384,13 +384,13 @@
         grafana = mkKubeDrv "grafana" {
           src = ./templates/grafana.yaml;
           namespace = "monitoring";
-          image = "docker.io/grafana/grafana:11.6.2";
+          image = "docker.io/grafana/grafana:11.6.5";
           storageclass = "local-path";
         };
         healthchecks = mkKubeDrv "healthchecks" {
           src = ./templates/healthchecks.yaml;
           namespace = "monitoring";
-          image = "docker.io/curlimages/curl:8.12.1";
+          image = "docker.io/curlimages/curl:8.16.0";
         };
         heralding = mkKubeDrv "heralding" {
           src = ./templates/heralding.yaml;
@@ -402,20 +402,20 @@
           src = ./templates/home-assistant.yaml;
           namespace = "default";
           timezone = "America/Denver";
-          image = "ghcr.io/home-assistant/home-assistant:2025.3.4";
+          image = "ghcr.io/home-assistant/home-assistant:2025.9.4";
           port = 80;
           replicas = 1;
           nodename = "nix-nvidia";
         };
         homepage = mkKubeDrv "homepage" {
           src = ./templates/homepage.yaml;
-          image = "ghcr.io/gethomepage/homepage:v1.2.0";
+          image = "ghcr.io/gethomepage/homepage:v1.5.0";
           namespace = "default";
         };
         http-files = mkKubeDrv "http-files" {
           src = ./templates/http-files.yaml;
           namespace = "default";
-          image = "docker.io/heywoodlh/http-files:v2.9.1";
+          image = "docker.io/heywoodlh/http-files:v2.10.2";
           replicas = 1;
         };
         iperf = mkKubeDrv "iperf" {
@@ -478,26 +478,26 @@
           src = ./templates/media.yaml;
           namespace = "media";
           replicas = 1;
-          plex_image = "docker.io/linuxserver/plex:1.42.1";
+          plex_image = "docker.io/linuxserver/plex:1.42.2";
           plex_hostfolder = "/media/config/services/plex";
-          radarr_image = "docker.io/linuxserver/radarr:5.27.1-nightly";
+          radarr_image = "docker.io/linuxserver/radarr:5.28.1-nightly";
           radarr_hostfolder = "/media/config/services/radarr";
           sonarr_image = "docker.io/linuxserver/sonarr:4.0.15-develop";
           sonarr_hostfolder = "/media/config/services/sonarr";
-          lidarr_image = "docker.io/linuxserver/lidarr:2.12.1-develop";
+          lidarr_image = "docker.io/linuxserver/lidarr:2.14.3-develop";
           lidarr_hostfolder = "/media/config/services/lidarr";
           readarr_image = "docker.io/linuxserver/readarr:0.4.19-nightly";
           readarr_hostfolder = "/media/config/services/readarr";
-          sabnzbd_image = "docker.io/linuxserver/sabnzbd:4.5.1";
+          sabnzbd_image = "docker.io/linuxserver/sabnzbd:4.5.3";
           sabnzbd_hostfolder = "/media/config/services/sabnzbd";
-          tautulli_image = "docker.io/linuxserver/tautulli:2.15.2";
+          tautulli_image = "docker.io/linuxserver/tautulli:2.16.0";
           tautulli_hostfolder = "/media/config/services/tautulli/config";
           media_hostfolder = "/media/home-media";
           nodename = "nix-nvidia";
         };
         metrics-server = mkKubeDrv "metrics-server" {
           src = ./templates/metrics-server.yaml;
-          image = "registry.k8s.io/metrics-server/metrics-server:v0.7.2";
+          image = "registry.k8s.io/metrics-server/metrics-server:v0.8.0";
         };
         metube = mkKubeDrv "metube" {
           src = ./templates/metube.yaml;
@@ -515,8 +515,8 @@
         miniflux = mkKubeDrv "miniflux" {
           src = ./templates/miniflux.yaml;
           namespace = "default";
-          image = "docker.io/miniflux/miniflux:2.2.8";
-          postgres_image = "docker.io/postgres:15.12";
+          image = "docker.io/miniflux/miniflux:2.2.13";
+          postgres_image = "docker.io/postgres:15.14";
           postgres_replicas = 1;
           nodename = "nix-nvidia";
           hostfolder = "/opt/miniflux";
@@ -567,7 +567,7 @@
         ntfy = mkKubeDrv "ntfy" {
           src = ./templates/ntfy.yaml;
           namespace = "default";
-          image = "docker.io/binwiederhier/ntfy:v2.11.0";
+          image = "docker.io/binwiederhier/ntfy:v2.14.0";
           base_url = "http://ntfy.barn-banana.ts.net";
           timezone = "America/Denver";
           replicas = 1;
@@ -575,9 +575,9 @@
         nuclei = mkKubeDrv "nuclei" {
           src = ./templates/nuclei.yaml;
           namespace = "nuclei";
-          image = "docker.io/heywoodlh/nuclei:v3.4.4";
+          image = "docker.io/heywoodlh/nuclei:v3.4.10";
           interactsh_image = "docker.io/projectdiscovery/interactsh-server:v1.2.4";
-          httpd_image = "docker.io/httpd:2.4.63";
+          httpd_image = "docker.io/httpd:2.4.65";
           replicas = 1;
         };
         ollama = mkKubeDrv "ollama" {
@@ -589,8 +589,8 @@
         open-webui = mkKubeDrv "open-webui" {
           src = ./templates/open-webui.yaml;
           namespace = "open-webui";
-          webui_image = "ghcr.io/open-webui/open-webui:0.6.5";
-          ollama_image = "docker.io/ollama/ollama:0.6.6";
+          webui_image = "ghcr.io/open-webui/open-webui:v0.6.30";
+          ollama_image = "docker.io/ollama/ollama:0.12.0";
           hostfolder = "/opt/open-webui";
         };
         palworld = mkKubeDrv "palworld" {
@@ -617,7 +617,7 @@
             server = {
               image = {
                 repository = "quay.io/prometheus/prometheus";
-                tag = "v3.2.1";
+                tag = "v3.6.0";
               };
               extraFlags = [
                 "storage.tsdb.wal-compression"
@@ -699,7 +699,7 @@
           image = "docker.io/diygod/rsshub:2025-02-19";
           browserless_image = "docker.io/browserless/chrome:1.61-puppeteer-13.1.3";
           browserless_replicas = 1;
-          redis_image = "docker.io/redis:7.4.2";
+          redis_image = "docker.io/redis:7.4.5";
           redis_replicas = 1;
           nodename = "nix-nvidia";
           hostfolder = "/opt/rsshub";
@@ -715,14 +715,14 @@
         rustdesk-web = mkKubeDrv "rustdesk-web" {
           src = ./templates/rustdesk-web.yaml;
           namespace = "default";
-          image = "docker.io/heywoodlh/rustdesk-web:1.4.0";
+          image = "docker.io/heywoodlh/rustdesk-web:1.4.2";
           replicas = 1;
         };
         samplicator = mkKubeDrv "samplicator" {
           src = ./templates/samplicator.yaml;
           namespace = "monitoring";
           image = "docker.io/heywoodlh/samplicator:ceeb1d2-2025_04";
-          kubectl_image = "docker.io/heywoodlh/kubectl:v1.32.2";
+          kubectl_image = "docker.io/heywoodlh/kubectl:v1.33.4";
           replicas = 1;
         };
         silverbullet = mkKubeDrv "silverbullet" {
@@ -741,7 +741,7 @@
         squid = mkKubeDrv "squid" {
           src = ./templates/squid.yaml;
           namespace = "default";
-          image = "docker.io/heywoodlh/squid:6.10";
+          image = "docker.io/heywoodlh/squid:6.13";
           nodename = "nix-nvidia";
           hostfolder = "/opt/squid";
           replicas = 1;
@@ -751,14 +751,14 @@
           namespace = "syncthing";
           nodename = "nix-nvidia";
           hostfolder = "/opt/syncthing";
-          image = "docker.io/syncthing/syncthing:1.29.3";
+          image = "docker.io/syncthing/syncthing:1.30.0";
           replicas = 1;
         };
         syslog = mkKubeDrv "syslog" {
           src = ./templates/syslog.yaml;
           namespace = "monitoring";
           hostfolder = "/media/data-ssd/syslog";
-          image = "docker.io/linuxserver/syslog-ng:4.8.1";
+          image = "docker.io/linuxserver/syslog-ng:4.8.3";
           logbash_image = "docker.io/heywoodlh/logbash:e1d594e";
           lnav_image = "docker.io/heywoodlh/lnav:35c17f9";
           replicas = 1;
@@ -775,7 +775,7 @@
         tailscale-dns-bridge = mkKubeDrv "tailscale-dns-bridge" {
           src = ./templates/tailscale-dns-bridge.yaml;
           namespace = "default";
-          image = "docker.io/heywoodlh/tailscale-dns-bridge:1.86.5";
+          image = "docker.io/heywoodlh/tailscale-dns-bridge:1.88.2";
           replicas = 1;
           hostfolder = "/opt/tailscale-dns-bridge";
           nodename = "nix-nvidia";
@@ -783,7 +783,7 @@
         tor-socks-proxy = mkKubeDrv "tor-socks-proxy" {
           src = ./templates/tor-socks-proxy.yaml;
           namespace = "default";
-          image = "docker.io/heywoodlh/tor-socks-proxy:0.4.8.13";
+          image = "docker.io/heywoodlh/tor-socks-proxy:0.4.8.18";
           replicas = 1;
         };
         uptime = mkKubeDrv "uptime" {
