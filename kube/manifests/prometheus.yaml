@@ -1057,7 +1057,7 @@ spec:
               readOnly: true
 
         - name: prometheus-server
-          image: "quay.io/prometheus/prometheus:v3.2.1"
+          image: "quay.io/prometheus/prometheus:v3.6.0"
           imagePullPolicy: "IfNotPresent"
           args:
             - --storage.tsdb.retention.time=15d

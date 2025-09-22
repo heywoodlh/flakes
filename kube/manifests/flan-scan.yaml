@@ -69,7 +69,7 @@ spec:
           hostNetwork: true
           containers:
             - name: flan-scan
-              image: "docker.io/heywoodlh/flan-scan:2025_05"
+              image: "docker.io/heywoodlh/flan-scan:2025_09"
               imagePullPolicy: IfNotPresent
               env:
                 - name: format
@@ -110,7 +110,7 @@ spec:
     spec:
       containers:
         - name: flan-scan
-          image: docker.io/heywoodlh/http-files:v2.10.0
+          image: docker.io/heywoodlh/http-files:v2.10.2
           ports:
             - containerPort: 80
           volumeMounts:

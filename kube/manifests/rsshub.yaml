@@ -63,7 +63,7 @@ spec:
       nodeSelector:
         kubernetes.io/hostname: nix-nvidia
       containers:
-      - image: docker.io/redis:7.4.2
+      - image: docker.io/redis:7.4.5
         name: rsshub-redis
         ports:
         - name: redis

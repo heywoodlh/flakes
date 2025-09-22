@@ -37,7 +37,7 @@ spec:
             - name: plex-config
               mountPath: /config
       containers:
-      - image: docker.io/linuxserver/plex:1.42.1
+      - image: docker.io/linuxserver/plex:1.42.2
         name: plex
         ports:
         - name: plex
@@ -110,7 +110,7 @@ spec:
       nodeSelector:
         kubernetes.io/hostname: nix-nvidia
       containers:
-      - image: docker.io/linuxserver/radarr:5.27.1-nightly
+      - image: docker.io/linuxserver/radarr:5.28.1-nightly
         name: radarr
         ports:
         - name: http
@@ -245,7 +245,7 @@ spec:
       nodeSelector:
         kubernetes.io/hostname: nix-nvidia
       containers:
-      - image: docker.io/linuxserver/sabnzbd:4.5.1
+      - image: docker.io/linuxserver/sabnzbd:4.5.3
         name: sabnzbd
         ports:
         - name: http
@@ -379,7 +379,7 @@ spec:
       nodeSelector:
         kubernetes.io/hostname: nix-nvidia
       containers:
-      - image: docker.io/linuxserver/lidarr:2.12.1-develop
+      - image: docker.io/linuxserver/lidarr:2.14.3-develop
         name: lidarr
         ports:
         - name: http
@@ -463,7 +463,7 @@ spec:
       nodeSelector:
         kubernetes.io/hostname: nix-nvidia
       containers:
-      - image: docker.io/linuxserver/tautulli:2.15.2
+      - image: docker.io/linuxserver/tautulli:2.16.0
         name: tautulli
         ports:
         - name: http

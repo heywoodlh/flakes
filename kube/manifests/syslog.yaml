@@ -84,7 +84,7 @@ spec:
         fsGroup: 1000
       containers:
       - name: syslog
-        image: docker.io/linuxserver/syslog-ng:4.8.1
+        image: docker.io/linuxserver/syslog-ng:4.8.3
         env:
           - name: PUID
             value: "1000"

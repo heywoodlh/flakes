@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
       - name: http-files
-        image: docker.io/heywoodlh/http-files:v2.9.1
+        image: docker.io/heywoodlh/http-files:v2.10.2
         ports:
         - containerPort: 80
         volumeMounts:

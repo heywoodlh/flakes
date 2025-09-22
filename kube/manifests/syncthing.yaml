@@ -25,7 +25,7 @@ spec:
       nodeSelector:
         kubernetes.io/hostname: nix-nvidia
       containers:
-      - image: docker.io/syncthing/syncthing:1.29.3
+      - image: docker.io/syncthing/syncthing:1.30.0
         name: syncthing
         ports:
         - name: web-ui
