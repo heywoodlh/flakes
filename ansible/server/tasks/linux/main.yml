@@ -50,7 +50,6 @@
       when:
         - ansible_os_family != "Alpine"
         - ansible_os_family != "Archlinux"
-        - not udm_check.stat.exists
       ansible.builtin.include_role:
         name: prometheus.prometheus.node_exporter
 
