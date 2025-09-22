@@ -625,7 +625,7 @@
               resources = {
                 limits = {
                   cpu = "2";
-                  memory = "4092Mi";
+                  memory = "8192Mi";
                 };
                 requests = {
                   cpu = "500m";
@@ -633,10 +633,13 @@
                 };
               };
             };
+            alertmanager.enabled = false;
+            kube-state-metrics.enabled = false;
             prometheus-node-exporter.enabled = false;
+            prometheus-pushgateway.enabled = false;
             extraScrapeConfigs = ''
               - job_name: "metrics-server"
-                scrape_interval: 2m
+                scrape_interval: 5m
                 static_configs:
                 - targets:
                   - metrics-server.kube-system.svc:443
@@ -644,10 +647,13 @@
                   insecure_skip_verify: true
 
               - job_name: "node"
-                scrape_interval: 2m
+                scrape_interval: 5m
                 static_configs:
                 - targets:
                   - nix-nvidia.barn-banana.ts.net:9100
+                  - spencer-router.barn-banana.ts.net:9100
+                  - yasmin-router.barn-banana.ts.net:9100
+                  - arlene-router.barn-banana.ts.net:9100
             '';
           };
         });
