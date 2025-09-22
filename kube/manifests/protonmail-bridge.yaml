@@ -19,7 +19,7 @@ spec:
       nodeSelector:
         kubernetes.io/hostname: nix-nvidia
       containers:
-      - image: docker.io/shenxn/protonmail-bridge:3.18.0-1
+      - image: docker.io/shenxn/protonmail-bridge:3.19.0-1
         name: protonmail-bridge
         ports:
         - name: smtp
