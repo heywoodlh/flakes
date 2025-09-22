@@ -484,7 +484,7 @@
           radarr_hostfolder = "/media/config/services/radarr";
           sonarr_image = "docker.io/linuxserver/sonarr:4.0.15-develop";
           sonarr_hostfolder = "/media/config/services/sonarr";
-          lidarr_image = "docker.io/linuxserver/lidarr:2.12.1-develop";
+          lidarr_image = "docker.io/linuxserver/lidarr:2.14.3-develop";
           lidarr_hostfolder = "/media/config/services/lidarr";
           readarr_image = "docker.io/linuxserver/readarr:0.4.19-nightly";
           readarr_hostfolder = "/media/config/services/readarr";
