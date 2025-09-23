@@ -308,6 +308,12 @@
           postgres_replicas = "1";
           postgres_storage_class = "local-path";
         };
+        comfyui = mkKubeDrv "comfyui" {
+          src = ./templates/comfyui.yaml;
+          namespace = "default";
+          image = "ghcr.io/lecode-official/comfyui-docker:latest";
+          hostfolder = "/media/data-ssd/comfyui";
+        };
         coredns = mkKubeDrv "coredns" {
           src = ./templates/coredns.yaml;
           tailnet = "barn-banana.ts.net";
