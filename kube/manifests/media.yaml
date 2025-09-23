@@ -86,6 +86,7 @@ spec:
     port: 32400
     protocol: TCP
     targetPort: plex
+    nodePort: 32400
   selector:
     app: plex
   type: LoadBalancer
