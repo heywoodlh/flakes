@@ -19,6 +19,7 @@ spec:
     spec:
       # GPU acceleration
       runtimeClassName: nvidia
+      hostNetwork: true
       nodeSelector:
         kubernetes.io/hostname: nix-nvidia
       initContainers:
@@ -87,7 +88,11 @@ spec:
     targetPort: plex
   selector:
     app: plex
-  type: ClusterIP
+  type: LoadBalancer
+status:
+  loadBalancer:
+    ingress:
+    - ip: 192.168.1.22
 # Radarr
 ---
 apiVersion: apps/v1
