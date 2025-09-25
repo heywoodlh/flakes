@@ -19,7 +19,7 @@ spec:
         io.kompose.service: pinchflat
     spec:
       nodeSelector:
-        kubernetes.io/hostname: nix-nvidia
+        kubernetes.io/hostname: homelab
       securityContext:
         runAsUser: 995
         fsGroup: 995

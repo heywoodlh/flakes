@@ -55,6 +55,6 @@ spec:
 kind: Node
 apiVersion: v1
 metadata:
-  name: nix-nvidia
+  name: homelab
   labels:
     nixos-nvidia-cdi: enabled

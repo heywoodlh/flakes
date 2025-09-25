@@ -30,7 +30,7 @@ data:
         forward . 10.43.0.15
     }
   NodeHosts: |
-    192.168.1.22 nix-nvidia
+    192.168.1.22 homelab
 #---
 #apiVersion: v1
 #kind: ConfigMap

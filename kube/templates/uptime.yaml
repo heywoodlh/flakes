@@ -23,9 +23,7 @@ data:
       status_dir: "/status"
     ping:
       hosts:
-        - nix-drive
-        - nix-nvidia
-        - nixos-zalman
+        - homelab
       options: "-c 1 -W 5"
       silent: "true"
     curl:

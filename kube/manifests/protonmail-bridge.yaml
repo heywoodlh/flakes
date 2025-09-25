@@ -17,7 +17,7 @@ spec:
         app: protonmail-bridge
     spec:
       nodeSelector:
-        kubernetes.io/hostname: nix-nvidia
+        kubernetes.io/hostname: homelab
       containers:
       - image: docker.io/shenxn/protonmail-bridge:3.19.0-1
         name: protonmail-bridge

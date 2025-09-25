@@ -25,7 +25,7 @@ spec:
         app: miniflux-db
     spec:
       nodeSelector:
-        kubernetes.io/hostname: nix-nvidia
+        kubernetes.io/hostname: homelab
       containers:
       - image: docker.io/postgres:15.14
         name: miniflux-db
@@ -100,7 +100,7 @@ spec:
         app: miniflux
     spec:
       nodeSelector:
-        kubernetes.io/hostname: nix-nvidia
+        kubernetes.io/hostname: homelab
       containers:
       - image: docker.io/miniflux/miniflux:2.2.13
         name: miniflux

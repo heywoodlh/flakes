@@ -138,7 +138,7 @@ spec:
             path: /media/data-ssd/lancache//logs
             type: Directory
       nodeSelector:
-        kubernetes.io/hostname: nix-nvidia
+        kubernetes.io/hostname: homelab
 ---
 apiVersion: v1
 kind: Service

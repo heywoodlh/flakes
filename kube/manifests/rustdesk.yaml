@@ -17,7 +17,7 @@ spec:
         app: rustdesk
     spec:
       nodeSelector:
-        kubernetes.io/hostname: nix-nvidia
+        kubernetes.io/hostname: homelab
       containers:
       - image: docker.io/rustdesk/rustdesk-server:1.1.10-3
         name: rustdesk-hbbs

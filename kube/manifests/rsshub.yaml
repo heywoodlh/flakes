@@ -17,7 +17,7 @@ spec:
         app: rsshub-browserless
     spec:
       nodeSelector:
-        kubernetes.io/hostname: nix-nvidia
+        kubernetes.io/hostname: homelab
       containers:
       - image: docker.io/browserless/chrome:1.61-puppeteer-13.1.3
         name: rsshub-browserless
@@ -61,7 +61,7 @@ spec:
         app: rsshub-redis
     spec:
       nodeSelector:
-        kubernetes.io/hostname: nix-nvidia
+        kubernetes.io/hostname: homelab
       containers:
       - image: docker.io/redis:7.4.5
         name: rsshub-redis
@@ -120,7 +120,7 @@ spec:
         app: rsshub
     spec:
       nodeSelector:
-        kubernetes.io/hostname: nix-nvidia
+        kubernetes.io/hostname: homelab
       containers:
       - image: docker.io/diygod/rsshub:2025-02-19
         name: rsshub

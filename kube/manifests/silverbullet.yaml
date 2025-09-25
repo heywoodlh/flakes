@@ -51,7 +51,7 @@ spec:
         app.kubernetes.io/instance: silverbullet
     spec:
       nodeSelector:
-        kubernetes.io/hostname: nix-nvidia
+        kubernetes.io/hostname: homelab
       securityContext:
         {}
       containers:

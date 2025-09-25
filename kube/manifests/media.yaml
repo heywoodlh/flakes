@@ -21,7 +21,7 @@ spec:
       runtimeClassName: nvidia
       hostNetwork: true
       nodeSelector:
-        kubernetes.io/hostname: nix-nvidia
+        kubernetes.io/hostname: homelab
       initContainers:
         - name: bundle-downloader
           image: docker.io/alpine/git
@@ -114,7 +114,7 @@ spec:
         app: radarr
     spec:
       nodeSelector:
-        kubernetes.io/hostname: nix-nvidia
+        kubernetes.io/hostname: homelab
       containers:
       - image: docker.io/linuxserver/radarr:5.28.1-nightly
         name: radarr
@@ -181,7 +181,7 @@ spec:
         app: sonarr
     spec:
       nodeSelector:
-        kubernetes.io/hostname: nix-nvidia
+        kubernetes.io/hostname: homelab
       containers:
       - image: docker.io/linuxserver/sonarr:4.0.15-develop
         name: sonarr
@@ -249,7 +249,7 @@ spec:
         app: sabnzbd
     spec:
       nodeSelector:
-        kubernetes.io/hostname: nix-nvidia
+        kubernetes.io/hostname: homelab
       containers:
       - image: docker.io/linuxserver/sabnzbd:4.5.3
         name: sabnzbd
@@ -316,7 +316,7 @@ spec:
         app: readarr
     spec:
       nodeSelector:
-        kubernetes.io/hostname: nix-nvidia
+        kubernetes.io/hostname: homelab
       containers:
       - image: docker.io/linuxserver/readarr:0.4.19-nightly
         name: readarr
@@ -383,7 +383,7 @@ spec:
         app: lidarr
     spec:
       nodeSelector:
-        kubernetes.io/hostname: nix-nvidia
+        kubernetes.io/hostname: homelab
       containers:
       - image: docker.io/linuxserver/lidarr:2.14.3-develop
         name: lidarr
@@ -467,7 +467,7 @@ spec:
         app: tautulli
     spec:
       nodeSelector:
-        kubernetes.io/hostname: nix-nvidia
+        kubernetes.io/hostname: homelab
       containers:
       - image: docker.io/linuxserver/tautulli:2.16.0
         name: tautulli

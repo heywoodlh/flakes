@@ -7,6 +7,30 @@ nix build -o ./result .#tailscale-operator --impure
 kubectl apply -f ./result
 ```
 
+## Notes on node setup
+
+Initial setup:
+
+```
+# 1Password operator
+op connect server create k3s-cluster --vaults Kubernetes && mv 1password-credentials.json /tmp/
+op connect token create --server k3s-cluster --vault Kubernetes k3s-cluster > /tmp/token.txt
+nix build .#1password-connect --impure && kubectl apply -f ./result
+
+# Tailscale operator
+kubectl create ns tailscale
+nix run .#1password-item -- --name operator-oauth --namespace tailscale --itemPath "vaults/Kubernetes/items/bwmt642lsbd5drsjcrxxnljkku" | kubectl apply -f -
+nix build .#tailscale-operator && kubectl apply -f ./result
+
+# ArgoCD
+kubectl create ns argo
+nix build .#argo && kubectl apply -f ./result
+kubectl apply -f ./kubectl/argo-nix-configmap.yaml # delete the argocd-server pod after applying
+
+# ArgoCD apps
+kubectl apply -f manifests/apps.yaml
+```
+
 ## 1Password usage with Kubernetes Operator
 
 Create a 1Password entry with the CLI:
@@ -36,68 +60,4 @@ I would use the following command to generate a OnePasswordItem:
 nix run .#1password-item -- --name cloudflared --namespace default --itemPath "vaults/Kubernetes/items/m4i7whzvm5amrmxntpoleuaxxe"
 ```
 
-## Notes on node setup
 
-My nodes are running K0s on Ubuntu 22.04.
-
-### NFS
-
-In order for nodes to use the NFS StorageClass, run the following command on each node that may be mounting NFS shares:
-
-```
-sudo apt-get install -y nfs-common
-```
-
-### Home Assistant
-
-For Home Assistant to work with wifi and bluetooth, the following commands were necessary on each node:
-
-```
-sudo apt-get install -y bluetooth network-manager && sudo systemctl enable --now bluetooth.service
-```
-
-For the `macmini7,1` model, install the broadcom wifi driver like so:
-
-```
-sudo apt-get install --reinstall bcmwl-kernel-source
-```
-
-To discover devices, Avahi must be running:
-
-```
-sudo apt-get install -y avahi-daemon
-sudo systemctl enable --now avahi-daemon.service
-```
-
-Additionally, set the following setting in `/etc/avahi/avahi-daemon.conf`:
-
-```
-[reflector]
-enable-reflector=yes
-reflect-ipv=no
-```
-
-And restart Avahi:
-
-```
-sudo systemctl restart avahi-daemon.service
-```
-
-Additionally, allow UDP port 5353 and TCP port 21063 on your node running HA:
-
-```
-sudo ufw allow from any to any port 5353 proto udp
-sudo ufw allow from any to any port 21063 proto tcp
-```
-
-<details>
-
-# Random notes
-
-Uptime testing
-
-```
-kubectl run -it --rm --image=docker.io/heywoodlh/bash-uptime:latest --command uptime-testing -- ash
-```
-
-</details>

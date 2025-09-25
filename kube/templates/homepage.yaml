@@ -41,7 +41,7 @@ data:
             description: ollama backend
             widget:
               type: customapi
-              url: http://nix-nvidia.barn-banana.ts.net:11434/api/ps
+              url: http://ollama.barn-banana.ts.net:11434/api/ps
               method: GET
               mappings:
                 - field: models[0].name

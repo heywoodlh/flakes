@@ -353,7 +353,7 @@ data:
       scrape_interval: 5m
       static_configs:
       - targets:
-        - nix-nvidia.barn-banana.ts.net:9100
+        - homelab.barn-banana.ts.net:9100
         - spencer-router.barn-banana.ts.net:9100
         - yasmin-router.barn-banana.ts.net:9100
         - arlene-router.barn-banana.ts.net:9100

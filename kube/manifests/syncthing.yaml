@@ -23,7 +23,7 @@ spec:
         app: syncthing
     spec:
       nodeSelector:
-        kubernetes.io/hostname: nix-nvidia
+        kubernetes.io/hostname: homelab
       containers:
       - image: docker.io/syncthing/syncthing:1.30.0
         name: syncthing

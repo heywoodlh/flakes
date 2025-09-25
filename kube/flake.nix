@@ -157,7 +157,7 @@
           namespace = "gaming";
           replicas = 1;
           hostfolder = "/media/data-ssd/games/arma-reforger";
-          nodename = "nix-nvidia";
+          nodename = "homelab";
         };
         attic = mkKubeDrv "attic" {
           src = ./templates/attic.yaml;
@@ -352,7 +352,7 @@
           kibana_nodecount = 1;
           logstash_nodecount = 1;
           hostfolder = "/media/data-ssd/elastic";
-          nodename = "nix-nvidia";
+          nodename = "homelab";
         };
 
         ersatztv = mkKubeDrv "ersatztv" {
@@ -362,7 +362,7 @@
           replicas = 1;
           hostfolder = "/media/data-ssd/ersatztv";
           hostmediafolder = "/media/home-media";
-          nodename = "nix-nvidia";
+          nodename = "homelab";
         };
         flan-scan = mkKubeDrv "flan-scan" {
           src = ./templates/flan-scan.yaml;
@@ -411,7 +411,7 @@
           image = "ghcr.io/home-assistant/home-assistant:2025.9.4";
           port = 80;
           replicas = 1;
-          nodename = "nix-nvidia";
+          nodename = "homelab";
         };
         homepage = mkKubeDrv "homepage" {
           src = ./templates/homepage.yaml;
@@ -473,7 +473,7 @@
           cache_generic = "true";
           timezone = "America/Denver";
           replicas = 1;
-          nodename = "nix-nvidia";
+          nodename = "homelab";
         };
         longhorn = mkKubeDrv "longhorn" {
           src = ./templates/longhorn.yaml;
@@ -499,7 +499,7 @@
           tautulli_image = "docker.io/linuxserver/tautulli:2.16.0";
           tautulli_hostfolder = "/media/config/services/tautulli/config";
           media_hostfolder = "/media/home-media";
-          nodename = "nix-nvidia";
+          nodename = "homelab";
         };
         metrics-server = mkKubeDrv "metrics-server" {
           src = ./templates/metrics-server.yaml;
@@ -515,7 +515,7 @@
           src = ./templates/minecraft-bedrock.yaml;
           namespace = "default";
           image = "docker.io/itzg/minecraft-bedrock-server:latest";
-          nodename = "nix-nvidia";
+          nodename = "homelab";
           hostfolder = "/opt/minecraft-bedrock";
         };
         miniflux = mkKubeDrv "miniflux" {
@@ -524,7 +524,7 @@
           image = "docker.io/miniflux/miniflux:2.2.13";
           postgres_image = "docker.io/postgres:15.14";
           postgres_replicas = 1;
-          nodename = "nix-nvidia";
+          nodename = "homelab";
           hostfolder = "/opt/miniflux";
           replicas = 1;
         };
@@ -535,7 +535,7 @@
           tag = "dev-amd64";
           replicas = 1;
           port = 80;
-          nodename = "nix-nvidia";
+          nodename = "homelab";
         };
         namespaces = mkKubeDrv "namespaces" {
           src = ./templates/namespaces.yaml;
@@ -612,7 +612,7 @@
           replicas = 1;
           hostfolder = "/media/data-ssd/pinchflat";
           hostmediafolder = "/media/home-media/disk3/youtube";
-          nodename = "nix-nvidia";
+          nodename = "homelab";
         };
         # Ensure to deploy prometheus-blackbox-exporter first
         prometheus = (kubelib.buildHelmChart {
@@ -656,7 +656,7 @@
                 scrape_interval: 5m
                 static_configs:
                 - targets:
-                  - nix-nvidia.barn-banana.ts.net:9100
+                  - homelab.barn-banana.ts.net:9100
                   - spencer-router.barn-banana.ts.net:9100
                   - yasmin-router.barn-banana.ts.net:9100
                   - arlene-router.barn-banana.ts.net:9100
@@ -679,7 +679,7 @@
           src = ./templates/protonmail-bridge.yaml;
           namespace = "default";
           image = "docker.io/shenxn/protonmail-bridge:3.19.0-1";
-          nodename = "nix-nvidia";
+          nodename = "homelab";
           hostfolder = "/opt/protonmail-bridge";
           replicas = 1;
         };
@@ -700,7 +700,7 @@
           src = ./templates/retroarcher.yaml;
           namespace = "default";
           image = "docker.io/lizardbyte/retroarcher:v2024.922.10155";
-          nodename = "nix-nvidia";
+          nodename = "homelab";
           hostfolder = "/opt/retroarcher";
           replicas = 1;
         };
@@ -713,14 +713,14 @@
           browserless_replicas = 1;
           redis_image = "docker.io/redis:7.4.5";
           redis_replicas = 1;
-          nodename = "nix-nvidia";
+          nodename = "homelab";
           hostfolder = "/opt/rsshub";
         };
         rustdesk = mkKubeDrv "rustdesk" {
           src = ./templates/rustdesk.yaml;
           namespace = "default";
           image = "docker.io/rustdesk/rustdesk-server:1.1.10-3";
-          nodename = "nix-nvidia";
+          nodename = "homelab";
           hostfolder = "/opt/rustdesk";
           replicas = 1;
         };
@@ -740,7 +740,7 @@
         silverbullet = mkKubeDrv "silverbullet" {
           src = ./templates/silverbullet.yaml;
           namespace = "docs";
-          nodename = "nix-nvidia";
+          nodename = "homelab";
           image = "ghcr.io/silverbulletmd/silverbullet:v2";
           replicas = 1;
         };
@@ -754,14 +754,14 @@
           src = ./templates/squid.yaml;
           namespace = "default";
           image = "docker.io/heywoodlh/squid:6.13";
-          nodename = "nix-nvidia";
+          nodename = "homelab";
           hostfolder = "/opt/squid";
           replicas = 1;
         };
         syncthing = mkKubeDrv "syncthing" {
           src = ./templates/syncthing.yaml;
           namespace = "syncthing";
-          nodename = "nix-nvidia";
+          nodename = "homelab";
           hostfolder = "/opt/syncthing";
           image = "docker.io/syncthing/syncthing:1.30.0";
           replicas = 1;
@@ -790,7 +790,7 @@
           image = "docker.io/heywoodlh/tailscale-dns-bridge:1.88.2";
           replicas = 1;
           hostfolder = "/opt/tailscale-dns-bridge";
-          nodename = "nix-nvidia";
+          nodename = "homelab";
         };
         tor-socks-proxy = mkKubeDrv "tor-socks-proxy" {
           src = ./templates/tor-socks-proxy.yaml;
@@ -805,7 +805,7 @@
           image = "docker.io/heywoodlh/bash-uptime:0.0.4";
           ntfy_url = "http://ntfy.default/uptime-notifications";
         };
-        # Copy certs first: `scp -r nix-nvidia:/opt/wazuh/certs /tmp/certs`
+        # Copy certs first: `scp -r homelab:/opt/wazuh/certs /tmp/certs`
         # Then build with: `nix build .#wazuh --impure`
         wazuh = let
           certs = /tmp/certs;

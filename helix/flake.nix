@@ -2,9 +2,12 @@
   description = "Helix editor flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    helix-src.url = "github:alevinval/helix/issue-2719";
+    helix-src = {
+      url = "github:alevinval/helix/issue-2719";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
@@ -53,14 +56,14 @@
     in {
       packages = rec {
         helix-config = helixConf;
-        helix = pkgs.writeShellScriptBin "hx" ''
+        helix-wrapper = pkgs.writeShellScriptBin "hx" ''
           PATH="${pkgs.nix}/bin:${pkgs.nil}/bin:$PATH"
           mkdir -p ~/.config/helix/themes
           cp -f ${self}/themes/heywoodlh.toml ~/.config/helix/themes
           ${helix-src.packages.${system}.helix}/bin/hx -c ${helixConf} $@
         '';
-        helixBin = helix-src.packages.${system}.helix;
-        default = helix;
+        helix = helix-src.packages.${system}.helix;
+        default = helix-wrapper;
       };
 
       formatter = pkgs.alejandra;
