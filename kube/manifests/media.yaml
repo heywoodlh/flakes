@@ -17,9 +17,6 @@ spec:
       labels:
         app: plex
     spec:
-      # GPU acceleration
-      runtimeClassName: nvidia
-      hostNetwork: true
       nodeSelector:
         kubernetes.io/hostname: homelab
       initContainers:
@@ -56,9 +53,9 @@ spec:
         # GPU acceleration
         resources:
           requests:
-            nvidia.com/gpu-all: "1"
+            gpu.intel.com/i915: "1"
           limits:
-            nvidia.com/gpu-all: "1"
+            gpu.intel.com/i915: "1"
       volumes:
       - name: plex-config
         hostPath:

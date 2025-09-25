@@ -424,6 +424,12 @@
           image = "docker.io/heywoodlh/http-files:v2.10.2";
           replicas = 1;
         };
+        intel-device-plugin = mkKubeDrv "http-files" {
+          src = ./templates/intel-device-plugin.yaml;
+          namespace = "default";
+          version = "v0.34.0";
+          replicas = 1;
+        };
         iperf = mkKubeDrv "iperf" {
           src = ./templates/iperf3.yaml;
           namespace = "default";

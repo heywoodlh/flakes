@@ -25,13 +25,6 @@ data:
         loop
         reload
         loadbalance
-
-        forward @tailnet@ 10.43.0.15 100.100.100.100 {
-            policy sequential
-            health_check 5s
-            max_fails 2
-            expire 10s
-        }
     }
 
   NodeHosts: |

@@ -29,6 +29,9 @@ kubectl apply -f ./kubectl/argo-nix-configmap.yaml # delete the argocd-server po
 
 # ArgoCD apps
 kubectl apply -f manifests/apps.yaml
+
+# Intel GPU device plugin (ArgoCD apps not managed by CI/CD)
+kubectl apply -f manifests/intel-device-plugin.yaml
 ```
 
 ## 1Password usage with Kubernetes Operator

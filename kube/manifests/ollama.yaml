@@ -60,9 +60,9 @@ spec:
               mountPath: /root/.ollama
           resources:
             requests:
-              nvidia.com/gpu-all: "1"
+              gpu.intel.com/i915: "1"
             limits:
-              nvidia.com/gpu-all: "1"
+              gpu.intel.com/i915: "1"
       volumes:
       - name: ollama
         hostPath:

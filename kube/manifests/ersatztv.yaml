@@ -41,9 +41,9 @@ spec:
               name: transcode
           resources:
             requests:
-              nvidia.com/gpu-all: "1"
+              gpu.intel.com/i915: "1"
             limits:
-              nvidia.com/gpu-all: "1"
+              gpu.intel.com/i915: "1"
       restartPolicy: Always
       volumes:
         - name: ersatztv-data
