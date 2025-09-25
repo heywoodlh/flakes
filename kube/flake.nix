@@ -496,7 +496,7 @@
           readarr_hostfolder = "/media/config/services/readarr";
           sabnzbd_image = "docker.io/linuxserver/sabnzbd:4.5.3";
           sabnzbd_hostfolder = "/media/config/services/sabnzbd";
-          tautulli_image = "docker.io/linuxserver/tautulli:2.16.0";
+          tautulli_image = "docker.io/linuxserver/tautulli:2021.12.16";
           tautulli_hostfolder = "/media/config/services/tautulli/config";
           media_hostfolder = "/media/home-media";
           nodename = "nix-nvidia";
