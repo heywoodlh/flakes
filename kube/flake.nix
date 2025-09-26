@@ -267,7 +267,7 @@
           namespace = "default";
           replicas = 1;
           image = "ghcr.io/atuinsh/atuin:v18.8.0";
-          postgres_image = "docker.io/postgres:14";
+          postgres_image = "docker.io/postgres:18";
         };
         beeper-bridges = mkKubeDrv "beeper-bridges" {
           src = ./templates/beeper-bridges.yaml;
@@ -528,7 +528,7 @@
           src = ./templates/miniflux.yaml;
           namespace = "default";
           image = "docker.io/miniflux/miniflux:2.2.13";
-          postgres_image = "docker.io/postgres:15.14";
+          postgres_image = "docker.io/postgres:18.0";
           postgres_replicas = 1;
           nodename = "homelab";
           hostfolder = "/opt/miniflux";
