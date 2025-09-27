@@ -390,7 +390,7 @@
         grafana = mkKubeDrv "grafana" {
           src = ./templates/grafana.yaml;
           namespace = "monitoring";
-          image = "docker.io/grafana/grafana:11.6.5";
+          image = "docker.io/grafana/grafana:11.6.6";
           storageclass = "local-path";
         };
         healthchecks = mkKubeDrv "healthchecks" {
@@ -595,14 +595,14 @@
         ollama = mkKubeDrv "ollama" {
           src = ./templates/ollama.yaml;
           namespace = "default";
-          image = "docker.io/ollama/ollama:0.12.0";
+          image = "docker.io/ollama/ollama:0.12.3";
           hostfolder = "/media/data-ssd/ollama";
         };
         open-webui = mkKubeDrv "open-webui" {
           src = ./templates/open-webui.yaml;
           namespace = "open-webui";
-          webui_image = "ghcr.io/open-webui/open-webui:v0.6.30";
-          ollama_image = "docker.io/ollama/ollama:0.12.0";
+          webui_image = "ghcr.io/open-webui/open-webui:v0.6.31";
+          ollama_image = "docker.io/ollama/ollama:0.12.3";
           hostfolder = "/opt/open-webui";
         };
         palworld = mkKubeDrv "palworld" {
