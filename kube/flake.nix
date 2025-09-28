@@ -481,6 +481,12 @@
           replicas = 1;
           nodename = "homelab";
         };
+        llama = mkKubeDrv "llama" {
+          src = ./templates/llama.yaml;
+          namespace = "default";
+          image = "ghcr.io/mostlygeek/llama-swap:vulkan";
+          hostfolder = "/media/data-ssd/llama";
+        };
         longhorn = mkKubeDrv "longhorn" {
           src = ./templates/longhorn.yaml;
           namespace = "longhorn-system";

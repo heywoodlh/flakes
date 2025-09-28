@@ -27,7 +27,6 @@ applications=(
   "nfcapd"
   "ntfy"
   "nuclei"
-  "ollama"
   "open-webui"
   "palworld"
   "pinchflat"
@@ -42,7 +41,6 @@ applications=(
   "syslog"
   "tailscale-dns-bridge"
 )
-
 
 set -ex
 
