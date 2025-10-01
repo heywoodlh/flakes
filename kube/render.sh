@@ -9,6 +9,7 @@ applications=(
   "beeper-bridges"
   "cloudflared"
   "coredns"
+  "comfyui"
   "coredns-kube-system"
   "crossplane"
   "drawio"

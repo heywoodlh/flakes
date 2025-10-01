@@ -47,9 +47,15 @@ spec:
       containers:
         - name: ollama
           securityContext:
-            {}
+            privileged: true
           image: "@image@"
           imagePullPolicy: IfNotPresent
+          command: [ "/bin/bash", "-c", "--" ]
+          args: [ "while true; do sleep 30; done;" ]
+          #command:
+          #  - /bin/sh
+          #  - -c
+          #  - mkdir -p /llm/ollama && cd /llm/ollama && init-ollama && exec ./ollama serve
           ports:
             - name: ollama
               containerPort: 11434
@@ -62,6 +68,17 @@ spec:
               gpu.intel.com/i915: "1"
             limits:
               gpu.intel.com/i915: "1"
+          env:
+            - name: DEVICE
+              value: "Arc"
+            - name: OLLAMA_INTEL_GPU
+              value: "true"
+            - name: ZES_ENABLE_SYSMAN
+              value: "1"
+            - name: OLLAMA_NUM_GPU
+              value: "999"
+            - name: OLLAMA_HOST
+              value: "0.0.0.0"
       volumes:
       - name: ollama
         hostPath:
@@ -77,7 +94,7 @@ data:
   ollama-pull.sh: |-
     #!/usr/bin/env bash
     ## Models I always need
-    models=("llama3:8b" "llama3.1:8b" "deepseek-coder:6.7b" "mistral:7b" "gemma3:4b" "qwen3:8b")
+    models=("gpt-oss:20b" "llama3:8b" "llama3.1:8b" "deepseek-coder:6.7b" "mistral:7b" "gemma3:4b" "qwen3:8b")
     for model in "${models[@]}"
     do
       ollama pull "${model}"

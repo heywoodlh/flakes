@@ -603,7 +603,7 @@
         ollama = mkKubeDrv "ollama" {
           src = ./templates/ollama.yaml;
           namespace = "default";
-          image = "docker.io/ollama/ollama:0.12.0";
+          image = "docker.io/intelanalytics/ipex-llm-inference-cpp-xpu";
           hostfolder = "/media/data-ssd/ollama";
         };
         open-webui = mkKubeDrv "open-webui" {

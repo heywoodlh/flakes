@@ -44,13 +44,19 @@ spec:
     spec:
       securityContext:
         {}
-      runtimeClassName: nvidia
       containers:
         - name: comfyui
           securityContext:
             {}
           image: "ghcr.io/lecode-official/comfyui-docker:latest"
           imagePullPolicy: IfNotPresent
+          command:
+            - /bin/bash
+            - -c
+          args: [
+            "pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/xpu;",
+            "/bin/bash /entrypoint.sh --oneapi-device-selector level_zero:gpu"
+          ]
           ports:
             - name: http
               containerPort: 8188
@@ -58,20 +64,26 @@ spec:
           volumeMounts:
             - name: comfyui-models
               mountPath: /opt/comfyui/models
+            - name: comfyui-output
+              mountPath: /opt/comfyui/output
             - name: comfyui-nodes
               mountPath: /opt/comfyui/custom_nodes
           resources:
             requests:
-              nvidia.com/gpu-all: "1"
+              gpu.intel.com/i915: "1"
             limits:
-              nvidia.com/gpu-all: "1"
+              gpu.intel.com/i915: "1"
       volumes:
       - name: comfyui-models
         hostPath:
           path: /media/data-ssd/comfyui/models
-          type: Directory
+          type: DirectoryOrCreate
       - name: comfyui-nodes
         hostPath:
           path: /media/data-ssd/comfyui/nodes
-          type: Directory
+          type: DirectoryOrCreate
+      - name: comfyui-output
+        hostPath:
+          path: /media/data-ssd/comfyui/output
+          type: DirectoryOrCreate
 
