@@ -276,6 +276,8 @@
           image = "ghcr.io/beeper/bridge-manager:5d5ce6adf5f7d0bfa399e2855506ba717a48d534";
           hostfolder = "/media/data-ssd/beeper";
         };
+        # Run the following before deploying:
+        # nix run .#1password-item -- --name dev-password --namespace default --itemPath "vaults/kubernetes/items/boofeqmvt6vmcdqsyzczhiwqre" | kubectl apply -f -
         dev = mkKubeDrv "dev" {
           src = ./templates/dev.yaml;
           namespace = "default";
