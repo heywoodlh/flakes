@@ -294,7 +294,7 @@
         [org/gnome/shell]
         disable-user-extensions=false
         disabled-extensions=@as ['disabled','ubuntu-dock@ubuntu.com']
-        enabled-extensions=@as ['caffeine@patapon.info','gsconnect@andyholmes.github.io','just-perfection-desktop@just-perfection','native-window-placement@gnome-shell-extensions.gcampax.github.com','user-theme@gnome-shell-extensions.gcampax.github.com','gnomebedtime@ionutbortis.gmail.com','hide-cursor@elcste.com','space-bar@luchrioh']
+        enabled-extensions=@as ['caffeine@patapon.info','gsconnect@andyholmes.github.io','just-perfection-desktop@just-perfection','native-window-placement@gnome-shell-extensions.gcampax.github.com','user-theme@gnome-shell-extensions.gcampax.github.com','gnomebedtime@ionutbortis.gmail.com','hide-cursor@elcste.com','space-bar@luchrioh','pip-on-top@rafostar.github.com']
         favorite-apps=@as ['firefox.desktop']
         had-bluetooth-devices-setup=true
         remember-mount-password=false
@@ -422,7 +422,8 @@
                                "native-window-placement@gnome-shell-extensions.gcampax.github.com"
                                "hide-cursor@elcste.com"
                                "user-theme@gnome-shell-extensions.gcampax.github.com"
-                               "space-bar@luchrioh")
+                               "space-bar@luchrioh"
+                               "pip-on-top@rafostar.github.com")
 
         for extension in "''${extensions[@]}"
         do
