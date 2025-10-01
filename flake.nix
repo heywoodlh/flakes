@@ -74,7 +74,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     vicinae-nix = {
-      url = "github:TomRomeo/vicinae-nix";
+      url = "github:vicinaehq/vicinae";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     gnome-flake = {
@@ -168,6 +168,7 @@
         tabby = tabby-flake.packages.${system}.tabby-wrapper;
         zellij = fish-flake.packages.${system}.zellij;
         ttyd = ttyd-flake.packages.${system}.ttyd;
+        vicinae = gnome-flake.packages.${system}.vicinae;
       };
       formatter = pkgs.alejandra;
     });

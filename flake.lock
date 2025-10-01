@@ -2857,16 +2857,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1757940030,
-        "narHash": "sha256-H52kU7DoO2HdPLrg2b7gZXTPRRN+dIuHElRkIs8RpsM=",
-        "owner": "TomRomeo",
-        "repo": "vicinae-nix",
-        "rev": "fa3b391ff9561321d6bffb6c58e284345c5914d9",
+        "lastModified": 1759316433,
+        "narHash": "sha256-C9cC9nJdvoaPhvNkhRxmv/hti+AehHJh1XYjSElZtlk=",
+        "owner": "vicinaehq",
+        "repo": "vicinae",
+        "rev": "273b49bf6b74b993a001227419f40b91b6a9909e",
         "type": "github"
       },
       "original": {
-        "owner": "TomRomeo",
-        "repo": "vicinae-nix",
+        "owner": "vicinaehq",
+        "repo": "vicinae",
         "type": "github"
       }
     },
