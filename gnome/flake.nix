@@ -22,7 +22,7 @@
       url = "https://github.com/EliverLara/Nordic/releases/download/v2.2.0/Nordic.tar.xz";
     };
     vicinae-nix = {
-      url = "github:TomRomeo/vicinae-nix";
+      url = "github:vicinaehq/vicinae";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -493,6 +493,7 @@
             printf "\nXDG_DATA_DIRS=\"$XDG_DATA_DIRS\"\n" >> ~/.profile
           fi
         '';
+        vicinae = vicinae-sh;
         default = gnome-desktop-setup;
       };
 
