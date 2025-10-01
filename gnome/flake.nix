@@ -222,6 +222,9 @@
         button-layout='close,minimize,maximize:appmenu'
         num-workspaces=10
 
+        [org/gnome/desktop/sound]
+        event-sounds=false
+
         [org/gnome/epiphany/web]
         enable-user-css=true
         enable-webextensions=true
@@ -336,18 +339,6 @@
         workspace-popup=false
         workspaces-in-app-grid=true
 
-        [org/gnome/shell/extensions/paperwm]
-        show-window-position-bar=false
-        use-default-background=true
-        winprops=['{"spaceIndex":0,"preferredWidth":"100%","wm_class":"Firefox"}', '{"preferredWidth":"100%","wm_class":"com.mitchellh.ghostty"}', '{"scratch_layer":true,"wm_class":"1Password"}', '{"scratch_layer":true,"wm_class":"vicinae"}', '{"preferredWidth":"100%","scratch_layer":true,"wm_class":"guake"}']
-
-        [org/gnome/shell/extensions/paperwm/keybindings]
-        move-left=@as ['<Shift><Super>braceleft']
-        move-right=@as ['<Shift><Super>braceright']
-        switch-left=@as ['<Super>bracketleft']
-        switch-right=@as ['<Super>bracketright']
-        toggle-maximize-width=@as ['<Super>Up']
-
         [org/gnome/shell/extensions/space-bar/behavior]
         indicator-style='current-workspace'
         smart-workspace-names=false
@@ -431,8 +422,7 @@
                                "native-window-placement@gnome-shell-extensions.gcampax.github.com"
                                "hide-cursor@elcste.com"
                                "user-theme@gnome-shell-extensions.gcampax.github.com"
-                               "space-bar@luchrioh"
-                               "paperwm@paperwm.github.com")
+                               "space-bar@luchrioh")
 
         for extension in "''${extensions[@]}"
         do
