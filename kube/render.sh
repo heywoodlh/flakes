@@ -41,6 +41,7 @@ applications=(
   "syncthing"
   "syslog"
   "tailscale-dns-bridge"
+  "tor-socks-proxy"
 )
 
 set -ex
