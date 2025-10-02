@@ -148,9 +148,20 @@
         add-to-path /Applications/Hammerspoon.app/Contents/Frameworks/hs
 
         # Custom functions
-
+        test -e $HOME/.1password/session.sh && test -r $HOME/.1password/session.sh && export (head -1 $HOME/.1password/session.sh)
         function op-unlock
-            env | grep -iqE "^OP_SESSION" || eval $(${pkgs._1password-cli}/bin/op signin)
+            mkdir -p -m 700 $HOME/.1password
+            test -e $HOME/.1password/session.sh && export (head -1 $HOME/.1password/session.sh)
+            ${pkgs._1password-cli}/bin/op account get &>/dev/null
+            if test $status -eq 0
+                echo "1Password CLI already unlocked"
+                if ! test -e $HOME/.1password/session.sh
+                   ${pkgs._1password-cli}/bin/op account list &>/dev/null && env | grep -iE "^OP_SESSION=" | head -1 > ~/.1password/session.sh
+                end
+            else
+                export OP_SESSION=$(${pkgs._1password-cli}/bin/op signin --raw)
+                env | grep -iE "^OP_SESSION=" | head -1 > ~/.1password/session.sh && ${pkgs._1password-cli}/bin/op account list &>/dev/null && echo "1Password CLI unlocked"
+            end
         end
 
         function geoiplookup
