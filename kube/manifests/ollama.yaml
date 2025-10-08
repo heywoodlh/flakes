@@ -48,7 +48,7 @@ spec:
         - name: ollama
           securityContext:
             privileged: true
-          image: "docker.io/intelanalytics/ipex-llm-inference-cpp-xpu"
+          image: "docker.io/intelanalytics/ipex-llm-inference-cpp-xpu:2.3.0-SNAPSHOT"
           imagePullPolicy: IfNotPresent
           command: [ "/bin/bash", "-c", "--" ]
           args: [ "while true; do sleep 30; done;" ]
@@ -116,7 +116,7 @@ spec:
         spec:
           containers:
             - name: ollama-pull
-              image: "docker.io/intelanalytics/ipex-llm-inference-cpp-xpu"
+              image: "docker.io/intelanalytics/ipex-llm-inference-cpp-xpu:2.3.0-SNAPSHOT"
               imagePullPolicy: IfNotPresent
               command: ["/bin/bash", "-c"]
               args: [

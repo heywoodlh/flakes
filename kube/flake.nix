@@ -486,7 +486,7 @@
         llama = mkKubeDrv "llama" {
           src = ./templates/llama.yaml;
           namespace = "default";
-          image = "ghcr.io/mostlygeek/llama-swap:vulkan";
+          image = "ghcr.io/mostlygeek/llama-swap:intel";
           hostfolder = "/media/data-ssd/llama";
         };
         longhorn = mkKubeDrv "longhorn" {
@@ -603,7 +603,8 @@
         ollama = mkKubeDrv "ollama" {
           src = ./templates/ollama.yaml;
           namespace = "default";
-          image = "docker.io/intelanalytics/ipex-llm-inference-cpp-xpu";
+          # https://github.com/intel/ipex-llm/issues/13277
+          image = "docker.io/intelanalytics/ipex-llm-inference-cpp-xpu:2.3.0-SNAPSHOT";
           hostfolder = "/media/data-ssd/ollama";
         };
         open-webui = mkKubeDrv "open-webui" {
