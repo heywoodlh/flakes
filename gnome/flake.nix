@@ -79,7 +79,7 @@
           restore-tabs-notify=false
           restore-tabs-startup=false
           save-tabs-when-changed=false
-          schema-version='3.9.0'
+          schema-version='3.10'
           scroll-keystroke=true
           start-at-login=true
           use-default-font=false
@@ -165,7 +165,7 @@
         picture-uri-dark='${wallpaper}'
 
         [org/gnome/desktop/input-sources]
-        xkb-options=@as ['caps:super']
+        xkb-options=@as ['caps:super', 'altwin:ctrl_win']
 
         [org/gnome/desktop/interface]
         clock-show-seconds=true
@@ -214,6 +214,8 @@
         switch-to-workspace-4=@as ['<Super>4']
         switch-to-workspace-left=@as ['<Super>bracketleft']
         switch-to-workspace-right=@as ['<Super>bracketright']
+        switch-windows=['<Control>Tab']
+        switch-windows-backward=['<Shift><Control>Tab']
         toggle-maximized=@as ['<Super>Up']
         toggle-message-tray=@as ['disabled']
         unmaximize=@as ['disabled']
@@ -236,7 +238,7 @@
         workspaces-only-on-primary=false
 
         [org/gnome/settings-daemon/plugins/media-keys]
-        custom-keybindings=@as ['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom9/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom10/']
+        custom-keybindings=@as ['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom9/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom10/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom11/']
         logout=@as ['<Shift><Super>e']
         play=@as ['<Shift><Control>space']
         terminal='disabled'
@@ -287,9 +289,14 @@
         name='launcher'
 
         [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom10]
-        binding='<Ctrl><Shift>space'
+        binding='<Control>space'
         command='${vicinae-sh}/bin/vicinae'
         name='launcher'
+
+        [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom11]
+        binding='<Control>s'
+        command='${pkgs._1password-gui}/bin/1password --quick-access'
+        name='1pass-quick-access'
 
         [org/gnome/shell]
         disable-user-extensions=false
@@ -351,7 +358,7 @@
         switch-to-application-2='disabled'
         switch-to-application-3='disabled'
         switch-to-application-4='disabled'
-        toggle-overview=@as ['disabled']
+        toggle-overview=['<Control>k']
 
         [org/gnome/terminal/legacy]
         default-show-menubar=false
