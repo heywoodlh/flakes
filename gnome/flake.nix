@@ -165,7 +165,7 @@
         picture-uri-dark='${wallpaper}'
 
         [org/gnome/desktop/input-sources]
-        xkb-options=@as ['caps:super', 'altwin:ctrl_win']
+        xkb-options=@as ['caps:ctrl_shifted_capslock', 'altwin:ctrl_win']
 
         [org/gnome/desktop/interface]
         clock-show-seconds=true
@@ -212,8 +212,8 @@
         switch-to-workspace-2=@as ['<Super>2']
         switch-to-workspace-3=@as ['<Super>3']
         switch-to-workspace-4=@as ['<Super>4']
-        switch-to-workspace-left=@as ['<Super>bracketleft']
-        switch-to-workspace-right=@as ['<Super>bracketright']
+        switch-to-workspace-left=@as ['<Control>bracketleft']
+        switch-to-workspace-right=@as ['<Control>bracketright']
         switch-windows=['<Control>Tab']
         switch-windows-backward=['<Shift><Control>Tab']
         toggle-maximized=@as ['<Super>Up']
