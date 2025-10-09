@@ -169,6 +169,7 @@
         zellij = fish-flake.packages.${system}.zellij;
         ttyd = ttyd-flake.packages.${system}.ttyd;
         vicinae = gnome-flake.packages.${system}.vicinae;
+        op-wrapper = fish-flake.packages.${system}.op-wrapper;
       };
       formatter = pkgs.alejandra;
     });

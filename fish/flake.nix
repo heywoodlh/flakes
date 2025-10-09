@@ -57,6 +57,42 @@
       # Additional, pkgs.ps on MacOS expects different arguments than Linux
       ps = if pkgs.stdenv.isDarwin then "/bin/ps" else "${pkgs.ps}/bin/ps";
       psFlags = if pkgs.stdenv.isDarwin then "-U $USER" else "-fjH -u $USER";
+      opUnlockerText = ''
+        ${pkgs.coreutils}/bin/mkdir -p -m 700 $HOME/.1password
+        test -e $HOME/.1password/session.sh && export (${pkgs.coreutils}/bin/head -1 $HOME/.1password/session.sh)
+        if ${pkgs._1password-cli}/bin/op --account my account get &>/dev/null
+            ${pkgs.coreutils}/bin/echo "1Password CLI already unlocked"
+            if ! test -e $HOME/.1password/session.sh
+               ${pkgs._1password-cli}/bin/op account list &>/dev/null && env | ${pkgs.gnugrep}/bin/grep -iE "^OP_SESSION" | ${pkgs.coreutils}/bin/head -1 > $HOME/.1password/session.sh
+            end
+        else
+            eval $(${pkgs._1password-cli}/bin/op signin)
+            env | ${pkgs.gnugrep}/bin/grep -iE "^OP_SESSION" | ${pkgs.coreutils}/bin/head -1 > ~/.1password/session.sh && ${pkgs._1password-cli}/bin/op account list &>/dev/null && ${pkgs.coreutils}/bin/echo "1Password CLI unlocked"
+        end
+        export (${pkgs.coreutils}/bin/head -1 $HOME/.1password/session.sh)
+      '';
+      opUnlocker = pkgs.writeText "op-unlock" ''
+        ${opUnlockerText}
+      '';
+      opWrapperText = ''
+        ${pkgs.fish}/bin/fish ${opUnlocker} &>/dev/null
+        test -e $HOME/.1password/session.sh && export (${pkgs.coreutils}/bin/head -1 $HOME/.1password/session.sh)
+        ${pkgs._1password-cli}/bin/op $argv
+      '';
+      opWrapper = let
+        unlocker = pkgs.writeText "op-unlock" ''
+          #!${pkgs.fish}/bin/fish
+          ${opUnlockerText}
+        '';
+        wrapper = pkgs.writeText "op-wrapper" ''
+          #!${pkgs.fish}/bin/fish
+          ${opWrapperText}
+        '';
+      in pkgs.stdenv.mkDerivation {
+        name = "op-wrapper";
+        builder = pkgs.bash;
+        args = [ "-c" "${pkgs.coreutils}/bin/mkdir -p $out/bin; ${pkgs.coreutils}/bin/cp ${wrapper} $out/bin/op-wrapper; ${pkgs.coreutils}/bin/cp ${unlocker} $out/bin/op-unlock; ${pkgs.coreutils}/bin/chmod +x $out/bin/op-wrapper $out/bin/op-unlock" ];
+      };
       fish_config = pkgs.writeText "profile.fish" ''
         # Function to add a directory to $PATH
         # Only if exists
@@ -149,20 +185,8 @@
 
         # Custom functions
         test -e $HOME/.1password/session.sh && test -r $HOME/.1password/session.sh && export (head -1 $HOME/.1password/session.sh)
-        function op-unlock
-            mkdir -p -m 700 $HOME/.1password
-            test -e $HOME/.1password/session.sh && export (head -1 $HOME/.1password/session.sh)
-            ${pkgs._1password-cli}/bin/op account get &>/dev/null
-            if test $status -eq 0
-                echo "1Password CLI already unlocked"
-                if ! test -e $HOME/.1password/session.sh
-                   ${pkgs._1password-cli}/bin/op account list &>/dev/null && env | grep -iE "^OP_SESSION=" | head -1 > ~/.1password/session.sh
-                end
-            else
-                export OP_SESSION=$(${pkgs._1password-cli}/bin/op signin --raw)
-                env | grep -iE "^OP_SESSION=" | head -1 > ~/.1password/session.sh && ${pkgs._1password-cli}/bin/op account list &>/dev/null && echo "1Password CLI unlocked"
-            end
-        end
+        alias op-unlock="${opWrapper}/bin/op-unlock"
+        alias op="${opWrapper}/bin/op-wrapper"
 
         function geoiplookup
             ${pkgs.curl}/bin/curl -s ipinfo.io/$argv[1]
@@ -186,7 +210,6 @@
 
         # Use custom config if exists
         test -e ~/.config/fish/custom.fish && source ~/.config/fish/custom.fish || true
-
       '';
       fishExe = pkgs.writeShellScriptBin "fish" ''
         ${pkgs.fish}/bin/fish --init-command="source ${fish_config}" $@
@@ -372,8 +395,8 @@
           PATH=${pkgs.zellij}/bin:$PATH # Include zellij in path
           ${pkgs.zellij}/bin/zellij --config ${zellijConf} $@
         '';
+        op-wrapper = opWrapper;
         default = fish;
-        };
-      }
-    );
+      };
+    });
 }
