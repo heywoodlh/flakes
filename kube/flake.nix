@@ -778,7 +778,7 @@
           namespace = "syncthing";
           nodename = "homelab";
           hostfolder = "/opt/syncthing";
-          image = "docker.io/syncthing/syncthing:1.30.0";
+          image = "docker.io/syncthing/syncthing:2.0.10";
           replicas = 1;
         };
         syslog = mkKubeDrv "syslog" {
