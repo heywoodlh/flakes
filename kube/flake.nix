@@ -169,7 +169,7 @@
           src = ./templates/actual.yaml;
           namespace = "default";
           replicas = 1;
-          image = "docker.io/actualbudget/actual-server:25.9.0-alpine";
+          image = "docker.io/actualbudget/actual-server:25.10.0-alpine";
           hostfolder = "/media/data-ssd/actual";
         };
         # After applying this, run the following: `kubectl apply -f ./kubectl/argo-nix-configmap.yaml`
@@ -282,7 +282,7 @@
           src = ./templates/dev.yaml;
           namespace = "default";
           replicas = 1;
-          image = "docker.io/heywoodlh/dev:2025_09_snapshot";
+          image = "docker.io/heywoodlh/dev:2025_10_snapshot";
         };
         cloudflared = mkKubeDrv "cloudflared" {
           src = ./templates/cloudflared.yaml;
@@ -301,7 +301,7 @@
           src = ./templates/coder.yaml;
           namespace = "coder";
           version = "2.8.3";
-          image = "ghcr.io/coder/coder:v2.26.0";
+          image = "ghcr.io/coder/coder:v2.27.0";
           access_url = "https://coder.heywoodlh.io";
           replicas = "1";
           port = "80";
@@ -320,7 +320,7 @@
           src = ./templates/coredns.yaml;
           tailnet = "barn-banana.ts.net";
           namespace = "coredns";
-          image = "docker.io/coredns/coredns:1.12.4";
+          image = "docker.io/coredns/coredns:1.13.1";
           replicas = "1";
         };
         coredns-kube-system = mkKubeDrv "coredns-kube-system" {
@@ -369,7 +369,7 @@
         flan-scan = mkKubeDrv "flan-scan" {
           src = ./templates/flan-scan.yaml;
           namespace = "monitoring";
-          image = "docker.io/heywoodlh/flan-scan:2025_09";
+          image = "docker.io/heywoodlh/flan-scan:2025_10";
           http_image = "docker.io/heywoodlh/http-files:v2.10.2";
           hostfolder = "/media/data-ssd/flan-scan";
           replicas = 1;
@@ -392,7 +392,7 @@
         grafana = mkKubeDrv "grafana" {
           src = ./templates/grafana.yaml;
           namespace = "monitoring";
-          image = "docker.io/grafana/grafana:11.6.5";
+          image = "docker.io/grafana/grafana:11.6.6";
           storageclass = "local-path";
         };
         healthchecks = mkKubeDrv "healthchecks" {
@@ -410,7 +410,7 @@
           src = ./templates/home-assistant.yaml;
           namespace = "default";
           timezone = "America/Denver";
-          image = "ghcr.io/home-assistant/home-assistant:2025.9.4";
+          image = "ghcr.io/home-assistant/home-assistant:2025.10.2";
           port = 80;
           replicas = 1;
           nodename = "homelab";
@@ -504,7 +504,7 @@
           radarr_hostfolder = "/media/config/services/radarr";
           sonarr_image = "docker.io/linuxserver/sonarr:4.0.15-develop";
           sonarr_hostfolder = "/media/config/services/sonarr";
-          lidarr_image = "docker.io/linuxserver/lidarr:2.14.3-develop";
+          lidarr_image = "docker.io/linuxserver/lidarr:2.14.5-develop";
           lidarr_hostfolder = "/media/config/services/lidarr";
           readarr_image = "docker.io/linuxserver/readarr:0.4.19-nightly";
           readarr_hostfolder = "/media/config/services/readarr";
@@ -610,8 +610,8 @@
         open-webui = mkKubeDrv "open-webui" {
           src = ./templates/open-webui.yaml;
           namespace = "open-webui";
-          webui_image = "ghcr.io/open-webui/open-webui:v0.6.30";
-          ollama_image = "docker.io/ollama/ollama:0.12.0";
+          webui_image = "ghcr.io/open-webui/open-webui:0.6.33";
+          ollama_image = "docker.io/ollama/ollama:0.12.5";
           hostfolder = "/opt/open-webui";
         };
         palworld = mkKubeDrv "palworld" {
@@ -726,7 +726,7 @@
           image = "docker.io/diygod/rsshub:2025-02-19";
           browserless_image = "docker.io/browserless/chrome:1.61-puppeteer-13.1.3";
           browserless_replicas = 1;
-          redis_image = "docker.io/redis:7.4.5";
+          redis_image = "docker.io/redis:7.4.6";
           redis_replicas = 1;
           nodename = "homelab";
           hostfolder = "/opt/rsshub";
@@ -802,7 +802,7 @@
         tailscale-dns-bridge = mkKubeDrv "tailscale-dns-bridge" {
           src = ./templates/tailscale-dns-bridge.yaml;
           namespace = "default";
-          image = "docker.io/heywoodlh/tailscale-dns-bridge:1.88.2";
+          image = "docker.io/heywoodlh/tailscale-dns-bridge:1.88.3";
           replicas = 1;
           hostfolder = "/opt/tailscale-dns-bridge";
           nodename = "homelab";
