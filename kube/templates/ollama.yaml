@@ -50,12 +50,7 @@ spec:
             privileged: true
           image: "@image@"
           imagePullPolicy: IfNotPresent
-          command: [ "/bin/bash", "-c", "--" ]
-          args: [ "while true; do sleep 30; done;" ]
-          #command:
-          #  - /bin/sh
-          #  - -c
-          #  - mkdir -p /llm/ollama && cd /llm/ollama && init-ollama && exec ./ollama serve
+          command: [ "ollama", "serve" ]
           ports:
             - name: ollama
               containerPort: 11434

@@ -603,8 +603,9 @@
         ollama = mkKubeDrv "ollama" {
           src = ./templates/ollama.yaml;
           namespace = "default";
-          # https://github.com/intel/ipex-llm/issues/13277
-          image = "docker.io/intelanalytics/ipex-llm-inference-cpp-xpu:2.3.0-SNAPSHOT";
+          # TODO switch back to whyvl/ollama-vulkan when issue 26 is fixed
+          #image = "docker.io/mthreads/ollama:0.11.5-rc2-23-g52fe8ce-vulkan-amd64";
+          image = "docker.io/mthreads/ollama:0.11.8-vulkan-amd64";
           hostfolder = "/media/data-ssd/ollama";
         };
         open-webui = mkKubeDrv "open-webui" {
