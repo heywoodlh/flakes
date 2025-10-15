@@ -17,6 +17,7 @@ applications=(
   "fleetdm"
   "ersatztv"
   "grafana"
+  "hashcat"
   "healthchecks"
   "homepage"
   "http-files"

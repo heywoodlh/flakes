@@ -395,6 +395,21 @@
           image = "docker.io/grafana/grafana:11.6.5";
           storageclass = "local-path";
         };
+        hashcat = mkKubeDrv "hashcat" {
+          src = ./templates/hashcat.yaml;
+          namespace = "security";
+          image = "docker.io/ubuntu:24.04";
+        };
+        hashtopolis = mkKubeDrv "hashtopolis" {
+          src = ./templates/hashtopolis.yaml;
+          namespace = "security";
+          frontend_image = "docker.io/hashtopolis/frontend:latest";
+          backend_image = "docker.io/hashtopolis/backend:latest";
+          agent_image = "docker.io/hashtopolis/agent:master";
+          mysql_image = "docker.io/mysql:8.0";
+          hostfolder = "/media/data-ssd/hashtopolis";
+          nodename = "homelab";
+        };
         healthchecks = mkKubeDrv "healthchecks" {
           src = ./templates/healthchecks.yaml;
           namespace = "monitoring";
