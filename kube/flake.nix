@@ -620,7 +620,7 @@
           namespace = "default";
           # TODO switch back to whyvl/ollama-vulkan when issue 26 is fixed
           #image = "docker.io/mthreads/ollama:0.11.5-rc2-23-g52fe8ce-vulkan-amd64";
-          image = "docker.io/mthreads/ollama:0.11.8-vulkan-amd64";
+          image = "docker.io/grinco/ollama-amd-apu:vulkan";
           hostfolder = "/media/data-ssd/ollama";
         };
         open-webui = mkKubeDrv "open-webui" {
