@@ -382,7 +382,7 @@ spec:
       nodeSelector:
         kubernetes.io/hostname: homelab
       containers:
-      - image: docker.io/linuxserver/lidarr:2.14.3-develop
+      - image: ghcr.io/hotio/lidarr:pr-plugins
         name: lidarr
         ports:
         - name: http
@@ -427,7 +427,7 @@ spec:
   selector:
     app: lidarr
   type: ClusterIP
-# Tautulli
+# tautulli
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -506,4 +506,157 @@ spec:
     targetPort: http
   selector:
     app: tautulli
+  type: ClusterIP
+# qbittorrent
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: qbittorrent
+  name: qbittorrent
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qbittorrent
+  template:
+    metadata:
+      labels:
+        app: qbittorrent
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: homelab
+      containers:
+      - image: docker.io/linuxserver/qbittorrent:5.1.2
+        name: qbittorrent
+        ports:
+        - name: http
+          containerPort: 8080
+        - name: torrenting
+          containerPort: 6881
+        - name: torrenting-udp
+          containerPort: 6881
+          protocol: UDP
+        volumeMounts:
+        - name: qbittorrent-config
+          mountPath: /config
+        - name: media
+          mountPath: /media/home-media
+        env:
+          - name: PUID
+            value: "995"
+          - name: PGID
+            value: "995"
+          - name: TZ
+            value: "America/Denver"
+          - name: WEBUI_PORT
+            value: "8080"
+          - name: TORRENTING_PORT
+            value: "6881"
+      volumes:
+      - name: qbittorrent-config
+        hostPath:
+          path: /media/config/services/qbittorrent
+          type: Directory
+      - name: media
+        hostPath:
+          path: /media/home-media
+          type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: qbittorrent
+  name: qbittorrent
+  namespace: media
+  annotations:
+    tailscale.com/expose: "true"
+    tailscale.com/hostname: "qbittorrent"
+    tailscale.com/tags: "tag:http"
+spec:
+  ports:
+  - name: web-ui
+    port: 80
+    protocol: TCP
+    targetPort: http
+  - name: torrenting
+    port: 6881
+    protocol: TCP
+    targetPort: torrenting
+  - name: torrenting-udp
+    port: 6881
+    protocol: UDP
+    targetPort: torrenting-udp
+  selector:
+    app: qbittorrent
+  type: ClusterIP
+# openaudible
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: openaudible
+  name: openaudible
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openaudible
+  template:
+    metadata:
+      labels:
+        app: openaudible
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: homelab
+      containers:
+      - image: docker.io/openaudible/openaudible:latest
+        name: openaudible
+        ports:
+        - name: http
+          containerPort: 3000
+        volumeMounts:
+        - name: openaudible-config
+          mountPath: /config/OpenAudible
+        - name: media
+          mountPath: /media/home-media
+        env:
+          - name: PUID
+            value: "995"
+          - name: PGID
+            value: "995"
+      volumes:
+      - name: openaudible-config
+        hostPath:
+          path: /media/config/services/openaudible
+          type: Directory
+      - name: media
+        hostPath:
+          path: /media/home-media
+          type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: openaudible
+  name: openaudible
+  namespace: media
+  annotations:
+    tailscale.com/expose: "true"
+    tailscale.com/hostname: "openaudible"
+    tailscale.com/tags: "tag:http"
+spec:
+  ports:
+  - name: web-ui
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app: openaudible
   type: ClusterIP

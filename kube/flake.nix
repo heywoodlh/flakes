@@ -514,13 +514,14 @@
           src = ./templates/media.yaml;
           namespace = "media";
           replicas = 1;
+          media_uid = "995";
           plex_image = "docker.io/linuxserver/plex:1.42.2";
           plex_hostfolder = "/media/config/services/plex";
           radarr_image = "docker.io/linuxserver/radarr:5.28.1-nightly";
           radarr_hostfolder = "/media/config/services/radarr";
           sonarr_image = "docker.io/linuxserver/sonarr:4.0.15-develop";
           sonarr_hostfolder = "/media/config/services/sonarr";
-          lidarr_image = "docker.io/linuxserver/lidarr:2.14.3-develop";
+          lidarr_image = "ghcr.io/hotio/lidarr:pr-plugins";
           lidarr_hostfolder = "/media/config/services/lidarr";
           readarr_image = "docker.io/linuxserver/readarr:0.4.19-nightly";
           readarr_hostfolder = "/media/config/services/readarr";
@@ -528,6 +529,10 @@
           sabnzbd_hostfolder = "/media/config/services/sabnzbd";
           tautulli_image = "docker.io/linuxserver/tautulli:2.16.0";
           tautulli_hostfolder = "/media/config/services/tautulli/config";
+          qbittorrent_image = "docker.io/linuxserver/qbittorrent:5.1.2";
+          qbittorrent_hostfolder = "/media/config/services/qbittorrent";
+          openaudible_image = "docker.io/openaudible/openaudible:latest";
+          openaudible_hostfolder = "/media/config/services/openaudible";
           media_hostfolder = "/media/home-media";
           nodename = "homelab";
         };

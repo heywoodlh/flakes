@@ -29,7 +29,7 @@ spec:
             - |
               test -e "/config/Library/Application Support/Plex Media Server/Plug-ins/YouTube-Agent.bundle" || git clone https://github.com/ZeroQI/YouTube-Agent.bundle "/config/Library/Application Support/Plex Media Server/Plug-ins/YouTube-Agent.bundle"
               test -e "/config/Library/Application Support/Plex Media Server/Plug-ins/AudNexus.bundle" || git clone https://github.com/djdembeck/AudNexus.bundle "/config/Library/Application Support/Plex Media Server/Plug-ins/AudNexus.bundle"
-              chown -R 995 "/config/Library/Application Support/Plex Media Server/Plug-ins"
+              chown -R @media_uid@ "/config/Library/Application Support/Plex Media Server/Plug-ins"
               exit 0
           volumeMounts:
             - name: plex-config
@@ -47,9 +47,9 @@ spec:
           mountPath: /media/home-media
         env:
           - name: PUID
-            value: "995"
+            value: "@media_uid@"
           - name: PGID
-            value: "995"
+            value: "@media_uid@"
         # GPU acceleration
         resources:
           requests:
@@ -125,9 +125,9 @@ spec:
           mountPath: /media/home-media
         env:
           - name: PUID
-            value: "995"
+            value: "@media_uid@"
           - name: PGID
-            value: "995"
+            value: "@media_uid@"
       volumes:
       - name: radarr-config
         hostPath:
@@ -192,9 +192,9 @@ spec:
           mountPath: /media/home-media
         env:
           - name: PUID
-            value: "995"
+            value: "@media_uid@"
           - name: PGID
-            value: "995"
+            value: "@media_uid@"
       volumes:
       - name: sonarr-config
         hostPath:
@@ -260,9 +260,9 @@ spec:
           mountPath: /media/home-media
         env:
           - name: PUID
-            value: "995"
+            value: "@media_uid@"
           - name: PGID
-            value: "995"
+            value: "@media_uid@"
       volumes:
       - name: sabnzbd-config
         hostPath:
@@ -327,9 +327,9 @@ spec:
           mountPath: /media/home-media
         env:
           - name: PUID
-            value: "995"
+            value: "@media_uid@"
           - name: PGID
-            value: "995"
+            value: "@media_uid@"
       volumes:
       - name: readarr-config
         hostPath:
@@ -394,9 +394,9 @@ spec:
           mountPath: /media/home-media
         env:
           - name: PUID
-            value: "995"
+            value: "@media_uid@"
           - name: PGID
-            value: "995"
+            value: "@media_uid@"
       volumes:
       - name: lidarr-config
         hostPath:
@@ -427,7 +427,7 @@ spec:
   selector:
     app: lidarr
   type: ClusterIP
-# Tautulli
+# tautulli
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -506,4 +506,157 @@ spec:
     targetPort: http
   selector:
     app: tautulli
+  type: ClusterIP
+# qbittorrent
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: qbittorrent
+  name: qbittorrent
+  namespace: @namespace@
+spec:
+  replicas: @replicas@
+  selector:
+    matchLabels:
+      app: qbittorrent
+  template:
+    metadata:
+      labels:
+        app: qbittorrent
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: @nodename@
+      containers:
+      - image: @qbittorrent_image@
+        name: qbittorrent
+        ports:
+        - name: http
+          containerPort: 8080
+        - name: torrenting
+          containerPort: 6881
+        - name: torrenting-udp
+          containerPort: 6881
+          protocol: UDP
+        volumeMounts:
+        - name: qbittorrent-config
+          mountPath: /config
+        - name: media
+          mountPath: /media/home-media
+        env:
+          - name: PUID
+            value: "@media_uid@"
+          - name: PGID
+            value: "@media_uid@"
+          - name: TZ
+            value: "America/Denver"
+          - name: WEBUI_PORT
+            value: "8080"
+          - name: TORRENTING_PORT
+            value: "6881"
+      volumes:
+      - name: qbittorrent-config
+        hostPath:
+          path: @qbittorrent_hostfolder@
+          type: Directory
+      - name: media
+        hostPath:
+          path: @media_hostfolder@
+          type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: qbittorrent
+  name: qbittorrent
+  namespace: @namespace@
+  annotations:
+    tailscale.com/expose: "true"
+    tailscale.com/hostname: "qbittorrent"
+    tailscale.com/tags: "tag:http"
+spec:
+  ports:
+  - name: web-ui
+    port: 80
+    protocol: TCP
+    targetPort: http
+  - name: torrenting
+    port: 6881
+    protocol: TCP
+    targetPort: torrenting
+  - name: torrenting-udp
+    port: 6881
+    protocol: UDP
+    targetPort: torrenting-udp
+  selector:
+    app: qbittorrent
+  type: ClusterIP
+# openaudible
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: openaudible
+  name: openaudible
+  namespace: @namespace@
+spec:
+  replicas: @replicas@
+  selector:
+    matchLabels:
+      app: openaudible
+  template:
+    metadata:
+      labels:
+        app: openaudible
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: @nodename@
+      containers:
+      - image: @openaudible_image@
+        name: openaudible
+        ports:
+        - name: http
+          containerPort: 3000
+        volumeMounts:
+        - name: openaudible-config
+          mountPath: /config/OpenAudible
+        - name: media
+          mountPath: /media/home-media
+        env:
+          - name: PUID
+            value: "@media_uid@"
+          - name: PGID
+            value: "@media_uid@"
+      volumes:
+      - name: openaudible-config
+        hostPath:
+          path: @openaudible_hostfolder@
+          type: Directory
+      - name: media
+        hostPath:
+          path: @media_hostfolder@
+          type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: openaudible
+  name: openaudible
+  namespace: @namespace@
+  annotations:
+    tailscale.com/expose: "true"
+    tailscale.com/hostname: "openaudible"
+    tailscale.com/tags: "tag:http"
+spec:
+  ports:
+  - name: web-ui
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app: openaudible
   type: ClusterIP
