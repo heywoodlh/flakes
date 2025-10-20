@@ -55,32 +55,6 @@ spec:
     app.kubernetes.io/name: attic
     app.kubernetes.io/instance: attic
 ---
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: attic-data
-  namespace: @namespace@
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: local-path
-  resources:
-    requests:
-      storage: 500Gi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: attic-config
-  namespace: @namespace@
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: local-path
-  resources:
-    requests:
-      storage: 10Gi
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -149,8 +123,10 @@ spec:
           configMap:
             name: server-toml
         - name: dbdir
-          persistentVolumeClaim:
-            claimName: attic-config
+          hostPath:
+            path: @hostfolder@/db
+            type: Directory
         - name: storagedir
-          persistentVolumeClaim:
-            claimName: attic-data
+          hostPath:
+            path: @hostfolder@/data
+            type: Directory

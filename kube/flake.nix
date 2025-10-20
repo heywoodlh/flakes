@@ -164,6 +164,7 @@
           namespace = "default";
           replicas = 1;
           image = "docker.io/heywoodlh/attic:47752427561f1c34debb16728a210d378f0ece36";
+          hostfolder = "/media/data-ssd/attic";
         };
         actual = mkKubeDrv "actual" {
           src = ./templates/actual.yaml;
