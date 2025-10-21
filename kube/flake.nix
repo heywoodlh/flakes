@@ -357,7 +357,6 @@
           hostfolder = "/media/data-ssd/elastic";
           nodename = "homelab";
         };
-
         ersatztv = mkKubeDrv "ersatztv" {
           src = ./templates/ersatztv.yaml;
           namespace = "media";
