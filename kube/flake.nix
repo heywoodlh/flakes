@@ -3,6 +3,10 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    fish-flake = {
+      url = "github:heywoodlh/flakes?dir=fish";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     flake-utils.url = "github:numtide/flake-utils";
     cloudflared-helm = {
       url = "github:cloudflare/helm-charts";
@@ -27,7 +31,6 @@
       url = "github:open-webui/open-webui";
       flake = false;
     };
-    op-scripts.url = "github:heywoodlh/flakes?dir=1password";
     coredns = {
       url = "github:coredns/helm";
       flake = false;
@@ -66,13 +69,13 @@
     minecraft-helm,
     truecharts-helm,
     open-webui,
-    op-scripts,
     coredns,
     wazuh,
     crossplane,
     elastic-cloud,
     krew2nix,
     kasmweb,
+    fish-flake,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs {
@@ -96,7 +99,7 @@
         echo export TS_CLIENT_ID="$TS_CLIENT_ID"
         echo export TS_SECRET="$TS_SECRET"
       '';
-      op-wrapper = op-scripts.packages.${system}.op;
+      op-wrapper = fish-flake.packages.${system}.op-wrapper;
       talos-wrapper = pkgs.writeShellScriptBin "talosctl" ''
         mkdir -p ~/tmp/talos
         item="op://kubernetes/h6d3bdi7yx2kvrk64u2lolva74"
