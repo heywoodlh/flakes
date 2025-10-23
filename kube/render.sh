@@ -36,6 +36,7 @@ applications=(
   "pinchflat"
   "prometheus"
   "protonmail-bridge"
+  "redm"
   "rsshub"
   "rustdesk"
   "rustdesk-web"

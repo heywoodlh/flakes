@@ -726,6 +726,15 @@
           replicas = 1;
           image = "quay.io/redlib/redlib:latest";
         };
+        redm = mkKubeDrv "redm" {
+          src = ./templates/redm.yaml;
+          namespace = "gaming";
+          replicas = 1;
+          image = "docker.io/routmoute/fxserver:recommended";
+          mysql_image = "docker.io/mariadb:10.11.2";
+          hostfolder = "/media/data-ssd/redm";
+          nodename = "homelab";
+        };
         regexr = mkKubeDrv "regexr" {
           src = ./templates/regexr.yaml;
           namespace = "regexr";
