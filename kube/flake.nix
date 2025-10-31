@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs-old.url = "github:NixOS/nixpkgs/nixos-24.05"; # For deprecated substituteAll function
     fish-flake = {
       url = "github:heywoodlh/flakes?dir=fish";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -16,7 +17,7 @@
       url = "github:kubernetes-sigs/nfs-subdir-external-provisioner";
       flake = false;
     };
-    nixhelm.url = "github:farcaller/nixhelm";
+    nixhelm.url = "github:nix-community/nixhelm";
     nix-kube-generators.url = "github:farcaller/nix-kube-generators";
     tailscale.url = "github:tailscale/tailscale";
     minecraft-helm = {
@@ -60,6 +61,7 @@
   outputs = inputs @ {
     self,
     nixpkgs,
+    nixpkgs-old,
     flake-utils,
     nfs-helm,
     nix-kube-generators,
@@ -82,14 +84,22 @@
         inherit system;
         config.allowUnfree = true;
       };
+      oldpkgs = import nixpkgs-old {
+        inherit system;
+        config.allowUnfree = true;
+      };
       mkKubeDrv = pkgName: args: let
-        yaml = pkgs.substituteAll args;
-      in pkgs.stdenv.mkDerivation {
+        yaml = oldpkgs.substituteAll args;
+      in builtins.derivation {
         name = pkgName;
-        phases = [ "installPhase" ];
-        installPhase = ''
-          cp ${yaml} $out
-        '';
+        inherit system;
+        builder = "${pkgs.bash}/bin/bash";
+        args = [
+          "-c"
+          ''
+          ${pkgs.coreutils}/bin/cp ${yaml} $out
+          ''
+        ];
       };
       kubelib = nix-kube-generators.lib { inherit pkgs; };
       ts-env = pkgs.writeShellScriptBin "tsenv" ''
@@ -385,6 +395,13 @@
           redis_image = "docker.io/redis:8.0-M02-alpine3.21";
           replicas = 1;
           logs_hostfolder = "/media/data-ssd/syslog/fleet";
+        };
+        foldingathome = mkKubeDrv "foldingathome" {
+          src = ./templates/foldingathome.yaml;
+          namespace = "foldingathome";
+          image = "lscr.io/linuxserver/foldingathome:8.4.9";
+          hostfolder = "/media/data-ssd/foldingathome";
+          replicas = 1;
         };
         gomuks = mkKubeDrv "gomuks" {
           src = ./templates/gomuks.yaml;

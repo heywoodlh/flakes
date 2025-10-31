@@ -297,6 +297,27 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
+  name: foldingathome
+  namespace: argo
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argo
+  source:
+    repoURL: https://github.com/heywoodlh/flakes.git
+    targetRevision: HEAD
+    path: kube/manifests
+    directory:
+      include: "foldingathome.yaml"
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
   name: ersatztv
   namespace: argo
 spec:
@@ -687,6 +708,27 @@ spec:
     path: kube/manifests
     directory:
       include: "protonmail-bridge.yaml"
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: redm
+  namespace: argo
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argo
+  source:
+    repoURL: https://github.com/heywoodlh/flakes.git
+    targetRevision: HEAD
+    path: kube/manifests
+    directory:
+      include: "redm.yaml"
   project: default
   syncPolicy:
     automated:

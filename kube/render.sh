@@ -17,6 +17,7 @@ applications=(
   "elastic-cloud-elastic-stack"
   "flan-scan"
   "fleetdm"
+  "foldingathome"
   "ersatztv"
   "grafana"
   "hashcat"
@@ -61,7 +62,8 @@ fi
 
 for app in "${applications[@]}"
 do
-    nix build --option substitute false "${root_dir}#${app}"
+    #nix build --option substitute false "${root_dir}#${app}"
+    nix build "${root_dir}#${app}"
     cp ./result "${root_dir}/manifests/${app}.yaml" # Copy file instead of using symlink
     chmod 644 "${root_dir}/manifests/${app}.yaml"
 
