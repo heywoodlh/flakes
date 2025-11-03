@@ -343,8 +343,6 @@
         # macos ghostty config
         font-size = 16
         macos-window-shadow = false
-        # https://github.com/ghostty-org/ghostty/pull/3742
-        # quick-terminal-size = 80%
         # center is too small to start, wait for quick-terminal-size to be implemented
         # quick-terminal-position = center
         quick-terminal-space-behavior = remain
@@ -361,10 +359,11 @@
         font-size = 14
       '';
       ghosttyConf = pkgs.writeText "config" ''
-        theme = catppuccin-frappe
+        theme = Nord
         command = ${pkgs.tmux}/bin/tmux -f ${tmuxConf}
         window-decoration = false
         auto-update = off
+        quick-terminal-size = 90%
         ${ghosttyOsConf}
       '';
       ghosttyXdgDir = pkgs.stdenv.mkDerivation {
