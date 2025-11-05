@@ -59,24 +59,24 @@
       psFlags = if pkgs.stdenv.isDarwin then "-U $USER" else "-fjH -u $USER";
       opUnlockerText = ''
         ${pkgs.coreutils}/bin/mkdir -p -m 700 $HOME/.1password
-        test -e $HOME/.1password/session.sh && export (${pkgs.coreutils}/bin/head -1 $HOME/.1password/session.sh)
+        test -e $HOME/.1password/session.sh && ${pkgs.gnugrep}/bin/grep -iqE "^OP_SESSION" $HOME/.1password/session.sh && export (${pkgs.coreutils}/bin/head -1 $HOME/.1password/session.sh)
         if ${pkgs._1password-cli}/bin/op --account my account get &>/dev/null
             ${pkgs.coreutils}/bin/echo "1Password CLI already unlocked"
             if ! test -e $HOME/.1password/session.sh
-               ${pkgs._1password-cli}/bin/op account list &>/dev/null && env | ${pkgs.gnugrep}/bin/grep -iE "^OP_SESSION" | ${pkgs.coreutils}/bin/head -1 > $HOME/.1password/session.sh
+               ${pkgs._1password-cli}/bin/op account list &>/dev/null && ${pkgs.coreutils}/bin/env | ${pkgs.gnugrep}/bin/grep -iE "^OP_SESSION" | ${pkgs.coreutils}/bin/head -1 > $HOME/.1password/session.sh
             end
         else
             eval $(${pkgs._1password-cli}/bin/op signin)
-            env | ${pkgs.gnugrep}/bin/grep -iE "^OP_SESSION" | ${pkgs.coreutils}/bin/head -1 > ~/.1password/session.sh && ${pkgs._1password-cli}/bin/op account list &>/dev/null && ${pkgs.coreutils}/bin/echo "1Password CLI unlocked"
+            ${pkgs.coreutils}/bin/env | ${pkgs.gnugrep}/bin/grep -iE "^OP_SESSION" | ${pkgs.coreutils}/bin/head -1 > ~/.1password/session.sh && ${pkgs._1password-cli}/bin/op account list &>/dev/null && ${pkgs.coreutils}/bin/echo "1Password CLI unlocked"
         end
-        export (${pkgs.coreutils}/bin/head -1 $HOME/.1password/session.sh)
+        test -e $HOME/.1password/session.sh && ${pkgs.gnugrep}/bin/grep -iqE "^OP_SESSION" $HOME/.1password/session.sh && export (${pkgs.coreutils}/bin/head -1 $HOME/.1password/session.sh)
       '';
       opUnlocker = pkgs.writeText "op-unlock" ''
         ${opUnlockerText}
       '';
       opWrapperText = ''
         ${pkgs.fish}/bin/fish ${opUnlocker} &>/dev/null
-        test -e $HOME/.1password/session.sh && export (${pkgs.coreutils}/bin/head -1 $HOME/.1password/session.sh)
+        test -e $HOME/.1password/session.sh && ${pkgs.gnugrep}/bin/grep -iqE "^OP_SESSION" $HOME/.1password/session.sh && export (${pkgs.coreutils}/bin/head -1 $HOME/.1password/session.sh)
         ${pkgs._1password-cli}/bin/op $argv
       '';
       opWrapper = let
@@ -184,7 +184,7 @@
         add-to-path /Applications/Hammerspoon.app/Contents/Frameworks/hs
 
         # Custom functions
-        test -e $HOME/.1password/session.sh && test -r $HOME/.1password/session.sh && export (head -1 $HOME/.1password/session.sh)
+        test -e $HOME/.1password/session.sh && test -r $HOME/.1password/session.sh && grep -qE '^OP_SESSION' $HOME/.1password/session.sh && export (head -1 $HOME/.1password/session.sh)
         alias op-unlock="${opWrapper}/bin/op-unlock"
         alias op="${opWrapper}/bin/op-wrapper"
 
