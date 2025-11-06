@@ -94,6 +94,11 @@
         args = [ "-c" "${pkgs.coreutils}/bin/mkdir -p $out/bin; ${pkgs.coreutils}/bin/cp ${wrapper} $out/bin/op-wrapper; ${pkgs.coreutils}/bin/cp ${unlocker} $out/bin/op-unlock; ${pkgs.coreutils}/bin/chmod +x $out/bin/op-wrapper $out/bin/op-unlock" ];
       };
       fish_config = pkgs.writeText "profile.fish" ''
+        # Delete invalid session.sh file if exists
+        if test -e $HOME/.1password/session.sh
+            ${pkgs.gnugrep}/bin/grep -iqE '^OP_SESSION' $HOME/.1password/session.sh || rm -f $HOME/.1password/session.sh
+        end
+
         # Function to add a directory to $PATH
         # Only if exists
         function add-to-path
