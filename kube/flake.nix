@@ -391,7 +391,7 @@
           src = ./templates/fleetdm.yaml;
           namespace = "monitoring";
           image = "docker.io/fleetdm/fleet:c62899e";
-          mysql_image = "docker.io/mysql:8.4.6";
+          mysql_image = "docker.io/mysql:9.5.0";
           redis_image = "docker.io/redis:8.0-M02-alpine3.21";
           replicas = 1;
           logs_hostfolder = "/media/data-ssd/syslog/fleet";
@@ -426,7 +426,7 @@
           frontend_image = "docker.io/hashtopolis/frontend:latest";
           backend_image = "docker.io/hashtopolis/backend:latest";
           agent_image = "docker.io/hashtopolis/agent:master";
-          mysql_image = "docker.io/mysql:8.0";
+          mysql_image = "docker.io/mysql:9.5";
           hostfolder = "/media/data-ssd/hashtopolis";
           nodename = "homelab";
         };
