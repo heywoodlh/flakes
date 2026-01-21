@@ -536,7 +536,7 @@
           media_uid = "995";
           plex_image = "docker.io/linuxserver/plex:1.42.2";
           plex_hostfolder = "/media/config/services/plex";
-          radarr_image = "docker.io/linuxserver/radarr:5.28.1-nightly";
+          radarr_image = "docker.io/linuxserver/radarr:6.0.4-nightly";
           radarr_hostfolder = "/media/config/services/radarr";
           sonarr_image = "docker.io/linuxserver/sonarr:4.0.15-develop";
           sonarr_hostfolder = "/media/config/services/sonarr";
